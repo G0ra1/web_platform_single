@@ -1,0 +1,12 @@
+{
+    "name": "primevue",
+    "viewName": "PrimeVUE",
+    "logo": "",
+    "icon": "",
+    "package": {
+        "devDependencies": {
+            "primeicons": "^5.0.0",
+            "primevue": "^3.9.1"
+        }
+    }
+}

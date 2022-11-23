@@ -1,0 +1,137 @@
+.wrapper {
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+
+  >.back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+  }
+
+  >.sider {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 70px;
+    width: 70px;
+    background-color: var(--layout-sider);
+    z-index: 3;
+    overflow: hidden;
+  }
+
+  >.container {
+    flex: 1;
+
+    .layout {
+      display: flex;
+      flex-direction: column;
+      z-index: -1;
+      height: 100%;
+      width: 100%;
+
+      &-header {
+        display: flex;
+        align-items: center;
+        height: 42px;
+        flex: 0 0 42px;
+        border-bottom: 1px solid #ccc;
+        box-shadow: 0 2px 4px 0 #d3d3d3;
+        padding: 0 5px;
+        justify-content: space-between;
+        z-index: 1;
+      }
+
+      &-content {
+        flex: 1;
+        z-index: 0;
+      }
+    }
+
+
+  }
+
+  &-logo {
+    display: flex;
+    justify-content: center;
+    padding: 5px 0 15px 0;
+  }
+
+  &-menu {
+    position: relative;
+    overflow: hidden;
+
+    &-item {
+      // position: relative;
+      display: flex;
+      margin-bottom: 10px;
+      height: 50px;
+      justify-content: center;
+      align-items: center;
+      color: #FEEBEC;
+      transition: .1s;
+      cursor: pointer;
+      flex-direction: column;
+      font-size: 12px;
+      font-weight: 600;
+
+      // right: -5px;
+      &.action {
+        background-color: #fff;
+        color: var(--n-red6);
+        // margin-left: 5px;
+        margin-right: -5px;
+        box-shadow: 1px 1px 4px 1px #999;
+        margin-left: 8px;
+        border-radius: 4px;
+        // background-color:var(--n-blue1);
+        // color: #fff;
+      }
+
+      &:hover {
+        color: #fff;
+      }
+
+      &.action:hover {
+        color: var(--n-red6);
+      }
+    }
+
+    &-app-in {
+      display: flex;
+      margin-bottom: 10px;
+      height: 40px;
+      justify-content: center;
+      align-items: center;
+      color: #ccc;
+      transition: .3s;
+      cursor: pointer;
+
+      &.action {
+        border-radius: 5px;
+        background-color: #F6F7F9;
+        color: var(--n-blue1);
+        margin-left: 8px;
+        // margin-left: 5px;
+        margin-right: -5px;
+        box-shadow: 1px 1px 4px 1px #999;
+        // background-color:var(--n-blue1);
+        // color: #fff;
+      }
+    }
+
+    &.app-menu {
+      flex: 1;
+
+      >.app-menu-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 5px;
+
+        .action {}
+      }
+    }
+  }
+}

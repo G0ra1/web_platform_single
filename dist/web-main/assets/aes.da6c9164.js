@@ -1,0 +1,1 @@
+import{eK as e}from"./index.0e7eb3bd.js";const p={encrypt(r){var t=e.enc.Utf8.parse("abcdefgabcdefg12"),a=e.enc.Utf8.parse(r),c=e.AES.encrypt(a,t,{mode:e.mode.ECB,padding:e.pad.Pkcs7});return c.toString()},decrypt(r){var t=e.enc.Utf8.parse("abcdefgabcdefg12"),a=e.AES.decrypt(r,t,{mode:e.mode.ECB,padding:e.pad.Pkcs7});return e.enc.Utf8.stringify(a).toString()}};export{p as A};

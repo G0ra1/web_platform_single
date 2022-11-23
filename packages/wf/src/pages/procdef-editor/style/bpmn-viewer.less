@@ -1,0 +1,57 @@
+@font-face {
+  font-family: 'iconfont';  /* Project id 3143123 */
+  src: url('//at.alicdn.com/t/font_3143123_uwy87vh4g49.woff2?t=1642219868062') format('woff2'),
+       url('//at.alicdn.com/t/font_3143123_uwy87vh4g49.woff?t=1642219868062') format('woff'),
+       url('//at.alicdn.com/t/font_3143123_uwy87vh4g49.ttf?t=1642219868062') format('truetype');
+}
+.bjs-container { // bpmn视图层css
+    // background: #f5f4fa;
+    // overflow: visible !important;
+    // .djs-container {
+    //     overflow: visible !important;
+    // }
+    .djs-palette-entries {
+        .palette-hide {
+            display: none;
+        }
+    }
+    .djs-overlay-context-pad {
+
+        .contextPad-hide {
+            display: none;
+        }
+    }
+    .bjs-powered-by {
+        opacity: .1;
+    }
+    .djs-palette {
+        top: -1px;
+        left: -1px;
+        // left: -92px;
+        height: calc(100% + 2px);
+    }
+        
+    .djs-minimap {
+        border: 1px solid #ccc;
+        box-shadow: 1px 1px 3px rgb(0 0 0 / 31%);
+        >.toggle {
+            font-family: "iconfont" !important;
+            font-size: 20px;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 0 5px !important;
+            color: #777;
+        }
+        &.open {
+            >.toggle:before {
+                content: "\e602";
+            }
+        }
+        >.toggle:before {
+            content: "\e61e";
+        }
+        top: -2px;
+        right: -2px;
+    }
+}

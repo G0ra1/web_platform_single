@@ -1,0 +1,39 @@
+
+.vxe-grid {
+    >.vxe-grid--toolbar-wrapper {
+        >.vxe-toolbar.size--mini {
+            padding: 0;
+            height: 40px;
+        }
+    }
+    >.vxe-grid--pager-wrapper {
+        >.vxe-pager.size--mini {
+            height: 40px;
+        }
+    }
+}
+
+// 内部块状窗口
+.nw-sprite {
+    // box-shadow: 0 0 2px 0 rgb(31 31 31 / 5%), 0 1px 2px 0 rgb(31 31 31 / 15%);
+    box-shadow: 0px 0px 3px 0 rgb(31 31 31 / 25%)
+    
+}
+// 全屏样式
+.full-screen {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 4 !important;
+}
+
+@import url('./Input/index.less');
+@import url('./Select/index.less');
+@import url('./Drawer/index.less');
+@import url('./Button/index.less');
+@import url('./Divider/index.less');
+@import url('./Layout/index.less');
+@import url('./Spin/index.less');
+@import url('./Dialog/index.less');

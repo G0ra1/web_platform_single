@@ -1,0 +1,45 @@
+.nw-layout-body-sider {
+
+    // 重写侧栏样式
+    &.n-layout-sider {
+        .n-layout-sider-scroll-container {
+            .n-menu {
+                // 收缩的样式
+                &.n-menu--collapsed {
+                    .n-menu-item, .n-submenu {
+                        .n-menu-item-content {
+                            padding-left:5px !important;
+                        }
+                    }
+                }
+                // 展开的样式
+                font-size: 14px;
+                .n-menu-item::before {
+                    left: 0;
+                    right: 0;
+                }
+                .n-menu-item {
+                    height: 28px;
+                }
+                .n-menu-item, .n-submenu {
+                    margin-top: 0px;
+                    .n-menu-item-content__icon {
+                        margin-right: 0px !important;
+                    }
+                    .n-menu-item-content {
+                        height: 28px;
+                        .n-menu-item-content-header {
+                            // color:red
+                        }
+                    }
+                }
+                // .n-submenu {
+                //     margin-top: 0px;
+                //     .n-menu-item-content__icon {
+                //         margin-right: 0px !important;
+                //     }
+                // }
+            }
+        }
+    }
+}

@@ -1,0 +1,6 @@
+packages:
+  # 业务模块
+  - 'packages/*'
+
+  # exclude packages that are inside test directories
+  - '!**/test/**'

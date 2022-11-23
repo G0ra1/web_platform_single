@@ -1,0 +1,57 @@
+
+// 这的颜色风格后期改为读取配置的定制
+.nw-vxe-grid-tree {
+    // border-bottom: 1px solid #333;
+    .vxe-table--render-default .vxe-table--border-line {
+        border: none
+    }
+    .vxe-table--render-default .vxe-tree--line {
+      bottom: -1.1em; // 连接线 高度
+      border-color: rgb(121, 121, 121);
+    }
+    .vxe-table--render-default {
+      // color: #ccc;
+    }
+    .vxe-table--render-default .vxe-table--body-wrapper, .vxe-table--render-default .vxe-table--footer-wrapper {
+      background-color: unset;
+    }
+    .vxe-icon--caret-bottom:before, .vxe-icon--caret-left:before, .vxe-icon--caret-right:before, .vxe-icon--caret-top:before{
+      border-width: .4em;
+    }
+    .vxe-icon--caret-right:before {
+      bottom: .1em;
+    }
+    // 重写高亮
+    .vxe-table--render-default .vxe-body--row.row--hover, .vxe-table--render-default .vxe-body--row.row--hover.row--stripe {
+      // background-color: #383838;
+    }
+    // 行高
+    .vxe-table--render-default.size--mini .vxe-body--column:not(.col--ellipsis), .vxe-table--render-default.size--mini .vxe-footer--column:not(.col--ellipsis), .vxe-table--render-default.size--mini .vxe-header--column:not(.col--ellipsis) {
+      padding: 2px 0;
+    }
+    .vxe-table--body {
+      width: 100% !important;
+    }
+    &-context {
+      // background: #383838;
+      // border: 1px solid #333;
+      .vxe-context-menu--option-wrapper, .vxe-table--context-menu-clild-wrapper {
+        // border-bottom: 1px solid #888
+      }
+      .vxe-context-menu--option-wrapper li.link--active, .vxe-table--context-menu-clild-wrapper li.link--active {
+        // background-color: #094771;
+        // border-color: #094771;
+        // color: #ccc;
+      }
+      .vxe-context-menu--link {
+        // color: #ccc;
+      }
+      .vxe-context-menu--option-wrapper li.link--active>.vxe-context-menu--link, .vxe-table--context-menu-clild-wrapper li.link--active>.vxe-context-menu--link {
+        // color: #ccc;
+      }
+      .vxe-context-menu--option-wrapper li.link--active, .vxe-table--context-menu-clild-wrapper li.link--active {
+        // background-color: #155d94;
+        border-color: none;
+      }
+    }
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">
+    <title>智慧中原建</title>
+</head>
+<style>
+    html,
+    body {
+        font-size: 10px;
+    }
+
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    header {
+        padding: 4rem 3rem;
+        padding-right: 5.5rem;
+        font-size: 1.5rem;
+        background-color: #343434;
+        color: #939393;
+        position: relative
+    }
+
+    header img {
+        position: absolute;
+        height: 5.4rem;
+        right: 1rem;
+        top: 1rem;
+    }
+
+    .content {
+        background: url('./biaotou.png') no-repeat;
+        background-size: 100% auto;
+        text-align: center;
+        padding-top: 12rem;
+    }
+
+    .content img {
+        width: 9rem;
+        border-radius: 8px;
+    }
+
+    .content h1 {
+        margin-top: 4rem;
+    }
+
+    .content img.erweima {
+        border-radius: 0;
+        margin-top: 6rem;
+    }
+
+    footer div {
+        width: 100%;
+        height: 5rem;
+        line-height: 5rem;
+        background: #0250a5;
+        color: #fff;
+        position: fixed;
+        bottom: 0;
+        text-align: center;
+        font-size: 1.4rem;
+    }
+
+    footer div a {
+        color: #fff;
+    }
+</style>
+
+<body>
+    <header id="header">
+        点击右上角按钮，然后再弹出菜单中，点击在浏览器打开，即可安装
+        <img src="./jiantou.png" alt="">
+    </header>
+    <div class="content">
+        <img src="./1024.png" alt="">
+        <h1>智慧中原建</h1>
+        <div id="ios">ios设备暂不支持</div>
+        <img class="erweima" id="erweima" src="./erweima.png" alt="">
+    </div>
+    <footer id="footer">
+        <a href="./zhzyj.apk">
+            <div>
+                立即下载
+            </div>
+        </a>
+    </footer>
+</body>
+<script>
+    var isAndroid = navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Adr') > -1; //android终端
+    var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    var isWechat = (function () {
+        return navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
+    }
+    )();
+    if (isWechat) {
+        
+    } else {
+        document.getElementById('header').style.display = "none"
+    }
+    if (isiOS) {
+        document.getElementById('ios').style.visibility = "visible"
+        document.getElementById('erweima').style.visibility = "hidden"
+        document.getElementById('footer').style.visibility = "hidden"
+
+    } else {
+        document.getElementById('ios').style.visibility = "hidden"
+
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,47 @@
+
+// 一般台账样式
+.nw-layout {
+    &-full {
+        background: none;
+
+        &.with-sprite {
+            &.n-layout {
+                overflow: visible;
+                >.n-layout-scroll-container {
+                    overflow: visible;
+                }
+            }
+        }
+        &.n-layout {
+            height: 100%;
+            >.n-layout-scroll-container {
+                display: flex;
+                flex-direction: column;
+            }
+            .n-layout-header {
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .title {
+                    font-size: 16px;
+                    font-weight: bold;
+                    margin-left: 10px;
+                }
+            }
+            .n-layout-content {
+                flex: 1;
+            }
+            .n-layout-footer {
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+    }
+    // &-header {
+    //     height: 40px;
+    
+    // }
+}

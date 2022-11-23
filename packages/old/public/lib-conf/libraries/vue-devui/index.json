@@ -1,0 +1,11 @@
+{
+    "name": "vue-devui",
+    "viewName": "Dev UI",
+    "logo": "",
+    "icon": "",
+    "package": {
+        "devDependencies": {
+            "vue-devui": "^1.0.0-beta.6"
+        }
+    }
+}

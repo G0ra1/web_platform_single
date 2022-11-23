@@ -1,0 +1,153 @@
+
+// 一般容器
+.box-model {
+    position: relative;
+    padding: 30px 5px 30px 5px;
+    // margin-bottom: 5px;
+    border: 1px solid #757575;
+    box-sizing: border-box;
+    // margin-right: 5px;
+    // margin: 0 2.5px 5px 2.5px;
+    &-control {
+        position: absolute;
+        left: 0px;
+        height: 25px;
+        width: 100%;
+        color: #ccc;
+        font-size: 12px;
+        text-align: center;
+        line-height: 25px;
+    }
+    &-header {
+        background: #ff000030;
+        top: 0px;
+        &-title {
+            position: absolute;
+            display: flex;
+            height: 25px;
+            left: 0px;
+            top: 0px;
+            justify-content: center;
+            align-items: center;
+            padding: 0 5px;
+            .drag {
+                visibility: hidden;
+                cursor: move;
+            }
+            .edit {
+                cursor: pointer;
+            }
+            .title {
+
+            }
+            .extra {
+                padding: 0 5px;
+            }
+        }
+        &-extra {
+            position: absolute;
+            display: flex;
+            height: 25px;
+            right: 0px;
+            top: 0px;
+            padding: 0 5px;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            &-icon {
+                cursor: pointer;
+            }
+        }
+        
+        &:hover {
+            background: #000;
+            >.box-model-header-extra {
+                visibility: visible;
+            }
+            >.box-model-header-extra {
+                visibility: visible;
+            }
+            >.box-model-header-title > .drag {
+                visibility: visible;
+            }
+        }
+    }
+    &-body {
+        position: absolute;
+        top: 30px;
+        left: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // min-height: 100px;
+        height: calc(~'100% - 60px');
+        width: calc(~'100% - 10px');
+        background: #00968830;
+        color: #ccc;
+        font-size: 14px;
+        &.text {
+            font-size: 22px;
+            font-weight: bold;
+        }
+    }
+    &-footer {
+        background: #03a9f430;
+        bottom: 0px;
+    }
+
+    &-active {
+        border: 1px solid #ccc;
+        >.box-model-header {
+            background: #ff000090;
+        }
+        >.box-model-body {
+            background: #00968890;
+        }
+        >.box-model-footer {
+            background: #03a9f490;
+        }
+
+        
+        // 隐藏所有子
+        &-drag{
+            position: fixed;
+            width: 300px !important;
+            height: 200px !important;
+            .box-model {
+                display: none;
+                visibility: hidden;
+            }
+            >.box-model-header > .drag-push-top {
+                display: none;
+                visibility: hidden;
+            }
+            >.drag-push-bottom {
+                display: none;
+                visibility: hidden;
+            }
+            >.box-model-body {
+                display: none;
+                visibility: hidden;
+            }
+        }
+        
+    }
+    // &-header:hover {
+    //     background: #ff000090;
+    //     top: 0px;
+    // }
+    // &-footer:hover {
+    //     background: #03a9f490;
+    //     bottom: 0px;
+    // }
+
+}
+// .box-model:hover {
+//     border: 1px solid #ccc;
+//     >.box-model-header {
+//         background: #ff000070;
+//     }
+//     >.box-model-footer {
+//         background: #03a9f470;
+//     }
+// }

@@ -1,0 +1,16 @@
+{
+    "normal": {
+        "name": "normal",
+        "viewName": "单表表单",
+        "logo": "",
+        "icon": "icon-naiveui",
+        "description": "只有含有主表的表单"
+    },
+    "normal2": {
+        "name": "normal2",
+        "viewName": "单表表单",
+        "logo": "",
+        "icon": "icon-naiveui",
+        "description": "只有含有主表的表单"
+    }
+}

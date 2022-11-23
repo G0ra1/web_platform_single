@@ -1,0 +1,35 @@
+
+// layout 布局
+.main-layout {
+  display: block;
+  &-header {
+    height: 48px;
+    overflow: hidden;
+  }
+  &-body {
+    // height: calc(~'100% - 48px');
+    height: 100%;
+  }
+
+  .header-search {
+    >.n-layout-sider-scroll-container {
+      display: flex;
+      // height: 48px;
+      padding: 5px;
+    }
+  }
+  .header-title {
+    // height: 48px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 48px;
+    text-indent: 1em;
+  }
+  .main-title {
+    height: 48px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 38px;
+    text-indent: 1em;
+  }
+}

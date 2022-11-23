@@ -1,0 +1,6 @@
+{
+    "apiBaseURL": "/api/v4.3",
+    "websocketURL": "ws://incloud.com/ws/msg",
+    "fileServerUrl": "/kkfile/onlinePreview",
+    "ueServerUrl": "/file/ueditor/exec?fileSource=manhour"
+}

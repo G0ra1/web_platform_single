@@ -1,0 +1,41 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" href="/assets/image/clogo.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>common dbds</title>
+    </head>
+    <body >
+
+        <form>
+            测试字段1: <input id="field1" name="field1" value="" /><br>
+            测试字段2: <input id="field2" name="field2" value="" /><br>
+            测试字段3: <input id="field2" name="field3" value="" />
+        </form>
+        <script>
+            // 设置表单数据
+            window.DM_SET_VALUE = function (v) {
+                Object.entries(v).forEach(([k, v]) => {
+                    document.getElementById(k).value = v
+                })
+            }
+            // 设置表单字段权限
+            window.DM_SET_RULES = function () {
+                
+            }
+            // 获取表单数据
+            window.DM_GET_VALUE = function () {
+                const r = {}
+                const els = document.getElementsByTagName("input")
+                document.getElementsByName("element").forEach
+                for (let i = 0; i < els.length; i++) {
+                    r[els[i].name] = els[i].value
+                }
+                return r
+            }
+            window.DM_INIT && window.DM_INIT()
+        </script>
+    </body>
+    </html>

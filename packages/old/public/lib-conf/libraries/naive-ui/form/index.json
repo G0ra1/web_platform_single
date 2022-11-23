@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "componentLibName": "naive-ui",
+  "fileDir": [
+    { "type": "dir", "name": "/public" },
+    { "type": "dir", "name": "/src" },
+    {
+      "type": "file",
+      "name": "/src/store.js",
+      "contents": "import {\n          ref,\n          reactive,\n          watch \n        } from 'vue'\n        export const dataModel = ref({})\n        export const rules = ref([])\n        \n        window.DM_SET_VALUE = function (v) {\n          dataModel.value = v\n        }\n        // 设置表单字段权限\n        window.DM_SET_RULES = function (v) {\n          rules.value = v\n        }\n        // 获取表单数据\n        window.DM_GET_VALUE = function () {\n          return dataModel.value\n        }\n        "
+    },
+    {
+      "type": "file",
+      "name": "/src/Form.vue",
+      "contents": "<template>\n        <n-form\n            :model=\"dataModel\"\n            :rules=\"rules\"\n            ref=\"formRef\"\n            label-placement=\"left\"\n            :label-width=\"160\"\n            size=\"small\"\n            :style=\"{\n            maxWidth: '640px'\n            }\"\n        >\n            <n-form-item label=\"Input\" path=\"inputValue\">\n            <n-input placeholder=\"Input\" v-model:value=\"dataModel.inputValue\" />\n            </n-form-item>\n        </n-form>\n        </template>\n        <script>\n            import { defineComponent, ref } from 'vue'\n            import {\n            useMessage,\n            NForm,\n            NGrid,\n            NFormItem,\n            NFormItemGi,\n            NSelect,\n            NInput,\n            NTransfer,\n            NRadio,\n            NRadioGroup,\n            NRadioButton,\n            NSwitch,\n            NDatePicker,\n            NMessageProvider\n            } from 'naive-ui'\n            import { dataModel } from './store.js'\n            export default defineComponent({\n                components: {\n                NForm,\n                NGrid,\n                NFormItem,\n                NFormItemGi,\n                NSelect,\n                NInput,\n                NTransfer,\n                NRadio,\n                NRadioGroup,\n                NRadioButton,\n                NSwitch,\n                NDatePicker,\n                NMessageProvider\n                },\n                setup () {\n                    const formRef = ref(null)\n                    return {\n                        dataModel,\n                        formRef,\n                        rules: {\n                            inputValue: {\n                                required: true,\n                                trigger: ['blur', 'input'],\n                                message: '请输入 inputValue'\n                            }\n                        }\n                    }\n                }\n            })\n        </script>\n        <style>\n        </style>\n        "
+    },
+    {
+      "type": "file",
+      "name": "/src/App.vue",
+      "contents": "<script setup>\n        import { NMessageProvider } from 'naive-ui'\n        import Form from './Form.vue'\n        </script>\n        <template>\n            <n-message-provider>\n                <Form />\n            </n-message-provider>\n        </template>\n        <style>\n        </style>\n        "
+    },
+    {
+      "type": "file",
+      "name": "/src/main.js",
+      "contents": "import { createApp } from 'vue'\n        import App from './App.vue'\n        createApp(App).mount('#app')\n        "
+    },
+    {
+      "type": "file",
+      "name": "/index.html",
+      "contents": "<!DOCTYPE html>\n        <html lang=\"en\">\n          <head>\n            <meta charset=\"UTF-8\" />\n            <link rel=\"icon\" href=\"/favicon.ico\" />\n            <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n            <title>Vite App</title>\n          </head>\n          <body>\n            <div id=\"app\"></div>\n            <script type=\"module\" src=\"/src/main.js\"></script>\n          </body>\n        </html>\n        "
+    },
+    {
+      "type": "file",
+      "name": "/.gitignore",
+      "contents": "node_modules\n        .DS_Store\n        dist\n        dist-ssr\n        *.local"
+    },
+    {
+      "type": "file",
+      "name": "/package.json",
+      "contents": "{\n          \"name\": \"basic-project\",\n          \"version\": \"0.0.0\",\n          \"scripts\": {\n            \"dev\": \"vite\",\n            \"build\": \"vite build\",\n            \"serve\": \"vite preview\"\n          },\n          \"dependencies\": {\n            \"vue\": \"^3.2.16\"\n          },\n          \"devDependencies\": {\n            \"@vitejs/plugin-vue\": \"^1.9.3\",\n            \"vite\": \"^2.6.4\",\n            \"naive-ui\": \"^2.16.2\"\n          }\n        }"
+    },
+    {
+      "type": "file",
+      "name": "/vite.config.js",
+      "contents": "import { defineConfig } from 'vite'\n        import vue from '@vitejs/plugin-vue'\n        export default defineConfig({\n          plugins: [vue()]\n        })"
+    }
+  ]
+}

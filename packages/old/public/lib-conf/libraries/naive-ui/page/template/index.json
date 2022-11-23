@@ -1,0 +1,50 @@
+{
+    "naive-ui": {
+        "name": "naive-ui",
+        "viewName": "Naive UI",
+        "logo": "",
+        "icon": "icon-naiveui",
+        "description": "Naive UI 是一个 Vue3 的组件库, 有超过 70 个组件",
+        "package": {
+            "devDependencies": {
+                "naive-ui": "^2.16.2"
+            }
+        }
+    },
+    "element-plus": {
+        "name": "element-plus",
+        "viewName": "Element Plus",
+        "logo": "",
+        "icon": "icon-elementui",
+        "description": "",
+        "package": {
+            "devDependencies": {
+                "element-plus": "^1.0.2-beta.71"
+            }
+        }
+    },
+    "vue-devui": {
+        "name": "vue-devui",
+        "viewName": "Dev UI",
+        "logo": "",
+        "icon": "icon-devui",
+        "description": "",
+        "package": {
+            "devDependencies": {
+                "vue-devui": "^1.0.0-beta.6"
+            }
+        }
+    },
+    "ant-design-vue": {
+        "name": "ant-design-vue",
+        "viewName": "Ant Design Vue",
+        "logo": "",
+        "icon": "icon-antd",
+        "description": "",
+        "package": {
+            "devDependencies": {
+                "ant-design-vue": "^2.2.6"
+            }
+        }
+    }
+}
