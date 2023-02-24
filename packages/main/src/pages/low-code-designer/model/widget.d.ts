@@ -1,11 +1,12 @@
 
 import type { PropsWithDefaults, ComputedRef, Ref } from 'vue'
+import { Widget } from './widget'
 
 // 类型枚举
-type Category = 'container' | 'data' | 'field' | 'service' | 'wf'
+type Category = 'container' | 'data' | 'field' | 'service' | 'wf' | 'format'
 
-// 数据类型 这里类型要加入 引用类型
-type OptionValueType = 'string' | 'number' | 'boolean' | 'function' | 'array' | 'object'
+// 数据类型 这里类型要加入 引用类型  这里是否加入 slotProps 插槽作用域变量  这里加入
+type OptionValueType = 'string' | 'number' | 'boolean' | 'function' | 'array' | 'object' | 'slotProps' | 'variable' | 'script'
 
 // 转换后的值
 type BindValueType = string | number | boolean | Function | Array | object
@@ -21,7 +22,14 @@ export namespace WidgetNS {
     export type Options = {
         [a: string]: OptionValue | BindValueType
     }
-
+    export type Source = {
+        label: string,
+        icon: string,
+        tagName: string,
+        category: Category, 
+        default: WidgetNS.Config,
+        isCustomDesigner: boolean
+    }
     // 事件配置
     export type Events = {
         [a: string]: string
@@ -32,6 +40,7 @@ export namespace WidgetNS {
         key?: string,
         // 标签名
         type?: string,
+        tagName?: string,
         // 类型
         category?: Category,
         // 图标
@@ -41,16 +50,29 @@ export namespace WidgetNS {
         // 是否内置
         internal?: boolean,
         internalOptions?: any,
+        isCustomDesigner?: boolean,
         // 插槽
         slots?: {
             [a: string]: Array<WidgetNS.Config>
+        },
+        vModel?: {
+            [a: string]: {
+                type: 'DataForm' | 'SlotProps' | 'Custom',
+                field: string
+            }
         },
         // 配置项
         options: Options,
         // 事件
         events?: Events
     }
-    
+    // script 脚本
+    export type Script = {
+        key?: string,
+        // 标签名
+        type?: string,
+        render?: string
+    }
     export interface Instance {
         key: string
         tagName: string
@@ -59,12 +81,12 @@ export namespace WidgetNS {
         config: Ref<WidgetNS.Config>
         internalOptions: ComputedRef<any>
         isActive: ComputedRef<boolean>
-        slots: {
-            [a: string]: Ref<Array<Widget>>
-        }
         // slots: {
-        //     [a: string]: Array<Widget>
+        //     [a: string]: Ref<Array<Widget>>
         // }
+        slots: {
+            [a: string]: Array<Widget>
+        }
         // 组件参数
         options: ComputedRef<Options>
     }

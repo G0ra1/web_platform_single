@@ -7,6 +7,10 @@
     :label-width="80"
     size="small"
     :style="{
+      padding:'10px',
+      height: '100%',
+      width: '100%',
+      overflowY: 'scroll',
     }"
   >
    <n-grid :cols="2" :x-gap="24">

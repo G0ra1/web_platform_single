@@ -1,1 +1,0 @@
-import{r as t}from"./index.0e7eb3bd.js";function r(e){return t({url:"/main/mdmBizMenu/list",method:"post",data:e})}function u(e){return t({url:"/main/mdmBizMenu",method:"post",data:e})}function m(e){return t({url:"/main/mdmBizMenu",method:"put",data:e})}function i(e){return t({url:`/main/mdmBizMenu/${e}`,method:"delete"})}export{u as c,i as d,m as e,r as q};

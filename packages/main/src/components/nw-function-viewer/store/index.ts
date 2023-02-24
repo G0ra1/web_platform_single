@@ -1,6 +1,6 @@
 import { ref, reactive ,watch, h, nextTick } from 'vue'
 
-import { request } from '@platform/main'
+import { request, Db } from '@platform/main'
 
 // 异步构造函数
 const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
@@ -25,6 +25,7 @@ class FunViewer {
 
     // Utils
     Utils = {
+        Db,
         // 
         Message: null,
         // 获取表单数据
@@ -43,6 +44,8 @@ class FunViewer {
         SetFormValueByCache: () => {
             this.Form.ref.setValue(this.FormCache)
         },
+        // 执行脚本
+        RunScript: (name: string = 'initScript') => this.Form.ref.runScript(name, this.Params.value),
         // // 设置按钮状态
         SetButton: (id: string, option: {
             disabled?: boolean,

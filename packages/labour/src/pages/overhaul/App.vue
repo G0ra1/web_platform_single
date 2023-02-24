@@ -5,39 +5,27 @@
         <NwFunctionPredefine code="CODE2" descr="左上预留位置按钮1"/>
       </n-space>
       <n-space :size="5" style="padding: 0 5px">
-        <n-input-group>
-          <n-input :value="filterData.overhaulRotation || ''" @update:value="(d: string) => filterData.overhaulRotation = d" placeholder="大修轮次" :style="{ width: '150px' }" />
-          <n-button type="primary" @click="query()">
-            搜索
-          </n-button>
-        </n-input-group>
-        <n-button  title="重置" type="warning" @click="refresh()">
+        <n-button title="筛选" @click="gridSearchRef?.toggle()">
+          <template #icon>
+            <nw-icon name="icon-n-y-shaixuan" />
+          </template>
+        </n-button>
+        <n-button title="重置" type="warning" @click="refresh()">
           <template #icon>
             <nw-icon name="icon-n-y-refresh" />
           </template>
         </n-button>
-        <n-button  title="导入" >
-          <template #icon>
-            <nw-icon name="icon-n-y-import" />
-          </template>
-        </n-button>
-        <n-button  title="导出" >
-          <template #icon>
-            <nw-icon name="icon-n-y-export" />
-          </template>
-        </n-button>
-        <n-button  title="打印" @click="gridRef?.print()" >
-          <template #icon>
-            <nw-icon name="icon-n-y-print" />
-          </template>
-        </n-button>
-        <n-button  >
-          <template #icon>
-            <nw-icon name="icon-n-y-column" />
-          </template>
-        </n-button>
+        <NwGridControl v-model:bind-options="bind" v-model:grid-events="gridEvents" />
       </n-space>
     </n-layout-header>
+    <NwGridSearch ref="gridSearchRef" :options="[
+        {
+          name: '大修轮次',
+          field: 'overhaulRotation',
+          vtype: 'string',
+        },      
+      ]">
+    </NwGridSearch>
     <n-layout-content>
       <vxe-grid v-bind="bind" ref="gridRef" :stripe="true" :row-config="{isCurrent: true, isHover: true}">
       </vxe-grid>
@@ -45,9 +33,9 @@
   </n-layout>
 </template>
 <script lang="ts" setup>
-  import { NwIcon } from "@platform/main"
+  import { NwIcon, NwGridSearch, NwGridControl } from "@platform/main"
   import { NLayout, NLayoutHeader, NLayoutContent, NButton, NSpace, NInput, NInputGroup} from 'naive-ui'
-  import { bind, gridRef, filterData, query, refresh, reset} from "./App"
+  import { bind, gridRef, filterData, query, refresh, reset, gridSearchRef, gridEvents} from "./App"
   import { nextTick, inject } from 'vue'
 
   //只能放在setup中的回调函数，用于页面中的功能操作后的回调刷新

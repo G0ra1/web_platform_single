@@ -1,6 +1,8 @@
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import type { FormRules, FormInst } from "naive-ui";
 import type { Ref } from 'vue'
+import { Utils } from '@platform/main'
+
 abstract class AbstractForm {
     abstract setValue: (a: object) => void      // 设定数据
     abstract getValue: () => Promise<object>  // 获取数据
@@ -14,6 +16,7 @@ abstract class AbstractForm {
     gridDataPermits = ref<any>({}); // 子表权限
     gridRules = ref<any>({})  // 子表验证规则
     gridRefs = ref<any>({})
+
     // registerGrid = () => {
     //     this.gridRefs.value[]
     // }
@@ -96,14 +99,29 @@ abstract class AbstractForm {
         })
         // 这里验证子表
         for(let gr in this.gridRefs.value) {
-            const er = await this.gridRefs.value[gr].validate()
-            if (er) f.push(er)
+            // 这里需要判断子表是否有权限
+            // console.log('========', gr, this.dataPermits.value, this.dataPermits.value[gr])
+            if (this.dataPermits.value[gr] !== 'hide') {
+                const er = await this.gridRefs.value[gr].validate()
+                if (er) f.push(er)
+            }
         }
         return f
     }
 
     private init() {
-        this.PageKey = window.location.hash.substring(1)
+        console.log('5==这里获取window.location.hash===========')
+        try {
+            console.log(window.location.href)
+            console.log(window.location.hash)
+        } catch (e) {
+            console.error(e)
+        }
+        const { fkey } = Utils.parseQuery(window.location.search.substring(1))
+        this.PageKey = window.location.hash.substring(1) || fkey
+
+        console.log('===前置=')
+        console.log('5=重新打包=这里是表单页面，发出加载完成信息=INIT_COMPLETE=', this.PageKey)
         window.parent.postMessage({
             cmd: 'INIT_COMPLETE',
             key: this.PageKey
@@ -162,6 +180,58 @@ abstract class AbstractForm {
                     //   value: window.DM_VALIDATE ? window.DM_VALIDATE() : true
                     // }, '*')
                     break;
+                
+                case 'RUN_SCRIPT':
+                    const scriptkey: string = e.data.value.scriptName
+                    const params: any = e.data.value.params
+                    const _this: any = this
+                    if (_this[scriptkey]) {
+                        // 判断是否为异步函数
+                        if (_this[scriptkey].constructor === Object.getPrototypeOf(async function(){}).constructor) {
+                            // 异步
+                            _this[scriptkey](params).then((r: any) => {
+                                window.parent.postMessage({
+                                    cmd: 'RUN_SCRIPT',
+                                    value: r,
+                                    key: this.PageKey
+                                }, '*')
+                            }).catch((error: any) => {
+                                console.error(`被调用的脚本KEy：${scriptkey}抛出错误`, error)
+                            })
+                        } else if (_this[scriptkey].constructor === Function) {
+                            // 同步
+                            window.parent.postMessage({
+                                cmd: 'RUN_SCRIPT',
+                                value: _this[scriptkey](params),
+                                key: this.PageKey
+                            }, '*')
+                        } else {
+                            const error = `被调用的脚本KEy：${scriptkey}不是 Function或AsyncFunction`
+                            window.parent.postMessage({
+                                cmd: 'RUN_SCRIPT_ERROR',
+                                value: error,
+                                key: this.PageKey
+                            }, '*')
+                            console.error(error)
+                        }
+                    } else {
+                        const error = `没有找到脚本KEy：${scriptkey}`
+                        window.parent.postMessage({
+                            cmd: 'RUN_SCRIPT_ERROR',
+                            value: error,
+                            key: this.PageKey
+                        }, '*')
+                        console.error(error)
+                    }
+                    // e.data.value 这里是
+                    // this.getValue().then(r => {
+                    //     window.parent.postMessage({
+                    //         cmd: 'GET_VALUE',
+                    //         value: r,
+                    //         key: this.PageKey
+                    //     }, '*')
+                    // })
+                    break;
             }
         })
         // window.parent.postMessage({
@@ -170,7 +240,16 @@ abstract class AbstractForm {
         // }, '*')
     }
     constructor() {
-        this.init()
+        console.log('4.2======表单构造函数=====')
+        // 这里改为页面加载完成后调用
+        nextTick().then(() => {
+            console.log('======1秒之前获取href====', window.location.href)
+            setTimeout(() => {
+                console.log('======1秒之后获取href====', window.location.href)
+                this.init()
+            }, 1000)
+        })
+        console.log('5.1======表单构造函数 init 完成=====')
     }
 }
 

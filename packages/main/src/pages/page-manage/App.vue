@@ -70,9 +70,9 @@
       </n-layout-content>
     </n-layout>
   </n-layout>
-  <ModalBasicForm ref="modalBasicFormRef" />
-  <ModalBasicPage ref="modalBasicPageRef" />
-  <ModalBasicFormInterface ref="modalBasicFormInterfaceRef" />
+  <ModalBasicForm ref="modalBasicFormRef" @callback="refresh" />
+  <ModalBasicPage ref="modalBasicPageRef" @callback="refresh" />
+  <ModalBasicFormInterface ref="modalBasicFormInterfaceRef" @callback="refresh" />
   <ModalBasicFormTransform ref="modalBasicFormTransformRef" />
 </template>
 
@@ -128,8 +128,8 @@ export default defineComponent({
     const md = Page.getMenuData()
     // 这里获取pm 数据
     // const { pm = '' } = Utils.parseQuery(window.location.search.substring(1))
-
-    const appInfo = ref({
+    console.log(Page.getMenuCache())
+    const appInfo = ref<any>({
       ...md
     })
     const dialog = useDialog()
@@ -254,6 +254,7 @@ export default defineComponent({
                     type="error"
                     onClick={() => {
                       dialog.error({
+                        class: 'text-modal-dialog',
                         title: '删除',
                         content: '确定删除？',
                         positiveText: '确定',
@@ -290,6 +291,7 @@ export default defineComponent({
                     type="error"
                     onClick={() => {
                       dialog.error({
+                        class: 'text-modal-dialog',
                         title: '删除',
                         content: '确定删除？',
                         positiveText: '确定',

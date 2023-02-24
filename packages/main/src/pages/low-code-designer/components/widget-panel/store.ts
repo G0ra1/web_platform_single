@@ -11,14 +11,15 @@ export class WidgetPanel {
     CategoryField = ref<Array<WidgetNS.Config>>([])
     CategoryService = ref<Array<WidgetNS.Config>>([])
     CategoryWf = ref<Array<WidgetNS.Config>>([])
+    CategoryFormat = ref<Array<WidgetNS.Config>>([])
     isLoading = ref<boolean>(false)
     async init () {
         this.isLoading.value = true
         // 加载
         const r = getWidget()
-        r.forEach(d => {
-            d.key = d.type
-        })
+        // r.forEach(d => {
+        //     d.key = d.type
+        // })
         // 容器组件
         this.CategoryContainer.value = r.filter(d => d.category === 'container')
         // 数据组件
@@ -29,6 +30,8 @@ export class WidgetPanel {
         this.CategoryService.value = r.filter(d => d.category === 'service')
         // 工作流组件
         this.CategoryWf.value = r.filter(d => d.category === 'wf')
+        // 容器组件
+        this.CategoryFormat.value = r.filter(d => d.category === 'format')
 
     }
 }

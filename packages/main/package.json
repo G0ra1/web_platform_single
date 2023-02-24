@@ -12,6 +12,7 @@
   "dependencies": {
     "@codemirror/lang-javascript": "^6.0.2",
     "@platform/main": "workspace:^0.0.0",
+    "@platform/wf": "workspace:^0.0.0",
     "@vicons/ionicons5": "^0.12.0",
     "axios": "^0.27.2",
     "codemirror": "^6.0.1",
@@ -24,8 +25,10 @@
     "lodash": "^4.17.21",
     "mitt": "^3.0.0",
     "naive-ui": "^2.31.0",
+    "pinyin-pro": "^3.13.0",
     "seemly": "^0.3.6",
     "sql-formatter": "^11.0.2",
+    "tdesign-vue-next": "^0.25.0",
     "v3-infinite-loading": "^1.2.1",
     "vue": "^3.2.37",
     "vue-codemirror": "^6.0.1",

@@ -20,7 +20,7 @@
             style="height: 34px; padding: 0 8px"
             size="small"
           >
-            <NwIcon name="icon-add-bold" :size="20"></NwIcon
+            <NwIcon name="icon-n-y-add" :size="20"></NwIcon
           ></n-button> -->
         </n-input-group>
         <n-spin :show="treeSpinShow">

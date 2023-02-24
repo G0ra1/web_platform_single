@@ -64,7 +64,7 @@ import {
     NSelect ,
     NDatePicker
 } from 'naive-ui'
-import {  editEmp} from './api'
+import {  updatePwd } from './api'
 import aes from '/@/utils/aes.js'
 
 export default defineComponent({
@@ -150,7 +150,7 @@ export default defineComponent({
           if (!errors) {
               modelRef.value.passWord = aes.encrypt(modelRef.value.passWord )
               modelRef.value.reenteredPassword = aes.encrypt(modelRef.value.reenteredPassword )
-            editEmp(modelRef.value).then((res)=>{
+              updatePwd(modelRef.value).then((res)=>{
                 context.emit('update:callback');
                 showModalRef.value = false
             })

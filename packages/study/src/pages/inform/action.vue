@@ -8,10 +8,10 @@
     positive-text="确认"
     :z-index='99'
     negative-text="取消"
-    style="width:1300px;"
+    style="width:800px;"
   >
   <n-spin :show="isLoading">
-    <n-form  :model="model" ref="formRef" :rules="rules">
+    <n-form  :model="model" ref="formRef" :rules="rules" style='padding:10px'>
         <n-grid  :cols="1" >
             
             <n-grid-item>
@@ -146,11 +146,7 @@ export default defineComponent({
     const isLoading = ref(false)
     const message = useMessage();
     const formRef = ref(null)
-    const editorConfig = ref({
-      UEDITOR_HOME_URL: "/UEditor/",
-      serverUrl: `${window.apiBaseURL}/main/ueditor/exec`,
-
-    });
+    
     const sonFn = (e={}) => {
       showModalRef.value = true
       if(e.id){
@@ -174,7 +170,7 @@ export default defineComponent({
       message,
       model:modelRef, // 表单数据
       isLoading,
-      editorConfig,
+      editorConfig: {},
       formRef,
       rules: {
         newsTitle: [
@@ -230,6 +226,15 @@ export default defineComponent({
       },
      
     }
+  },
+  created() {
+     // 更多 UEditor 配置，参考 http://fex.baidu.com/ueditor/#start-config
+     this.editorConfig = {
+      // 访问 UEditor 静态资源的根路径，可参考 https://hc199421.gitee.io/vue-ueditor-wrap/#/faq
+      UEDITOR_HOME_URL: "/assets/UEditor/",
+      // 服务端接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
+      serverUrl: `${window.apiBaseURL}api/v4.3/main/ueditor/exec`,
+    };
   },
   methods: {
      handleFinish() {

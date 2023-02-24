@@ -5,7 +5,7 @@
       <n-anchor-link title="物资计划信息" href="#ignore-gap" />
       <n-anchor-link title="附件" href="#affix" />
     </n-anchor> -->
-    <n-form :model="dataModel" :rules="rules" ref="formRef" label-placement="left" label-align="left" :label-width="90"
+    <n-form :model="dataModel" :rules="rules" ref="formRef" label-placement="left" label-align="left" :label-width="120"
       size="small" :style="{ padding: '28px 84px', width: '1200px', margin: '0 auto' }">
       <n-grid :cols="12" :x-gap="24">
         <n-form-item-gi :span="12" label="" path="code">
@@ -29,24 +29,26 @@
           <n-input placeholder="申请时间" v-model:value="dataModel.applyTime" disabled />
         </n-form-item-gi>
         <n-form-item-gi :span="6" label="购置申请" path="applyId">
-          <managApplicationsPick v-model:value="dataModel.applyId" v-model:code="dataModel.applyCode">
-          </managApplicationsPick>
+          <n-input placeholder="购置申请" v-model:value="dataModel.applyCode" disabled />
+          <!-- <managApplicationsPick v-model:value="dataModel.applyId" v-model:code="dataModel.applyCode">
+          </managApplicationsPick> -->
         </n-form-item-gi>
-        <n-form-item-gi :span="6" label="采购合同" path="contractCode">
-          <n-input placeholder="采购合同" v-model:value="dataModel.contractCode" />
+        <n-form-item-gi :span="6" label="采购合同编号" path="contractCode">
+          <n-input placeholder="采购合同编号" v-model:value="dataModel.contractCode" />
         </n-form-item-gi>
-        <n-form-item-gi :span="6" label="供应商" path="supplierName">
-          <supplierPick v-model:value="dataModel.supplierName" v-model:id="dataModel.supplierId" />
+        <n-form-item-gi :span="6" label="采购合同名称" path="contractName">
+          <n-input placeholder="采购合同名称" v-model:value="dataModel.contractName" />
         </n-form-item-gi>
         <n-form-item-gi :span="6" label="合同签订时间" path="contractTime">
           <n-date-picker style="width: 100%" placeholder="请选择合同签订时间" v-model:value="dataModel.contractTime"
             value-format="yyyy-MM-dd" format="yyyy-MM-dd" type="date" clearable></n-date-picker>
         </n-form-item-gi>
+        <n-form-item-gi :span="6" label="供应商" path="supplierName">
+          <supplierPick v-model:value="dataModel.supplierName" v-model:id="dataModel.supplierId" />
+        </n-form-item-gi>
         <n-form-item-gi :span="6" label="合计金额" path="sumTotalAmount">
           <n-input placeholder="合计金额" v-model:value="dataModel.sumTotalAmount" disabled />
         </n-form-item-gi>
-
-
         <n-form-item-gi :span="12" label="采购合同附件" path="contractFileIds">
           <fileUploadButton v-model:fileName="dataModel.contractFileName" v-model:fileId="dataModel.contractFileIds">
             <n-button class="uploadbtn" v-if="!dataModel.contractFileName" size="small" type="info">
@@ -64,25 +66,24 @@
         <n-form-item-gi :span="12" label="" path="">
           <div style="width: 100%">
             <span style="height: 24px; line-height: 24px">采购信息</span>
-            <n-button style="
-                height: 24px;
+            <n-button style="height: 24px;
                 width: 24px;
                 line-height: 24px;
                 margin-left: 10px;
               " @click="
-                () => {
-                  addAsset();
-                }
-              " circle type="info">
-              <nw-icon name="icon-add-bold" :size="15" />
+  () => {
+    addAsset();
+  }
+" circle type="info">
+              <nw-icon name="icon-n-y-add" :size="15" />
             </n-button>
             <vxe-table ref="detailTable" show-overflow border :data="assetsList" :column-config="{ resizable: true }"
               :row-config="{ keyField: 'rowId' }" :edit-config="{
-                trigger: 'click',
-                mode: 'row',
-                enabled: true,
-                showIcon: true,
-              }" @cell-click="editIemRow">
+  trigger: 'click',
+  mode: 'row',
+  enabled: true,
+  showIcon: true,
+}" @cell-click="editIemRow">
               <vxe-column type="seq" title="序号" width="60"></vxe-column>
               <vxe-column field="itemName" title="物资名称" width="135">
               </vxe-column>
@@ -92,9 +93,16 @@
               </vxe-column>
               <vxe-column field="descshort" title="物资描述" width="135">
               </vxe-column>
-              <vxe-column field="applyNumber" title="申请数量" width="135">
-              </vxe-column>
-              <vxe-column field="applyAmount" title="单价" width="135">
+              <vxe-column field="registerTaxRate" title="采购税率" width="135" :edit-render="{}">
+                <template #edit="{ row }">
+                  <vxe-select v-model="row.registerTaxRate" @change="dataChangeEvent({ row, column })" transfer>
+                    <vxe-option v-for="item in taxRateList" :key="item.dictItemCode" :value="item.dictItemCode"
+                      :label="item.dictItemName"></vxe-option>
+                  </vxe-select>
+                </template>
+                <template #default="{ row }">
+                  <span>{{ row.registerTaxRate ? row.registerTaxRate + "%" : "" }}</span>
+                </template>
               </vxe-column>
               <vxe-column field="unitName" title="计量单位" width="135" :edit-render="{}">
                 <template #edit="{ row }">
@@ -103,6 +111,10 @@
                       :label="item.unitName"></vxe-option>
                   </vxe-select>
                 </template>
+              </vxe-column>
+              <vxe-column field="applyNumber" title="申请数量" width="135">
+              </vxe-column>
+              <vxe-column field="applyAmount" title="单价" width="135">
               </vxe-column>
               <vxe-column field="registerNumber" title="采购数量" :edit-render="{}" width="135">
                 <template #edit="{ row, column }">
@@ -114,17 +126,6 @@
                 <template #edit="{ row, column }">
                   <vxe-input v-model="row.registerAmount" type="text" @change="dataChangeEvent({ row, column })">
                   </vxe-input>
-                </template>
-              </vxe-column>
-              <vxe-column field="registerTaxRate" title="采购税率" width="135" :edit-render="{}">
-                <template #edit="{ row }">
-                  <vxe-select v-model="row.registerTaxRate" @change="dataChangeEvent({ row, column })" transfer>
-                    <vxe-option v-for="item in taxRateList" :key="item.dictItemCode" :value="item.dictItemCode"
-                      :label="item.dictItemName"></vxe-option>
-                  </vxe-select>
-                </template>
-                <template #default="{ row }">
-                  <span>{{ row.registerTaxRate ? row.registerTaxRate + "%" : "" }}</span>
                 </template>
               </vxe-column>
               <vxe-column field="registerSumAmount" width="135" title="总价">
@@ -156,10 +157,10 @@
                       margin-right: 15px;
                       font-size: 12px;
                     " @click="
-                      () => {
-                        delIemRow(row);
-                      }
-                    ">删除</span>
+  () => {
+    delIemRow(row);
+  }
+">删除</span>
                 </template>
               </vxe-column>
             </vxe-table>
@@ -333,7 +334,9 @@ export default defineComponent({
   box-sizing: border-box;
   position: relative;
   background: #f8f8f8;
-  min-height: 100vh;
+  height: 640px;
+  height: 640px;
+  overflow: auto;
 
   .n-anchor {
     position: absolute;

@@ -11,7 +11,7 @@
     ref="xmodal"
   >
   <n-spin :show="isLoading">
-      <n-form  :model="model" ref="formRef" :rules="rules">
+      <n-form  style='padding:10px' :model="model" ref="formRef" :rules="rules">
          
           <n-grid x-gap="8" :cols="1" >
               <n-grid-item>

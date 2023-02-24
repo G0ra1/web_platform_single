@@ -106,7 +106,7 @@
                 <n-image width="30" height="30" v-if="row.fileIds" :src="getUrl(row.fileIds)" />
                 <fileUploadButton v-model:fileIds="row.fileIds" :showFileList="false">
                   <n-button text>
-                    <nw-icon name="icon-add-bold" :size="25" />
+                    <nw-icon name="icon-n-y-add" :size="25" />
                   </n-button>
                 </fileUploadButton>
               </div>
@@ -121,7 +121,7 @@
                 <fileUploadButton ref="fileUploadButtonRef" v-model:fileIds="row.document" :showFileList="false"
                   :showLookOver="true" :multiple="true">
                   <n-button text>
-                    <nw-icon name="icon-add-bold" :size="25" />
+                    <nw-icon name="icon-n-y-add" :size="25" />
                   </n-button>
                 </fileUploadButton>
               </div>

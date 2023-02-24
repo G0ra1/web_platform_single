@@ -1,0 +1,29 @@
+{
+  "name": "@platform/cemlab",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "src/lib/index.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@platform/main": "workspace:^0.0.0",
+    "@types/three": "^0.149.0",
+    "d3": "^7.6.1",
+    "date-fns": "^2.28.0",
+    "echarts": "^5.3.2",
+    "lodash": "^4.17.21",
+    "three": "^0.149.0",
+    "vue": "^3.2.37"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.182",
+    "@vitejs/plugin-vue": "^3.0.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.0",
+    "vue-tsc": "^0.38.4"
+  }
+}

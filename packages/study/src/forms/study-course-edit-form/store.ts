@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash'
 import type { Ref } from 'vue'
 import { AbstractForm, Cookies } from '@platform/main'
 import { format } from "date-fns";
-// import Schema from './schema'
+import { detail } from "./api/index";
 
 
 class FormModal extends AbstractForm {
@@ -25,7 +25,7 @@ class FormModal extends AbstractForm {
         //     d.widgetSize = []
         // }
         // 给表单设定数据
-        this.dataModel.value = {labelCode:d.labelCode ? d.labelCode.split(',') : [],labelName:d.labelName ? d.labelName.split(',') : [],...cloneDeep(d)}
+        this.dataModel.value = {...cloneDeep(d),labelCode:d.labelCode ? d.labelCode.split(',') : [],labelName:d.labelName ? d.labelName.split(',') : [],}
 
 
     }
@@ -37,14 +37,23 @@ class FormModal extends AbstractForm {
           nDataModel.labelName = nDataModel.labelName.join(',')
           nDataModel.labelCode = nDataModel.labelCode.join(',')
         }
-        let data = cloneDeep(this.dataModel.value)
         // if(data.widgetSize) {
         //     data.widgetSize = data.widgetSize.join(',')
         // }
         // 从表单获取数据
-        return data
+        return nDataModel
     }
-
+    initScript = async (params: any) => {
+        //人员进场默认带过来所有
+        // detail(
+        //   {
+           
+        //   }
+        // ).then((rep: Array<any>) => {
+          
+        // })
+    
+      }
     setRules = (v: object) => {
         // 设定表单权限
         this.rules.value = {}

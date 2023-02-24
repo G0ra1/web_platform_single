@@ -12,14 +12,14 @@
             <n-input v-model:value="SearchForm.userNameCh" placeholder="联系人名称" />
           </n-form-item>
           <n-form-item>
-            <n-button type="info" attr-type="button" style="margin-right: 5px;" @click="()=>{
-              vbind.request.params.userNameCh =SearchForm.userNameCh
+            <n-button type="info" attr-type="button" style="margin-right: 5px;" @click="() => {
+              vbind.request.params.userNameCh = SearchForm.userNameCh
               $refs.tableRef.commitQuery()
             
             }">
               查询
             </n-button>
-            <n-button type="warning" attr-type="button" @click="()=>{
+            <n-button type="warning" attr-type="button" @click="() => {
               SearchForm.userNameCh = ''
               vbind.request.params.userNameCh = ''
               $refs.tableRef.commitQuery()
@@ -49,8 +49,12 @@
       </n-layout-content>
     </n-layout>
   </n-layout>
-  <n-modal v-model:show="showModal" preset="dialog" :title="formData.btnType==1?'即时通消息':'发送短信'">
+  <n-modal v-model:show="showModal" preset="dialog"
+    :title="formData.btnType == 1 ? '即时通消息' : formData.btnType == 2 ? '发送短信' : '发送邮件'">
     <n-form style="padding:0 10px">
+      <n-form-item label="标题" v-if="formData.btnType == 3">
+        <n-input v-model:value="formData.msgTitle" type="textarea" placeholder="" />
+      </n-form-item>
       <n-form-item label="内容">
         <n-input v-model:value="formData.msgContent" type="textarea" placeholder="" />
       </n-form-item>
@@ -61,8 +65,8 @@
     </template>
   </n-modal>
   <ModalAction ref="modalAction" @update:callback="() => {
-                $refs.tableRef.commitQuery()
-
+    $refs.tableRef.commitQuery()
+  
   }"></ModalAction>
 </template>
 
@@ -101,7 +105,7 @@ import {
   NwIcon, RequestPaging, VxeHelper, request, NwTable,
   OrgTree
 } from '@platform/main'
-import { rightList, query, collectMan, cancelCollectMan, sendMessage, sendMsgForCts } from './api/index'
+import { rightList, query, collectMan, cancelCollectMan, sendMessage, sendMsgForCts, sendmailForCts } from './api/index'
 
 export default defineComponent({
   components: {
@@ -172,7 +176,7 @@ export default defineComponent({
                   default: () => <div style="width:300px">
 
                     <h3 style="width:100%;text-align:center">{row.userNameCh}</h3>
-                    <div style="width:60%;margin:auto">
+                    <div style="width:100%;margin:auto">
                       <NSpace size={5} justify="center">
                         <NButton
                           type="success"
@@ -189,6 +193,16 @@ export default defineComponent({
                               formData.value = { ...row, btnType: 2 }
                           }}
                         >发短信</NButton>
+                        {
+                          row.email ? <NButton
+                            type="info"
+                            v-show={false}
+                            onClick={() => {
+                              showModal.value = true,
+                                formData.value = { ...row, btnType: 3 }
+                            }}
+                          >发邮件</NButton> : <span></span>
+                        }
                       </NSpace>
                     </div>
                     <p>所属部门 {row.dealTime}</p>
@@ -261,7 +275,17 @@ export default defineComponent({
                       formData.value = { ...row, btnType: 2 }
                   }}
                 >发短信</a>
+                {
 
+                  row.email ? <a
+                    style="color:red;cursor: pointer;display:inline-block;margin-left:8px"
+                    onClick={() => {
+                      showModal.value = true,
+                        formData.value = { ...row, btnType: 3 }
+                    }}
+                  >发邮件</a> : <span></span>
+
+                }
               </div>
 
             ];
@@ -297,15 +321,22 @@ export default defineComponent({
         message.warning("请输入消息内容")
         return
       }
-      const fn = formData.value.btnType == 1 ? sendMessage : sendMsgForCts
-      fn({
+      const fn = formData.value.btnType == 1 ? sendMessage : formData.value.btnType == 2 ? sendMsgForCts : sendmailForCts
+      let d =
+      {
         receiverUserNameCh: formData.value.userNameCh,
         receiverUserCode: formData.value.userCode,
         receiverUserPhone: formData.value.phoneNum,
         msgContent: formData.value.msgContent,
         msgTitle: formData.value.msgTitle,
-        receiverUserId: formData.value.id
-      })
+        receiverUserId: formData.value.id,
+      }
+      if (formData.value.btnType == 3) {
+        d.smsMsgType = "mail"
+        d.receiverUserEmail = formData.value.email
+        d.msgSource = 'cts'
+      }
+      fn(d)
     }
     nextTick().then(() => {
       // reset()

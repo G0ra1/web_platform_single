@@ -53,6 +53,8 @@ setup(props,context) {
     let catchErr: any; // 错误
     const loadForm = async (url: string) => {
         FormUrl.value = url
+        console.log('1====加载表单页面url====', url);
+        console.log('2====开始等待表单页面返回====');
         await new Promise((resolve, reject) => {
             //
             loaded = resolve
@@ -73,6 +75,9 @@ setup(props,context) {
         setRules: (d: any) => {
             FormRef.value.setRules(d)
         },
+        runScript: (name: string, params: Array<any>) => {
+            return FormRef.value.runScript(name, params)
+        },
         validate: () => {
             return FormRef.value.validate()
         }
@@ -88,6 +93,7 @@ setup(props,context) {
             ref={e => FormRef.value = e}
             src={FormUrl.value}
             onInited={(e) => {
+                console.log('7========表单页面加载完成=调用Inited=', e)
                 if (e) {
                     // 抛出错误
                     catchErr(e)
@@ -101,15 +107,15 @@ setup(props,context) {
 });
 </script>
 <style lang="less">
-    .form-viewer {
-        display: flex;
-        flex-direction: column;
-        >.header {
-            flex: 0 0 32px;
-            border-bottom: 1px solid #ccc;
-        }
-        >.content {
+.form-viewer {
+    // display: flex;
+    // flex-direction: column;
+    // >.header {
+    //     flex: 0 0 32px;
+    //     border-bottom: 1px solid #ccc;
+    // }
+    // >.content {
 
-        }
-    }
+    // }
+}
 </style>

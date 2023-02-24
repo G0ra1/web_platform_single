@@ -21,7 +21,7 @@
        
         <n-form
           ref="formRef"
-          inline
+          inline        
           label-placement="left"
           :label-width="80"
           :model="SearchForm"

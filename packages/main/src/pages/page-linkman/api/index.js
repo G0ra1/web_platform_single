@@ -59,19 +59,31 @@ export function  cancelCollectMan (id) {
 // 即时通消息发送
 export function  sendMessage (params) {
   return request({
-      url: `oilsms/qywechat/sendMsgForCts`,
+      url: `sms/qywechat/sendMsgForCts`,
       method: 'post',
       data: params
   })
 }
+
 // 短信发送
 export function  sendMsgForCts (params) {
   return request({
-      url: `oilsms/sms/sendMsgForCts`,
+      url: `sms/sms/sendMsgForCts`,
       method: 'post',
       data: params
   })
 }
+
+// 邮件发送
+export function  sendmailForCts (params) {
+  return request({
+      url: `sms/api/sendSmsForUnify`,
+      method: 'post',
+      data: params
+  })
+}
+
+
 
 // 群发消息
 export function  ctsFsend (params) {

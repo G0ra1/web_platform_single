@@ -5,10 +5,11 @@
     ref="gridRef"
   >
   </vxe-grid>
+  <wf-run-modal ref="WfRunModalRef" />
 </template>
 
 <script lang='jsx'>
-import { h, defineComponent, ref, reactive, getCurrentInstance, nextTick } from 'vue';
+import { h, defineComponent, ref, reactive, getCurrentInstance, nextTick, inject } from 'vue';
 import {
   NDrawer,
   NDrawerContent,
@@ -29,6 +30,7 @@ import {
 import { wftodotaskList, } from "../api";
 import { cloneDeep } from 'lodash'
 import { NwIcon, VxeHelper, RequestPaging } from '@platform/main';
+import { WfRunModal } from '../../../components/index'
 export default defineComponent({
   components: {
     NDrawer,
@@ -45,11 +47,14 @@ export default defineComponent({
     NFormItem,
     NPopconfirm,
     NSelect,
-    NwIcon
+    NwIcon,
+    WfRunModal
   },
   setup() {
-    window.addEventListener('wfComplete', () => {
-      reset({})
+    
+    const WfRunModalRef = ref()
+    inject('Emitter').on('function-complete', () => {
+        reset({})
     })
     const message = useMessage();
     const formVisible = ref(false);
@@ -86,12 +91,13 @@ export default defineComponent({
             default: ({ row }) => {
               return <span onClick={() => {
                 // window.open(`/web-wf/pages/run-skin.html?Action=todo&id=${row.id}`)
-
-                window.open(
-                  `/web-wf/pages/run-skin.html?Action=out_duplicate&id=${row.id}`,
-                  '_blank',
-                  'top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no'
-                )
+                
+                WfRunModalRef.value.show(`/web-wf/pages/run-skin.html?Action=out_duplicate&id=${row.id}`)
+                // window.open(
+                //   `/web-wf/pages/run-skin.html?Action=out_duplicate&id=${row.id}`,
+                //   '_blank',
+                //   'top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no'
+                // )
 
               }} style="color:#1d7ced;cursor: pointer;">{row.bizKey}</span>
             }
@@ -212,7 +218,7 @@ export default defineComponent({
       })
     })
     return {
-      
+      WfRunModalRef,
       bind,
       gridRef,
       filterData,

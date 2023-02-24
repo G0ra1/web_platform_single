@@ -20,7 +20,7 @@ export default class LabourSuppUser {
     //证件类型
     cardType!: number;
     //性别 0 男   1女
-    sex: number = 0;
+    sex!: number;
     //证件号;0居民身份证；1港澳居民来往内地通信证；2港澳居民居住证；3台湾居民来往大陆通行证；4台湾居民居住证；5外国护照；6外国人永久居留身份证；7外国人居留证；
     idCard!: string;
     //生日

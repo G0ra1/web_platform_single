@@ -109,15 +109,75 @@ class FormModal extends AbstractForm {
     //处理页面隐藏、只读等特殊权限的控制数据
     dataPermits = ref<any>({});
 
+    checkPhoneNmber = (d: string) => {
+        let myreg=/^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+        if (!myreg.test(d)) {
+            messageLocal.error("非有效的手机号");
+            return false;
+        }
+    }
+
+
+    checkidCard = (d:string)=>{
+        //将身份证号的出生日期提取出来
+        const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(reg.test(d) === false)
+        {
+	        messageLocal.error("非有效的身份证");
+	    return false;
+        }
+        let birthday = this.getBirth(d)
+        this.dataModel.value.birthday = birthday
+       let sex =  this.getSex(d)
+       this.dataModel.value.sex = sex
+    }
+
+
+    
+    /**
+     * 身份证提取出生日期
+     * @param idCard
+    */
+     getBirth(idCard: any) {
+        let birthday = "";
+        if(idCard != null && idCard != ""){
+            if(idCard.length == 15){
+                birthday = "19"+idCard.slice(6,12);
+            } else if(idCard.length == 18){
+                birthday = idCard.slice(6,14);
+            }   
+            birthday = birthday.replace(/(.{4})(.{2})/,"$1-$2-");
+        }   
+        return birthday;
+    }
+
+
+    /**
+    * @param idCard
+    */
+     getSex(idCard: any) {
+        let sexStr ;
+        if (parseInt(idCard.slice(-2, -1)) % 2 == 1) {
+            sexStr = 1;
+        }
+        else {
+            sexStr = 2;
+        }
+        return sexStr;
+    }
+
     getSchema = async () => {
         // 从表单获取数据
         return FormSchema;
     };
 
     //这个地方父类定义使用了object，不能直接用我们的类做了形参
-    setValue = (d: object) => {
+    setValue = (d: any) => {
         // 这里使用copy赋值，不能直接把d赋值或强转赋值给dataModel,因为这会使dataModel对应的代理对象发生改变为object；
         console.log("setValue", d);
+        if(!d.sex){
+            d.sex=1;
+        }
         Object.assign(this.dataModel.value, d);
         this.initFiles();
     };

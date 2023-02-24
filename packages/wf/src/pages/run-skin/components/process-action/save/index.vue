@@ -1,5 +1,5 @@
 <template>
-    <n-button type="primary" @click="sendSave">保存</n-button>
+    <n-button type="primary" @click="sendSave" class="liuchengBtn" ghost>保存</n-button>
 </template>
 
 <script lang='tsx'>

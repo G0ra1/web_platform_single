@@ -25,6 +25,7 @@ export function rightList(data) {
   });
 }
 export function empLists(data) {
+  debugger
   return request({
     url: `/asset/purchaseAccept/getRegResultList`,
     method: "post",

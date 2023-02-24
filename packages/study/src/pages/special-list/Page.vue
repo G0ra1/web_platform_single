@@ -26,6 +26,8 @@
           />
            <NwFunctionPredefine
             code="SPECIAL_Edit"
+            :disabled="selected.length !==1 || selected[0] &&  selected[0].status !== 1"
+            :params="selected"
             descr="左上预留位置按钮2"  
           />
           <n-popconfirm
@@ -461,7 +463,6 @@ export default defineComponent({
       handDel,
       searchFormData,
        WfGetParams: async (key, formName) => {
-        console.log(key,'-===',formName)
         if(tableRef.value && (key === 'studySpecialAdj' || key === 'studySpecialCopy')){
            const obj = await detail(tableRef.value.selected[0].id).then((r)=>{
               return r

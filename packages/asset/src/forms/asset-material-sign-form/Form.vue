@@ -29,9 +29,10 @@
           <n-input placeholder="申请时间" v-model:value="dataModel.applyTime" disabled />
         </n-form-item-gi>
         <n-form-item-gi :span="6" label="物资领用" path="sourceId">
-          <materialAcceptPick v-model:value="dataModel.sourceId" v-model:code="dataModel.sourceCode"
+          <n-input placeholder="购置申请" v-model:value="dataModel.sourceCode" disabled />
+          <!-- <materialAcceptPick v-model:value="dataModel.sourceId" v-model:code="dataModel.sourceCode"
             @onChange="materialAcceptChange">
-          </materialAcceptPick>
+          </materialAcceptPick> -->
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="申请说明" v-if="brules['explanation'] !== 'hide'" path="reson">
           <n-input :disabled="brules['explanation'] === 'readonly'" type="textarea" placeholder="请输入申请说明"
@@ -44,13 +45,26 @@
           <div style="width: 100%">
             <span style="height: 24px; line-height: 24px">签收明细</span>
             <!-- <acceptanceDetails ref="acceptanceDetailsRef"></acceptanceDetails> -->
+            <!-- <n-button style="
+                height: 24px;
+                width: 24px;
+                line-height: 24px;
+                margin-left: 10px;
+              " @click="
+  () => {
+    addAsset1();
+  }
+" circle type="info">
+              <nw-icon name="icon-n-y-add" :size="15" />
+            </n-button> -->
+
             <vxe-table ref="detailTable" show-overflow border :data="assetsList" :column-config="{ resizable: true }"
               :row-config="{ keyField: 'rowId' }" :edit-config="{
-                trigger: 'click',
-                mode: 'row',
-                enabled: true,
-                showIcon: true,
-              }">
+  trigger: 'click',
+  mode: 'row',
+  enabled: true,
+  showIcon: true,
+}">
               <vxe-column type="seq" title="序号" fixed="left" width="60"></vxe-column>
               <vxe-column field="itemCode" title="物资编码" width="135">
               </vxe-column>
@@ -61,9 +75,9 @@
               <vxe-column field="itemType" title="物资类型" width="135">
                 <template v-slot="{ row }">
                   <span>{{
-                      wuziTypeList.find(d => d.dictItemCode == row.itemType) ? wuziTypeList.find(d => d.dictItemCode ==
-                        row.itemType).dictItemName : ""
-                  }}</span>
+    wuziTypeList.find(d => d.dictItemCode == row.itemType) ? wuziTypeList.find(d => d.dictItemCode ==
+      row.itemType).dictItemName : ""
+}}</span>
                 </template>
               </vxe-column>
               <vxe-column field="descshort" title="规格" width="135">
@@ -186,7 +200,7 @@ import { NwIcon, NwDic, Utils } from '@platform/main'
 import assetsApplyPick from "./assetsApplyPick/index.vue";
 import fileInfo from "../../components/fileInfo/index.vue";
 import acceptanceDetails from "./acceptanceDetails.vue";
-const { reduceData,enlargeData} = Utils
+const { reduceData, enlargeData } = Utils
 
 export default defineComponent({
   components: {
@@ -241,10 +255,19 @@ export default defineComponent({
         console.log(res, 'getAssetsList')
         assetsList.value = enlargeData(res)
       })
+    }
 
+    const addAsset1 = () => {
+      const sourceId = dataModel.value.sourceId;
+      getAssetsList({ sourceId, distributeType: 0 }).then(res => {
+        console.log(res, 'getAssetsList')
+        assetsList.value = enlargeData(res)
+      })
     }
     const wuziTypeList = ref([])
-
+    watch(() => dataModel.value.sourceId, (d, od) => {
+      addAsset1()
+    })
     onMounted(() => {
       wuziType().then(res => {
         wuziTypeList.value = res
@@ -278,7 +301,8 @@ export default defineComponent({
       assetsList,
       acceptanceDetailsRef,
       wuziTypeList,
-      materialAcceptChange
+      materialAcceptChange,
+      addAsset1
     };
   },
 });
@@ -292,7 +316,8 @@ export default defineComponent({
   box-sizing: border-box;
   position: relative;
   background: #f8f8f8;
-  min-height: 100vh;
+  height: 640px;
+  overflow: auto;
 
   .n-anchor {
     position: absolute;

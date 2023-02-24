@@ -72,8 +72,8 @@ export default defineComponent({
     const gridComponent = ref(null)
     const router = useRouter()
     const handelClick = (row) => {
-      // window.open(row.contentUrl, 'newwindow');
-      window.open('/web-old/html/portal/article.html?origin=xinwendongtai')
+      window.open(row.contentUrl, 'newwindow');
+      // window.open('/web-old/html/portal/article.html?origin=xinwendongtai')
     }
     const page = ref(1)
     const dataList = ref([])

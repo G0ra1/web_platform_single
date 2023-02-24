@@ -13,7 +13,7 @@
     style="width:1500px;"
   >
      <n-grid > 
-        <!-- <n-grid-item span="6" style="height: 800px;" v-if="showSide">
+        <!-- <n-grid-item span="6" style="height: 550px;" v-if="showSide">
             <div class="sider">
                 <n-input v-model:value="pattern" placeholder="搜索" />
                 <n-spin :show="leftSpinShow" style="padding-top: 6px">
@@ -22,7 +22,7 @@
                         highlight-current-row
                         ref="aTable"
                         row-id="id"
-                        height="760px"
+                        height="510px"
                     
                         :data="course.studyExamDatabaseDefList"
                     >
@@ -42,25 +42,15 @@
                 </n-spin>
             </div>
         </n-grid-item>         -->
-            <n-grid-item :span="showSide ? 24 : 24" style="height: 800px;">
+            <n-grid-item :span="showSide ? 24 : 24" style="height: 550px;">
                  <n-spin :show="spinShow" >
-                    <vxe-toolbar style="height:40px">
-                        <template v-slot:buttons>
-                            <vxe-form>
-                                <vxe-form-item v-if="multiple">
-                                    <template #default>
-                                      待选择题库  <vxe-input v-model="filterName1" type="search" placeholder="全表搜索" @keyup="searchEvent1"></vxe-input>
-                                    </template>
-                                </vxe-form-item>
-                            </vxe-form>
-                        </template>
-                    </vxe-toolbar>
+                   
                     <vxe-table
                         resizable
                         highlight-current-row
                         ref="xTable"
                         row-id="id"
-                        :height="!multiple ? '760px' : '380px'"
+                        :height="!multiple ? '510px' : '250px'"
                         :data="course.topicList"
                     >
                       
@@ -87,23 +77,13 @@
                             </template>
                         </vxe-table-column>
                     </vxe-table>
-                      <vxe-toolbar style="height:40px" v-if="multiple">
-                        <template v-slot:buttons>
-                            <vxe-form>
-                                <vxe-form-item>
-                                    <template #default>
-                                      已选择题库
-                                    </template>
-                                </vxe-form-item>
-                            </vxe-form>
-                        </template>
-                    </vxe-toolbar>
+                     
                     <vxe-table
                         resizable
                         highlight-current-row
                         ref="blTable"
                         row-id="id"
-                        height="340px"
+                        height="240px"
                     
                         v-if="multiple"
                         :data="course.alreadyTopicList"

@@ -22,7 +22,7 @@
             >
                 <vxe-column field="lessonName" title="课程名称" >
                   <template v-slot="{ row }">
-                    <span style="color:#2080f0;cursor:pointer" @Click="()=>{studyLessonHisDetailShow(row)}">
+                    <span style="color:#2080f0;cursor:pointer" @click="()=>{studyLessonHisDetailShow(row)}">
                       {{row.lessonName}}
                     </span>
                 </template>
@@ -63,7 +63,7 @@
     >
       <nw-form-view
         ref="formRef"
-        src="/html/forms/study-course-form.html"
+        src="/web-study/forms/study-course-form.html"
       />
       
     </n-drawer-content>

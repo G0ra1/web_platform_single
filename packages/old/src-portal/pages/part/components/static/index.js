@@ -6,6 +6,7 @@ import PNews from './PNews/index.vue'
 import PProcessing from './PProcessing/index.vue'
 import PSchedule from './PSchedule/index.vue'
 import PWidget from './PWidget/index.vue'
+import PLlTodo from './PLlTodo/index.vue'
 
 
 
@@ -22,6 +23,7 @@ export default {
     app.component('PProcessing', PProcessing)
     app.component('PSchedule', PSchedule)
     app.component('PWidget', PWidget)
+    app.component('PLlTodo', PLlTodo)
   }
 }
 
@@ -82,6 +84,14 @@ export const useComponents = [
     color: '#ffeb3b',
     code: '<p-widget />',
     getCode: () => `<p-widget code='${new Date().getTime()}' />`
+  },
+  {
+    key: 'PLlTodo',
+    label: '蓝凌待办中心',
+    icon: 'component-partCodes',
+    color: '#ffeb3b',
+    code: '<p-ll-todo />',
+    getCode: () => `<p-ll-todo />`
   }
 
 ]

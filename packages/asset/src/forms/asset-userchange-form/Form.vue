@@ -45,7 +45,7 @@
                   addAsset();
                 }
               " circle type="info">
-              <nw-icon name="icon-add-bold" :size="15" />
+              <nw-icon name="icon-n-y-add" :size="15" />
             </n-button>
             <vxe-table ref="detailTable" show-overflow border :data="assetsList" :column-config="{ resizable: true }"
               :row-config="{ keyField: 'rowId' }" :edit-config="{
@@ -281,7 +281,8 @@ export default defineComponent({
   box-sizing: border-box;
   position: relative;
   background: #f8f8f8;
-  min-height: 100vh;
+  height: 640px;
+  overflow: auto;
 
   .n-anchor {
     position: absolute;

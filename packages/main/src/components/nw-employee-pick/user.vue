@@ -82,7 +82,7 @@ export default {
       rowId: 'id',
       rowKey: false,
       size: 'mini',
-      height: 'auto',
+      height: '370',
       showOverflow: false,
       highlightHoverRow: true,
       showHeader: false,

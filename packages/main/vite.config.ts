@@ -14,6 +14,7 @@ export default async () => {
     plugins: [vue()],
     base: `/${baseName}`,
     build: {
+      // target:['edge90','chrome90','firefox90','safari15'],
       outDir: `../../dist/${baseName}`,
       // lib: {
       //   entry: resolve(__dirname, 'src/export.ts'),
@@ -88,7 +89,18 @@ export default async () => {
             target: `http://127.0.0.1:3006/web-labour`,
           changeOrigin: true,
           rewrite: path => path.replace(/^\/web-labour/, '/')
-        }
+        },
+        "/web-cemlab": {
+            target: `http://127.0.0.1:3007/web-cemlab`,
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/web-cemlab/, '/')
+        },  
+        "/webroot": {
+          //使用环境变量INCLOUD_APIURL，方便直接调用自己后台，如果自己电脑上没有配置环境变量INCLOUD_APIURL，则使用默认incloud值
+          target: `http://192.168.0.196:8189/webroot`,
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/webroot/, '/')
+        },
       }
     }
   })

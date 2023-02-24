@@ -17,26 +17,40 @@ import { FormSchema } from "./conf";
 import type { FormType, TaskInfoDetail } from "./conf";
 
 class FormModal extends AbstractForm {
-  formRef = ref<FormInst>();
-  rules = ref<FormRules>({
-    'taskTitle': {
-      type: 'string',
-      required: true,
-      trigger: ["blur", "input"],
-      message: `该属性为必填`,
-    }
-  });
-  dataPermits = ref<any>({});
-  gridOption = ref<VxeGridProps<TaskInfoDetail>>({})
+  // formRef = ref<FormInst>();
+  // rules = ref<FormRules>({
+  //   'taskTitle': {
+  //     type: 'string',
+  //     required: true,
+  //     trigger: ["blur", "input"],
+  //     message: `该属性为必填`,
+  //   }
+  // });
+  // dataPermits = ref<any>({});
+  // gridOption = ref<VxeGridProps<TaskInfoDetail>>({})
   
   dataModel = ref<FormType>({});
-
+  
   getSchema = async () => {
     // 从表单获取数据
     return FormSchema;
   };
+
+  initScript = (params: Array<any>) => {
+
+    this.dataModel.value.taskTitle = params[0].taskTitle
+    return 'initScript'
+  }
+
+  test1Script = () => {
+
+    return 'test1Script'
+  }
+  test2Script = () => {
+
+    return 'test2Script'
+  }
   setValue = (d: FormType) => {
-    console.log('====setValue===', d)
     // 给表单设定数据
     this.dataModel.value = d;
   };
@@ -50,6 +64,14 @@ class FormModal extends AbstractForm {
     super.setRules(v)
   };
 
+  // async validate () {
+  //   alert(111);
+  //   const r = await super.validate()
+
+
+
+  //   return r
+  // }
   constructor() {
     super();
   }

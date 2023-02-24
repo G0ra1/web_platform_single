@@ -104,100 +104,101 @@
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="当前进展" path="currentProgressName">
-                  <NwDic :disabled="dataModelDisabled" dictCode="current_progress" placeholder="请选择当前进展"
+                  <NwDic :disabled="dateModelDisabled" dictCode="current_progress" placeholder="请选择当前进展"
                     v-model:value="model.currentProgressCode" v-model:label="model.currentProgressName">
                   </NwDic>
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="方案提交时间（一体化平台）" path="onePlatformSubmitTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.onePlatformSubmitTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.onePlatformSubmitTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="方案审批完成时间（一体化平台）" path="onePlatformFinishTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.onePlatformFinishTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.onePlatformFinishTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="方案提交时间（招标管理平台）" path="inviteBidsSubmitTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.inviteBidsSubmitTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.inviteBidsSubmitTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
 
               <n-grid-item>
                 <n-form-item label="方案审批完成时间（招标管理平台）" path="inviteBidsFinishTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.inviteBidsFinishTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.inviteBidsFinishTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="招标文件确认时间" path="inviteBidsConfirmTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.inviteBidsConfirmTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.inviteBidsConfirmTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="招标公告时间" path="inviteBidsPublicTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.inviteBidsPublicTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.inviteBidsPublicTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="开标时间" path="tenderOpenTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.tenderOpenTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.tenderOpenTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="招标结果公示时间" path="inviteBidsResultPublicTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.inviteBidsResultPublicTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.inviteBidsResultPublicTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="招标结果完成审批时间" path="resultFinishTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.resultFinishTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.resultFinishTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="评审报告提交时间（一体化平台）" path="assessSubmitTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.assessSubmitTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.assessSubmitTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="评审报告审批完成时间（一体化平台）" path="assessFinishTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.assessFinishTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.assessFinishTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="结果公告时间" path="resultPublicTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.resultPublicTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.resultPublicTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="目录上载时间" path="catalogUploadTime">
-                  <n-date-picker style="width: 100%;" v-model:formatted-value="model.catalogUploadTime"
-                    value-format="yyyy-MM-dd" type="date" />
+                  <n-date-picker :disabled="dateModelDisabled" style="width: 100%;"
+                    v-model:formatted-value="model.catalogUploadTime" value-format="yyyy-MM-dd" type="date" />
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="产品构成">
-                  <NwIcon name="icon-n-n-add" @click="selectMaterials" size="15"
-                    style="color: #828282; cursor: pointer;position: absolute;top: -22px;left: 62px;z-index: 99;" />
+                  <NwIcon v-if="!dateModelDisabled" name="icon-n-n-add" @click="selectMaterials" size="15"
+                    style="color: #828282; cursor: pointer;position: absolute;top: -25px;left: 62px;z-index: 99;" />
                   <vxe-grid ref="detailVxeGrid" v-bind="detailListGridOption" style="width: 100%;">
                     <template #expenditurePattern_default="{ row, column }">
                       <span>{{ row.expenditurePattern }}</span>
                     </template>
                     <template #expenditurePattern_edit="{ row, column }">
-                      <n-input-number placeholder="请输入大宗商品价格" v-model:value="row.expenditurePattern">
+                      <n-input-number :disabled="dateModelDisabled" placeholder="请输入大宗商品价格"
+                        v-model:value="row.expenditurePattern">
                       </n-input-number>
                     </template>
                   </vxe-grid>
@@ -205,7 +206,8 @@
               </n-grid-item>
               <n-grid-item>
                 <n-form-item label="备注" path="explanation2">
-                  <n-input placeholder="请输入备注" v-model:value="model.explanation2"></n-input>
+                  <n-input :disabled="dateModelDisabled" placeholder="请输入备注"
+                    v-model:value="model.explanation2"></n-input>
                 </n-form-item>
               </n-grid-item>
 
@@ -310,6 +312,7 @@ export default defineComponent({
     const detailVxeGrid = ref()
     const materialsPickRef = ref()
     const basicDisabled = ref(false)
+    const dateModelDisabled = ref(true)
     const selectMaterials = () => {
       materialsPickRef.value.show(dzsply.value)
     }
@@ -325,6 +328,8 @@ export default defineComponent({
       showModalRef.value = true
       if (e.id) {
         details(e.id).then(res => {
+          basicDisabled.value = res.permissionStatus != 1 || !res.permissionStatus
+          dateModelDisabled.value = res.permissionStatus != 2
           modelRef.value = {
             ...res,
             materialsTypeCode: res.materialsTypeCode?.split(','),
@@ -471,6 +476,7 @@ export default defineComponent({
       selectUser,
       getUsers,
       basicDisabled,
+      dateModelDisabled,
       dzsplyChangeEvent,
       detailVxeGrid,
       detailListGridOption,

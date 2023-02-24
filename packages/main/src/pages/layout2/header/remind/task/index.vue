@@ -2,7 +2,7 @@
 <template>
     <n-scrollbar style="height: 100%;">
         <template
-            v-for="item in TaskData"
+            v-for="item in MsgData"
             :key="item.id"
         >
             <todo-card
@@ -15,6 +15,14 @@
             
             <done-card
                 v-else-if="item.tmpCode === 'applyTask'"
+                :title="item.msgTitle"
+                :content="item.msgContent"
+                :time="item.updateTime"
+                :url="item.msgPcUrl"
+            />
+            
+            <msg-card
+                v-else-if="item.msgType === 'business'"
                 :title="item.msgTitle"
                 :content="item.msgContent"
                 :time="item.updateTime"
@@ -60,8 +68,9 @@ import { NwIcon, RequestPaging, VxeHelper } from '@platform/main'
 
 import TodoCard from './todo.vue'
 import DoneCard from './done.vue'
+import MsgCard from './msg.vue'
 
-import { TaskData } from '../store'
+import { MsgData } from '../store'
 
 export default defineComponent({
     // props: {
@@ -74,12 +83,13 @@ export default defineComponent({
         NwIcon,
         NScrollbar,
         TodoCard,
-        DoneCard
+        DoneCard,
+        MsgCard
     },
     setup (props) {
         const visible = ref<boolean>(false)
         return {
-            TaskData,
+            MsgData,
             visible,
             theme: {
                 padding: '5px'

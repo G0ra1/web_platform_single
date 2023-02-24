@@ -21,7 +21,7 @@ export function  empLists(params) {
   // 人员多查详情
 export function mdmUserIds (d) {
     return request({
-        url: `mdm/mdmUser/getByIds/${d}`,
+        url: `main/mdmUser/getByIds?ids=${d}`,
         method: 'get',
     })
   }

@@ -43,18 +43,6 @@
         </n-button>
       </n-space>
     </n-layout-header>
-    <NwGridSearch ref="GridSearchRef" :options="[]" >
-      <template #title="{ operation }">
-        <n-input v-if="operation === 'eq'" />
-        <n-input v-else-if="operation === 'eq'" />
-      </template>
-      <template #age="{  }">
-        <n-input-number />
-      </template>
-      <template #sex="{  }">
-        <NwDic />
-      </template>
-    </NwGridSearch>
     <n-layout-content>
       <vxe-grid
         v-bind="bind"
@@ -111,9 +99,7 @@ export default defineComponent({
   },
   setup () {
     const GridSearchRef = ref<any>()
-    nextTick().then(() => {
-      console.log('=====GridSearchRef==', GridSearchRef.value.toggle())
-    })
+
     const ModalRef = ref<any>();
     (inject('Emitter') as any).on('function-complete', () => {
       reset({})
@@ -145,7 +131,9 @@ export default defineComponent({
             visible: true
           },
           { field: 'code', title: '业务入口编码', showHeaderOverflow: true,
-            visible: false },
+            visible: true },
+          { field: 'sort', title: '排序', showHeaderOverflow: true,
+            visible: true },
           
           {
                     title: '操作',
@@ -169,6 +157,7 @@ export default defineComponent({
                                     onClick={() => {
 
                                       (window as any).NaiveDialog.error({
+                        class: 'text-modal-dialog',
                                         title: '删除',
                                         content: '确定删除？',
                                         positiveText: '确定',

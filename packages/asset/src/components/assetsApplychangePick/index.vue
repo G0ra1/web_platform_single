@@ -7,7 +7,7 @@
   <n-modal v-model:show="showModal" :mask-closable="false" preset="dialog" title="选择物资信息" content="你确认"
     positive-text="确认" negative-text="取消" style="width: 1200px">
     <n-grid>
-      <n-grid-item :span="showSide ? 18 : 24" style="height: 650px">
+      <n-grid-item :span="showSide ? 18 : 24" style="height: 520px">
         <n-spin :show="spinShow">
           <vxe-toolbar style="height: 40px">
             <template v-slot:buttons>
@@ -27,7 +27,7 @@
               </vxe-form>
             </template>
           </vxe-toolbar>
-          <vxe-table resizable highlight-current-row ref="xTable" :row-config="{ keyField: 'rowId' }" :height="'600px'"
+          <vxe-table resizable highlight-current-row ref="xTable" :row-config="{ keyField: 'rowId' }" :height="'480px'"
             :data="emp.empList">
             <vxe-table-column field="itemName" title="物资名称"></vxe-table-column>
             <vxe-table-column field="itemCode" title="物资编码"></vxe-table-column>

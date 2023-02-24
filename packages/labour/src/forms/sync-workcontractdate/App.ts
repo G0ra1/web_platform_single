@@ -4,7 +4,7 @@ import { AbstractForm } from "@platform/main";
 import type { FormModalTypes } from '@platform/main'
 type RulesType = FormModalTypes.RulesType
 import { FormSchema } from "./conf";
-import {Model,SyncRule} from "./mode";
+import {Model,Rule} from "./model";
 import { cloneDeep } from "lodash";
 
 class FormModal extends AbstractForm {
@@ -14,7 +14,7 @@ class FormModal extends AbstractForm {
 
     constructor() {
       super();
-      const newRules = new SyncRule(); 
+      const newRules = new Rule(); 
       Object.assign(this.rules.value, newRules);
     }
 

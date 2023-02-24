@@ -1,0 +1,160 @@
+.theme-default {
+    .vxe-grid {
+        >.vxe-grid--toolbar-wrapper {
+            >.vxe-toolbar.size--mini {
+                padding: 0;
+                height: 40px;
+            }
+        }
+
+        >.vxe-grid--pager-wrapper {
+            >.vxe-pager.size--mini {
+                height: 40px;
+            }
+        }
+
+        .vxe-table--render-default .vxe-body--column {
+            line-height: 22px;
+            font-size: 12px;
+        }
+
+        .vxe-table--render-default .vxe-header--column {
+            line-height: 22px;
+            font-size: 12px;
+            color: #606266;
+            font-weight: 600;
+
+        }
+
+        .vxe-table--render-default .vxe-table--header {
+            // height: 54px;
+        }
+
+        .grid-ntag {
+            text-align: center;
+            height: 22px;
+            font-size: 12px;
+            border-radius: 15px;
+        }
+    }
+
+    // 内部块状窗口
+    .nw-sprite {
+        // box-shadow: 0 0 2px 0 rgb(31 31 31 / 5%), 0 1px 2px 0 rgb(31 31 31 / 15%);
+        box-shadow: 0px 0px 3px 0 rgb(31 31 31 / 25%)
+    }
+
+    // 全屏样式
+    .full-screen {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        z-index: 4 !important;
+    }
+
+    .vxe-grid-active {
+        color: rgba(42, 130, 228, 0.94);
+        font-size: 12px;
+        font-weight: 400;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .n-drawer.n-drawer--right-placement {
+        width: 100%;
+        padding: 10px 15px 15px;
+        background: #eee;
+    }
+
+    // 模态框尺寸，自适应
+    .nw-model-media {
+        width: 1440px !important;
+        height: 760px !important;
+
+        &.n-dialog {
+            >.n-dialog__content {
+                height: calc(~'100% - 85px');
+            }
+        }
+    }
+    .n-form-item.n-form-item--left-labelled .n-form-item-label{
+        line-height: 36px;
+        font-size: 14px;
+        font-weight: 400;
+    
+        color: rgba(48,48,48,100);
+        font-family: AliMedium;
+    }
+    .pickAnyC {
+        font-family: AliMedium;
+        height: 36px;
+        width: 64px;
+        border-radius: 6px;
+        .n-button__content{
+        font-weight: 400;
+        }
+    }
+    // 流程相关表单样式
+    .LForm{
+        padding: 0 26px;
+        height: 100%;
+        overflow-y: scroll;
+        .LFormNg{
+            padding-top:28px
+        }
+        .LFormTable{
+            padding: 0 15px;
+        }
+    }
+    // 按钮样式
+    .liuchengBtn{
+        font-family: AliMedium;
+        height: 36px;
+        width: 64px;
+        border-radius: 6px;
+        .n-button__content{
+        font-weight: 400;
+        }
+    }
+    // 分组样式
+    .card-title {
+        font-size: 18px;
+        font-family: AliMedium;
+        font-weight: 500;
+        border-left: 2px solid #C91019;
+        margin: 0;
+        height: 19px;
+        line-height: 19px;
+        padding-left: 16px;
+    }
+    //   阿里普惠体
+    @font-face {
+        font-family:AliMedium;
+        src:url('../assets/AlibabaPuHuiTi-2-55-Regular.ttf')
+    }  
+    @media only screen and (max-width: 1440px) {
+        .nw-model-media {
+            width: 1000px !important;
+            height: 580px !important
+        }
+    }
+
+    // @media only screen and (max-height: 1440px) {
+    //     .nw-model-media {
+    //         width: 1000px !important;
+    //         height: 580px !important
+    //     }
+    // }
+
+    @import url('./Input/index.less');
+    @import url('./Select/index.less');
+    @import url('./Drawer/index.less');
+    @import url('./Button/index.less');
+    @import url('./Divider/index.less');
+    @import url('./Layout/index.less');
+    @import url('./Spin/index.less');
+    @import url('./Dialog/index.less');
+    @import url('./TreeSelect/index.less');
+}

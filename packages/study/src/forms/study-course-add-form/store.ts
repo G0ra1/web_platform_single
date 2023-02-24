@@ -25,18 +25,20 @@ class FormModal extends AbstractForm {
         //     d.widgetSize = []
         // }
         // 给表单设定数据
-        this.dataModel.value = {labelCode:d.labelCode ? d.labelCode.split(',') : [],labelName:d.labelName ? d.labelName.split(',') : [],...cloneDeep(d)}
+        this.dataModel.value = {...cloneDeep(d),labelCode:d.labelCode ? d.labelCode.split(',') : [],labelName:d.labelName ? d.labelName.split(',') : [],}
 
-
+ 
     }
 
     getValue = async () => {
+        
         this.dataModel.value.applyType = this.dataModel.value.applyType ? this.dataModel.value.applyType : 0
         let nDataModel = cloneDeep(this.dataModel.value)
-        // if (nDataModel.labelName) {
-        //   nDataModel.labelName = nDataModel.labelName.join(',')
-        //   nDataModel.labelCode = nDataModel.labelCode.join(',')
-        // }
+        if (nDataModel.labelName ) {
+          nDataModel.labelName = nDataModel.labelName.join(',')
+          nDataModel.labelCode = nDataModel.labelCode.join(',')
+        }
+        let data = cloneDeep(this.dataModel.value)
         // if(data.widgetSize) {
         //     data.widgetSize = data.widgetSize.join(',')
         // }

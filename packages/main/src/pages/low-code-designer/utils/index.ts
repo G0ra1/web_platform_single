@@ -10,10 +10,12 @@ export const NameToHump = (name: string) => name.replace(
 )
 
 // 转换数据
-const compileValue: (d: WidgetNS.OptionValue) => WidgetNS.OptionValue = (d: WidgetNS.OptionValue) => {
+export const compileValue: (d: WidgetNS.OptionValue) => WidgetNS.OptionValue = (d: WidgetNS.OptionValue) => {
     if (['function', 'array', 'object'].includes(d.type)) {
         // 进行转换
         return new Function(`return ${d.value}`)()
+    } else if (d.type === 'variable') {
+        return '' // 这里处理变量
     } else {
         return d.value
     }
@@ -29,7 +31,6 @@ export const compileConfig = (options: WidgetNS.Options) => {
 }
 
 // 递归数据转换
-
 export const recursionCompileConfig = (WidgetData: Array<WidgetNS.Config>) => {
 
     const fn = (list: Array<WidgetNS.Config>) => {
@@ -49,3 +50,5 @@ export const recursionCompileConfig = (WidgetData: Array<WidgetNS.Config>) => {
 
     return WidgetData
 }
+
+// 对object

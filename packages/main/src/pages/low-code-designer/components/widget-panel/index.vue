@@ -1,9 +1,9 @@
 <template>
   <div class="widget-panel">
-    <div class="header">
+    <!-- <div class="header">
       <div class="title">组件库</div>
       <div class="extra">1</div>
-    </div>
+    </div> -->
     <div class="content" >
       <n-scrollbar >
         <!-- <div class="widget-item">
@@ -12,18 +12,45 @@
             表单
           </div>
         </div> -->
-        <n-divider title-placement="left" style="margin: 10px 0 0 0; padding: 0 20px;">
+        <!-- <n-divider title-placement="left" style="margin: 10px 0 0 0; padding: 0 20px;">
           容器
         </n-divider>
-        <WidgetDrag :value="CategoryContainer" />
+        <WidgetDrag :value="CategoryContainer" /> -->
         <n-divider v-if="CategoryField.length" title-placement="left" style="margin: 10px 0 0 0; padding: 0 20px;">
-          基础字段
+          字段组件
         </n-divider>
         <WidgetDrag :value="CategoryField" />
         <n-divider v-if="CategoryData.length" title-placement="left" style="margin: 10px 0 0 0; padding: 0 20px;">
-          数据
+          数据组件
         </n-divider>
         <WidgetDrag :value="CategoryData" />
+        <n-divider title-placement="left" style="margin: 10px 0 0 0; padding: 0 20px;">
+          格式组件
+        </n-divider>
+        <WidgetDrag :value="CategoryFormat" />
+        <!-- <n-form
+          :label-width="50"
+          size="small"
+          label-placement="top"
+          label-align="right"
+        >
+          <NwFieldEmail v-model:value="test" />
+          <n-input v-model:value="test" />
+
+          <NwFieldGrid :value="[{}]" :columns="testColumns">
+            <template v-for="col in testColumns"
+              #[col.slots.default]
+            >
+            222
+            </template>
+            <template v-for="col in testColumns"
+              #[col.slots.edit]
+            >
+            333
+            </template>
+          </NwFieldGrid>
+        </n-form>
+        {{test}} -->
       </n-scrollbar>
     </div>
   </div>
@@ -34,7 +61,7 @@ import { ref, reactive, defineComponent, nextTick, h, onMounted } from 'vue'
 // import type { ComponentPublicInstance, Ref, ReactiveEffect } from 'vue'
 // import type { VxeGridProps, VxeGridInstance } from 'vxe-table'
 import {
-  NwIcon, RequestPaging, VxeHelper, request, NwTable,
+  NwIcon, RequestPaging, VxeHelper, request, NwTable,NwFieldEmail
 } from '@platform/main'
 
 import { WidgetPanel } from './store'
@@ -44,7 +71,8 @@ import WidgetDrag from './widget-drag.vue'
 export default defineComponent({
   components: {
     NwIcon,
-    WidgetDrag
+    WidgetDrag,
+    NwFieldEmail
   },
   setup(props, context) {
 
@@ -52,13 +80,32 @@ export default defineComponent({
     const {
       CategoryContainer,
       CategoryData,
-      CategoryField
+      CategoryField,
+      CategoryFormat
     } = widgetPanel
     widgetPanel.init()
+    console.log('====hhhh====', h)
     return {
+      test: ref(''),
+      testColumns: ref([{
+        field: 'test',
+        title: '测试',
+        slots: {
+          default: 'test-def',
+          edit: 'test-edit'
+        }
+      },{
+        field: 'test1',
+        title: '测试1',
+        slots: {
+          default: 'test1-def',
+          edit: 'test1-edit'
+        }
+      }]),
       CategoryContainer,
       CategoryData,
-      CategoryField
+      CategoryField,
+      CategoryFormat
     }
   }
 })

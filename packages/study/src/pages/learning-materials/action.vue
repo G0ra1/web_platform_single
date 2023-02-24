@@ -11,7 +11,7 @@
     style="width:700px;"
   >
   <n-spin :show="isLoading">
-    <n-form  :model="model" ref="formRef" :rules="rules" style='padding:0 10px'>
+    <n-form  :model="model" ref="formRef" :rules="rules" style='padding:10px 10px'>
         <n-grid  :cols="1" >
              <n-grid-item>
                 <n-form-item label="标签名称" path="labelCode">
@@ -22,7 +22,7 @@
                         size="small"
                         multiple
                         :response="{dataMethod:res => res.map(({dictItemCode: value, dictItemName: label}) => ({label, value}))}"
-                        />
+                      />
                 </n-form-item>
             </n-grid-item>
              <n-grid-item>
@@ -205,6 +205,7 @@ export default defineComponent({
       
       onPositiveClick (){
         const fn =!modelRef.value.id?creat:edit
+      
          formRef.value.validate((errors) => {
           if (!errors) {
             isLoading.value = true
@@ -217,7 +218,8 @@ export default defineComponent({
               }
 
             }).finally(r => {
-             
+              modelRef.value.labelName = modelRef.value.labelName ? modelRef.value.labelName.split(',') : ''
+              modelRef.value.labelCode = modelRef.value.labelCode ? modelRef.value.labelCode.split(',') : ''
               isLoading.value = false
             })
           }

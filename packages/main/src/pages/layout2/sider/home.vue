@@ -1,21 +1,23 @@
 <template>
   <n-popover
+    v-if="menuOptions.length"
     :overlap="false"
     placement="right-start"
     trigger="hover"
     :show-arrow="false"
     >
         <template #trigger>
-            
+          <n-badge :value="messageNum" :max="99">
             <div
                 :class="{
                     'wrapper-menu-item': true,
                     'action':  props.isActive
                 }"
             >
-                <nw-icon name="icon-n-n-home" :size="32" />
+                <nw-icon name="icon-n-n-menhu" :size="24" />
                 门户
             </div>
+            </n-badge>
         </template>
         <n-menu
           :options="menuOptions"

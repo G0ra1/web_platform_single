@@ -8,7 +8,7 @@
   <n-modal v-model:show="showModal" :mask-closable="false" preset="dialog" title="选择购置申请信息" content="你确认"
     positive-text="确认" negative-text="取消" style="width: 1200px">
     <n-grid>
-      <n-grid-item :span="24" style="height: 650px">
+      <n-grid-item :span="24" style="height: 520px">
         <n-spin :show="spinShow">
           <vxe-toolbar style="height: 40px">
             <template v-slot:buttons>
@@ -109,7 +109,7 @@ export default defineComponent({
     }
     const gridOptions = reactive({
       border: true,
-      height: 600,
+      height: 480,
       rowConfig: {
         keyField: "id",
       },

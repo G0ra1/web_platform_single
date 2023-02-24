@@ -19,15 +19,22 @@
             <n-input placeholder="申请人" v-model:value="dataModel.applyUserName" class="selectedInput" disabled />
           </n-input-group>
         </n-form-item-gi>
-        <n-form-item-gi :span="6" label="领用申请部门" path="applyUserDeptName">
-          <n-input placeholder="领用申请部门" v-model:value="dataModel.applyUserDeptName" disabled />
+        <n-form-item-gi :span="6" label="申请部门" path="applyUserDeptName">
+          <n-input placeholder="申请部门" v-model:value="dataModel.applyUserDeptName" disabled />
         </n-form-item-gi>
-        <n-form-item-gi :span="6" label="领用申请单位" path="applyUserOrgName">
-          <n-input placeholder="领用申请单位" v-model:value="dataModel.applyUserOrgName" disabled />
+        <n-form-item-gi :span="6" label="申请单位" path="applyUserOrgName">
+          <n-input placeholder="申请单位" v-model:value="dataModel.applyUserOrgName" disabled />
         </n-form-item-gi>
         <n-form-item-gi :span="6" label="申请时间" path="applyTime">
           <n-input placeholder="申请时间" v-model:value="dataModel.applyTime" disabled />
         </n-form-item-gi>
+        <n-form-item-gi :span="6" label="领用人" path="assetUserName">
+          <n-input placeholder="领用人" v-model:value="dataModel.assetUserName" disabled />
+          <NwEmployeePick :value="dataModel.assetUserId" :expreParamValueText="dataModel.assetUserName"
+                        @updateExpreParamValueText="(value) => dataModel.assetUserName = value"
+                        @updateValue="(value) => dataModel.assetUserId = value" />
+        </n-form-item-gi>
+        
         <n-form-item-gi :span="12" label="说明" v-if="brules['explanation'] !== 'hide'" path="title">
           <n-input :disabled="brules['explanation'] === 'readonly'" type="textarea" placeholder="请输入说明"
             v-model:value="dataModel.explanation" />
@@ -44,19 +51,19 @@
                 line-height: 24px;
                 margin-left: 10px;
               " @click="
-                () => {
-                  addAsset();
-                }
-              " circle type="info">
-              <nw-icon name="icon-add-bold" :size="15" />
+  () => {
+    addAsset();
+  }
+" circle type="info">
+              <nw-icon name="icon-n-y-add" :size="15" />
             </n-button>
             <vxe-table ref="detailTable" show-overflow border :data="detailList" :column-config="{ resizable: true }"
               :edit-config="{
-                trigger: 'click',
-                mode: 'row',
-                enabled: true,
-                showIcon: true,
-              }" @cell-click="editIemRow">
+  trigger: 'click',
+  mode: 'row',
+  enabled: true,
+  showIcon: true,
+}" @cell-click="editIemRow">
               <vxe-column type="seq" title="序号" width="60"></vxe-column>
               <vxe-column field="classifyCode" width="135" title="分类编码">
               </vxe-column>
@@ -71,9 +78,10 @@
               <vxe-column field="itemType" title="物资类型" width="135">
                 <template v-slot="{ row }">
                   <span>{{ wuziTypeList.find(d => d.dictItemCode == row.itemType) ? wuziTypeList.find(d =>
-                      d.dictItemCode ==
-                      row.itemType).dictItemName : ""
-                  }}</span>
+                              d.dictItemCode ==
+                              row.itemType).dictItemName : ""
+                          }}
+                  </span>
                 </template>
               </vxe-column>
               <vxe-column field="specs" width="135" title="规格">
@@ -98,10 +106,10 @@
                       margin-right: 15px;
                       font-size: 12px;
                     " @click="
-                      () => {
-                        delIemRow(row);
-                      }
-                    ">删除</span>
+  () => {
+    delIemRow(row);
+  }
+">删除</span>
                 </template>
               </vxe-column>
             </vxe-table>
@@ -165,7 +173,8 @@ import {
 import warehousePick from "../../components/warehousePick/index.vue";
 import { dictItemLists } from "./api/index.js";
 import employeePick from "../../components/employeePick/index.vue";
-import { NwIcon, NwDic } from '@platform/main'
+import { NwIcon, NwDic, NwEmployeePick } from '@platform/main'
+
 
 import acceptAssetsPick from "../../components/acceptAssetsPick/index.vue";
 import fileInfo from "../../components/fileInfo/index.vue";
@@ -201,7 +210,8 @@ export default defineComponent({
     NSpin,
     NUpload,
     fileInfo,
-    warehousePick
+    warehousePick,
+    NwEmployeePick
   },
   setup() {
     const message = useMessage();
@@ -261,7 +271,8 @@ export default defineComponent({
   box-sizing: border-box;
   position: relative;
   background: #f8f8f8;
-  min-height: 100vh;
+  height: 640px;
+  overflow: auto;
 
   .n-anchor {
     position: absolute;

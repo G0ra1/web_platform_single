@@ -3,13 +3,13 @@ import { ref, provide } from 'vue'
 import { Utils, Db, Page } from '@platform/main'
 
 type MenuItem = {
-    id: string,
-    menuName: string,
-    appCode: string,
-    menuCode: string,
-    type: 0 | 1 | 2 | 3 | 4,
-    key: string,
-    label: string
+    id?: string,
+    menuName?: string,
+    appCode?: string,
+    menuCode?: string,
+    type?: 0 | 1 | 2 | 3 | 4,
+    key?: string,
+    label?: string
 }
 
 export const menuItems = ref<Array<MenuItem>>([])
@@ -44,6 +44,7 @@ export const activeTick = async () => {
 
     ActiveApp.value = {}
     ActiveMenu.value = {}
+    menuItems.value = []
     EnableMenuLevel2.value = false
     // p1 应用名称 p2 一级菜单code p3 一级菜单选择数据 p4 二级菜单code
     if (layoutType === 'app') {
@@ -107,6 +108,11 @@ export const activeTick = async () => {
             
         }
 
+    } else if (layoutType === 'iframe-inner') {
+        const [ title ] = window.decodeURI(window.atob(p2)).split('$$')
+        menuItems.value = [{
+            label: title
+        }]
     }
 
 }

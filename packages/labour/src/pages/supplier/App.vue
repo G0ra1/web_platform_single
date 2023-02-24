@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { NwIcon, NwFunctionPredefine } from "@platform/main"
-import { NLayout, NLayoutHeader, NLayoutContent, NSpace, NInput, NSelect, NInputGroup, useDialog, NButton } from 'naive-ui'
-import { bind, gridRef, filterData, query, refresh, reset, paramsArray, statusOptions, initDialog, syncEvent } from "./App"
+import { NwIcon, NwFunctionPredefine, NwGridSearch, NwGridControl } from "@platform/main"
+import { NLayout, NLayoutHeader, NLayoutContent, NSpace, NInput, NSelect, useDialog, NButton,NForm,NFormItem } from 'naive-ui'
+import { bind, gridRef, filterData, query, refresh, reset, paramsArray, statusOptions, initDialog, syncEvent, gridSearchRef, gridEvents,orgNameOptions  } from "./App"
 import { nextTick, inject } from 'vue'
 initDialog(useDialog());
 //只能放在setup中的回调函数，用于页面中的功能操作后的回调刷新
@@ -27,44 +27,50 @@ nextTick().then(() => {
                     <n-button type="primary" size="small" @click="syncEvent">同步</n-button>
                 </n-space>
                 <n-space :size="5" style="padding: 0 5px">
-                    <n-input-group>
-                        <n-input :value="filterData.orgCode || ''" @update:value="(d: string) => filterData.orgCode = d"
-                            placeholder="组织机构代码" :style="{ width: '150px' }" style="margin-right: 10px" />
-                        <n-input :value="filterData.orgName || ''" @update:value="(d: string) => filterData.orgName = d"
-                            placeholder="组织机构名称" :style="{ width: '150px' }" style="margin-right: 10px" />
-                        <n-select v-model:value="filterData.status" :options="statusOptions"
-                            @update:value="(d: string) => filterData.status = d" placeholder="请选择"
-                            :style="{ width: '150px' }">
-                        </n-select>
+                    <n-form label-placement="left" :show-feedback="false" inline>
+                        <n-form-item label="机构名称:">
+                            <!-- select  -->
+                            <n-select v-model:value="filterData.orgName" :options="orgNameOptions"
+                                @update:value="(d) => filterData.orgName = d" placeholder="请选择状态"
+                                :style="{ width: '250px' }">
+                            </n-select>
+                        </n-form-item>
+                        <n-form-item label="状态:">
+                            <n-select v-model:value="filterData.status" :options="statusOptions"
+                                @update:value="(d) => filterData.status = d" placeholder="请选择状态"
+                                :style="{ width: '120px' }">
+                            </n-select>
+                        </n-form-item>
                         <n-button type="primary" @click="query()">
                             搜索
                         </n-button>
-                    </n-input-group>
-                    <n-button title="重置" type="warning" @click="refresh()">
-                        <template #icon>
-                            <nw-icon name="icon-n-y-refresh" />
-                        </template>
-                    </n-button>
-                    <n-button title="导入">
-                        <template #icon>
-                            <nw-icon name="icon-n-y-import" />
-                        </template>
-                    </n-button>
-                    <n-button title="导出">
-                        <template #icon>
-                            <nw-icon name="icon-n-y-export" />
-                        </template>
-                    </n-button>
-                    <n-button title="打印" @click="gridRef?.print()">
-                        <template #icon>
-                            <nw-icon name="icon-n-y-print" />
-                        </template>
-                    </n-button>
-                    <n-button>
-                        <template #icon>
-                            <nw-icon name="icon-n-y-column" />
-                        </template>
-                    </n-button>
+                        <n-button title="重置" type="warning" @click="refresh()">
+                            <template #icon>
+                                <nw-icon name="icon-n-y-refresh" />
+                            </template>
+                        </n-button>
+                        <n-button title="导入">
+                            <template #icon>
+                                <nw-icon name="icon-n-y-import" />
+                            </template>
+                        </n-button>
+                        <n-button title="导出">
+                            <template #icon>
+                                <nw-icon name="icon-n-y-export" />
+                            </template>
+                        </n-button>
+                        <n-button title="打印" @click="gridRef?.print()">
+                            <template #icon>
+                                <nw-icon name="icon-n-y-print" />
+                            </template>
+                        </n-button>
+                        <n-button>
+                            <template #icon>
+                                <nw-icon name="icon-n-y-column" />
+                            </template>
+                        </n-button>
+                        <NwGridControl v-model:bind-options="bind" v-model:grid-events="gridEvents" />
+                    </n-form>
                 </n-space>
             </n-layout-header>
             <!-- 内容区头部 end -->

@@ -16,6 +16,12 @@
                     </n-grid-item>
 
                     <n-grid-item>
+                        <n-form-item path="userCode" label="用户编码">
+                            <n-input v-model:value="model.userCode" />
+                        </n-form-item>
+                    </n-grid-item>
+                    <n-grid-item></n-grid-item>
+                    <n-grid-item>
                         <n-form-item path="passWord" label="密码">
                             <n-input v-model:value="model.passWord" @input="handlePasswordInput" type="password"
                                 @keydown.enter.prevent />

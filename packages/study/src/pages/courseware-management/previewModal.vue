@@ -94,7 +94,7 @@ export default defineComponent({
       showModalRef.value = true
 
       couType.value = e.couType
-      fileUrl.value = e.couType == 3 ? `${Setting.fileServerUrl}?url=${encodeURIComponent(Base64.encode(e.fileUrl))}`  :  e.fileUrl
+      fileUrl.value = e.couType == 3 ? `${window.apiBaseURL.fileServerUrl}?url=${encodeURIComponent(Base64.encode(e.fileUrl))}`  :  e.fileUrl
       
 
     };

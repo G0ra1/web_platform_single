@@ -86,7 +86,7 @@ type FormType = {
     taskInfoDetailList1?: Array<TaskInfoDetail>,
     testGrid?: Array<any>,
     testGrid1?: Array<any>,
-    testObject?: object,
+    testObject?: any,
 }
 
 export type {

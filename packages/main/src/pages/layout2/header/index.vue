@@ -1,10 +1,10 @@
 
 <template>
-    <div class="header" >
+    <div class="header">
         <!-- 这里可能有标题 -->
         <div class="header-menulevel2" v-if="EnableMenuLevel2">
             <div class="title" @click="handleParentMenu">
-                {{ActiveMenu.label}}
+                {{ ActiveMenu.label }}
             </div>
             <div class="comp">
                 <data-pick />
@@ -12,7 +12,8 @@
         </div>
         <nw-menu></nw-menu>
     </div>
-    <n-space align="center" >
+    <n-space align="center">
+        <collection />
         <real-time />
         <remind />
         <logout />
@@ -46,7 +47,7 @@ import {
 } from "naive-ui";
 
 import { NwIcon, RequestPaging, VxeHelper } from '@platform/main'
-
+import Collection from './collection.vue'
 import NwMenu from './menu/index.vue'
 import Logout from './logout.vue'
 import Remind from './remind/index.vue'
@@ -80,9 +81,10 @@ export default defineComponent({
         Remind,
         RealTime,
         NwMenu,
-        DataPick
+        DataPick,
+        Collection
     },
-    setup (props) {
+    setup(props) {
         registerListener()
         return {
             EnableMenuLevel2,
@@ -98,10 +100,12 @@ export default defineComponent({
 .header {
     display: flex;
     height: 100%;
+
     &-menulevel2 {
         display: flex;
         align-items: center;
         padding-right: 10px;
+
         >.title {
             padding: 0 10px;
             font-size: 18px;

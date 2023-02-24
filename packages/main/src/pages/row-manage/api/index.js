@@ -133,3 +133,12 @@ export function setRolePostUserRel (params) {
       method: 'get',
   })
 }
+
+
+ // 根据角色id 获取角色岗位角色和人员的关系
+ export function getRolePostandEmp (id) {
+  return request({
+      url: `/main/mdmOrg/getUserAndPostByOrgId/${id}`,
+      method: 'get',
+  })
+}

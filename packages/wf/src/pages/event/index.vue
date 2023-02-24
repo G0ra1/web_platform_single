@@ -139,6 +139,7 @@ export default defineComponent({
                     type="error"
                     onClick={() => {
                       dialog.error({
+                        class: 'text-modal-dialog',
                         title: '删除',
                         content: '确定删除？',
                         positiveText: '确定',

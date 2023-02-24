@@ -7,7 +7,7 @@
       <n-scrollbar class="page">
         <div style="padding: 2px">
         <template v-for="item in SourceWidget" :key="item.key">
-          <component :is="`dw-${item.type}`" :value="item" >
+          <component :is="`dw-${item.tagName}`" :value="item" >
           </component>
         </template>
         </div>

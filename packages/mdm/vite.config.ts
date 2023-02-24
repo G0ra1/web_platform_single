@@ -12,6 +12,7 @@ export default async () => {
     plugins: [vue()],
     base: `/${baseName}`,
     build: {
+      /* target: ['edge90', 'chrome90', 'firefox90', 'safari15'], */
       outDir: `../../dist/${baseName}`,
       // lib: {
       //   entry: resolve(__dirname, 'src/export.ts'),
@@ -19,7 +20,7 @@ export default async () => {
       //   fileName: (format) => `commonnw.${format}.js`
       // },
       rollupOptions: {
-        input: buildHtml(fs, (file: string) =>  resolve(__dirname, `./${file}`), baseName),
+        input: buildHtml(fs, (file: string) => resolve(__dirname, `./${file}`), baseName),
         // output: {
         //   manualChunks(id) { // 分包
         //     console.log(id)

@@ -248,8 +248,8 @@ export default defineComponent({
 
       .n-menu-item .n-menu-item-content.n-menu-item-content--selected::before {
         background: rgba(201, 16, 25, 0.2);
-
       }
+      
     }
   }
 

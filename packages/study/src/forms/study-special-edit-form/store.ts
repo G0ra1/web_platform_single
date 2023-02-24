@@ -24,27 +24,24 @@ class FormModal extends AbstractForm {
         // } else {
         //     d.widgetSize = []
         // }
+        d.labelCode = d.labelCode ? d.labelCode.split(',') : []
+        d.label = d.label ? d.label.split(',') : []
         // 给表单设定数据
-        this.dataModel.value = {labelCode:d.labelCode ? d.labelCode.split(',') : [],labelName:d.labelName ? d.labelName.split(',') : [],...cloneDeep(d)}
+        console.log(d,'-==============')
+        this.dataModel.value = cloneDeep(d)
 
 
     }
 
     getValue = async () => {
-        this.dataModel.value.applyType = this.dataModel.value.applyType ? this.dataModel.value.applyType : 0
-        let nDataModel = cloneDeep(this.dataModel.value)
-        if (nDataModel.labelName) {
-          nDataModel.labelName = nDataModel.labelName.join(',')
-          nDataModel.labelCode = nDataModel.labelCode.join(',')
-        }
-        let data = cloneDeep(this.dataModel.value)
-        // if(data.widgetSize) {
-        //     data.widgetSize = data.widgetSize.join(',')
-        // }
+        let nDataModel = cloneDeep({...this.dataModel.value})
+      
         // 从表单获取数据
-        return data
-    }
+        console.log(nDataModel,'-=--2------')
 
+        return {...nDataModel,labelCode:nDataModel.labelCode.join(','),label:nDataModel.label.join(',')}
+    }
+  
     setRules = (v: object) => {
         // 设定表单权限
         this.rules.value = {}

@@ -7,7 +7,7 @@
   <n-modal v-model:show="showModal" :mask-closable="false" preset="dialog" title="选择验收信息" content="你确认"
     positive-text="确认" negative-text="取消" style="width: 1200px">
     <n-grid>
-      <n-grid-item :span="showSide ? 18 : 24" style="height: 650px">
+      <n-grid-item :span="showSide ? 18 : 24" style="height: 520px">
         <n-spin :show="spinShow">
           <vxe-toolbar style="height: 40px">
             <template v-slot:buttons>
@@ -28,7 +28,7 @@
             </template>
           </vxe-toolbar>
           <vxe-table resizable highlight-current-row ref="xTable" :row-config="{ keyField: 'rowId' }"
-            :height="!multiple ? '500px' : '600px'" :data="emp.empList" :edit-config="{
+            :height="!multiple ? '380px' : '480px'" :data="emp.empList" :edit-config="{
               trigger: 'click',
               mode: 'row',
               enabled: true,

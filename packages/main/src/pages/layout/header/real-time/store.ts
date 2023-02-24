@@ -9,7 +9,7 @@ export class Ws {
     constructor (dialog: any) {
         const token = Cookies.get("token");
         const tokenType = Cookies.get("tokenType");
-        // Ws.ws = new WebSocket(`ws://192.168.1.195:8010/ws/msg?token=${tokenType} ${token}&userId=${userId}`);
+        Ws.ws = new WebSocket(`${window.websocketURL}?token=${token}&userId=`); // ${userId}
 
         // // 触发
         // Ws.ws.onopen = () => {

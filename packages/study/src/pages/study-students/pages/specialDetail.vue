@@ -120,8 +120,8 @@
                     </p>
                     <p style="width:30px;text-align:center" @click="clientTemplate(item)" v-if="item.isDownload == 1">
                         <nw-icon
-                          name="icon-daochu"
-                          :size="30"
+                          name="icon-n-y-export"
+                          :size="25"
                           style="cursor: pointer;color:#2080f0"
                         />
                     </p>
@@ -218,8 +218,7 @@
 <script lang='jsx'>
 // import { GridComponent, ColumnsDirective, ColumnDirective } from '@syncfusion/ej2-vue-grids';
 import { h,defineComponent, ref, reactive, getCurrentInstance,onMounted,watch  } from "vue";
-import { NwIcon } from '@platform/main'
-
+import { NwIcon,Cookies } from '@platform/main'
 import {
   NForm, 
   NFormItem,
@@ -326,6 +325,40 @@ export default defineComponent({
           }
         })
     }
+       // 下载
+    const clientTemplate = (item) => {
+      var fileType  = item.fileUrl.substring(item.fileUrl.lastIndexOf('.')) 
+      var filename = `${item.materialsName}${fileType}`;
+      const token = Cookies.get("token");
+      const tokenType = Cookies.get("tokenType");
+      fetch(`${window.apiBaseURL}/main/aliyunFile/${item.fileId}`, {
+        method: "get",
+        headers: new Headers({
+          Authorization: `${tokenType} ${token}`,
+        }),
+        responseType: "blob",
+      })
+        .then((response) => response.arrayBuffer())
+        .then((res) => {
+          var a = document.createElement("a");
+          a.style.display = "none";
+          var url = URL.createObjectURL(
+            new Blob([res], {
+              type:
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+            })
+          );
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url); // 释放掉blob对象
+          document.body.removeChild(a); // 下载完成移除元素
+          setTimeout(() => {
+            message.success("下载成功");
+          }, 1000);
+        });
+    }
     onMounted(()=>{
         specialDetail(route.query.id).then((r)=>{
           formData.value = r
@@ -339,6 +372,7 @@ export default defineComponent({
       showModal,
       isCanExam,
       showCourseDetail,
+      clientTemplate,
       showExaminationModal,
       showExamination,
       answerModal,

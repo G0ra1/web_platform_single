@@ -1,18 +1,26 @@
 <template>
-  <n-form :model="dataModel" :rules="rules" ref="formRef" label-placement="left" :label-width="160" size="small" :style="{
-    padding: '45px'
-  }">
-    <n-grid :cols="24" :x-gap="24">
-      <n-form-item-gi :span="8" label="填报日期" path="tianbaoshijian">
-        <n-date-picker v-model:formatted-value="dataModel.tianbaoshijian" value-format="yyyy-MM-dd" type="date" />
+  <n-form :model="dataModel" 
+    :rules="rules" ref="formRef" 
+    label-placement="left" :label-width="160" size="small" 
+    class="LForm"
+  >
+    <n-grid :cols="24" :x-gap="24" class="LFormNg">
+      <n-form-item-gi :span="24" label="" path="">
+        <h5 class="card-title">基本信息</h5>
       </n-form-item-gi>
-      <n-form-item-gi :span="8" label="填报厂别" path="tianbaochangbie">
+      <n-form-item-gi :span="8" label="填报日期" path="tianbaoshijian" class="LFormTable">
+        <n-date-picker style="width:100%" v-model:formatted-value="dataModel.tianbaoshijian" value-format="yyyy-MM-dd" type="date" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" label="填报厂别" path="tianbaochangbie" class="LFormTable">
         <n-input placeholder="填报厂别" disabled v-model:value="dataModel.tianbaochangbie" />
       </n-form-item-gi>
-      <n-form-item-gi :span="8" label="填报人" path="tianbaoren">
+      <n-form-item-gi :span="8" label="填报人" path="tianbaoren" class="LFormTable">
         <n-input placeholder="填报人" disabled v-model:value="dataModel.tianbaoren" />
       </n-form-item-gi>
-      <n-form-item-gi :span="24" label="河北销售管输气">
+      <n-form-item-gi :span="24" label="" path="code">
+        <h5 class="card-title">河北销售管输气</h5>
+      </n-form-item-gi>
+      <n-form-item-gi :span="24" label="" class="LFormTable">
         <n-button type="primary" @click="activeNum++" v-if="dataModel.tianbaochangbieId=='239'&&activeNum==0">+
         </n-button>
         <vxe-grid ref="sourceVxeGrid" v-else v-bind="sourceListGridOption" style="
@@ -46,12 +54,15 @@
           </template>
         </vxe-grid>
       </n-form-item-gi>
-      <n-form-item-gi :span="24" label="合计">
+      <!-- <n-form-item-gi :span="24" label="合计">
         <span class="heji">
           <span>河北销售管输气:</span><span class="num">{{sumNum(dataModel.sourceList||[],'yunxiaoliang')}}</span>
         </span>
+      </n-form-item-gi> -->
+      <n-form-item-gi :span="24" label="" path="code">
+        <h5 class="card-title">华北油田冀中自产气</h5>
       </n-form-item-gi>
-      <n-form-item-gi :span="24" label="华北油田冀中自产气">
+      <n-form-item-gi :span="24" label="" class="LFormTable">
         <vxe-grid ref="detailVxeGrid" v-bind="detailListGridOption" style="
               moz-user-select: -moz-none;
               -moz-user-select: none;
@@ -102,12 +113,12 @@
         </vxe-grid>
       </n-form-item-gi>
 
-      <n-form-item-gi :span="24" label="合计">
+      <!-- <n-form-item-gi :span="24" label="合计">
         <span v-for="t in natgasTypeList" class="heji">
           <span v-if="t" class="label">{{t}}:</span><span class="num"
             v-if="t">{{natgasTypeSum?natgasTypeSum[t]:''}}</span>
         </span>
-      </n-form-item-gi>
+      </n-form-item-gi> -->
     </n-grid>
   </n-form>
   <!-- <n-button @click="testshow">Test</n-button> -->
@@ -291,22 +302,23 @@ export default defineComponent({
           }
         }
       ],
-      // footerMethod({ columns, data }) {
-      //   const sums: Array<number | string> = []
-      //   columns.forEach((column, columnIndex) => {
-      //     if (columnIndex === 0) {
-      //       sums.push('合计')
-      //     } else {
-      //       if (column.field === 'yunxiaoliang') {
-      //         sums.push(Number(sumNum(data, 'yunxiaoliang')))
-      //       } else {
-      //         sums.push('-')
-      //       }
-      //     }
-      //   })
-      //   // 返回一个二维数组的表尾合计
-      //   return [sums]
-      // }
+      footerMethod({ columns, data }) {
+        const sums: Array<number | string> = []
+        columns.forEach((column, columnIndex) => {
+          if (columnIndex === 0) {
+            sums.push('合计')
+          } else {
+            if (column.field === 'yunxiaoliang') {
+              sums.push(Number(sumNum(data, 'yunxiaoliang')))
+              // dataModel.value.sourceList
+            } else {
+              sums.push('-')
+            }
+          }
+        })
+        // 返回一个二维数组的表尾合计
+        return [sums]
+      }
     })
     const detailListGridOption = ref<VxeGridProps<any>>({
       rowId: 'id',
@@ -318,6 +330,7 @@ export default defineComponent({
       highlightHoverRow: true,
       border: true,
       data: dataModel.value.detailList,
+      showFooter: true,
       toolbarConfig: {
         slots: {
           buttons: ({ $grid }: any) => {
@@ -420,6 +433,22 @@ export default defineComponent({
           }
         }
       ],
+      footerMethod({ columns, data }) {
+        const sums: Array<number | string> = [];
+        columns.forEach((column, columnIndex) => {
+          if (columnIndex === 0) {
+            sums.push("合计");
+          } else {
+            if (column.field === "yunxiaoliang") {
+              sums.push(Number(sumNum(data, "yunxiaoliang")));
+            } else {
+              sums.push("-");
+            }
+          }
+        });
+        // 返回一个二维数组的表尾合计
+        return [sums];
+      },
     })
 
     const natgasTypeList = ref<Array<any>>([])

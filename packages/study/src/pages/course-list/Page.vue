@@ -24,6 +24,8 @@
           <span style='width:5px;display:inline-block'></span>
            <NwFunctionPredefine
             code="COURSE_EDIT"
+            :disabled="selected.length !==1 || selected[0] &&  selected[0].status !== 1"
+            :params="selected"
             descr="左上预留位置按钮1"  
           />
            <!-- <NwFunctionPredefine

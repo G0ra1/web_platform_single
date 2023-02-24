@@ -1,14 +1,14 @@
 <template>
   <n-input-group>
     <n-input v-model:value="supplierName" :style="{ width: '100%' }" placeholder="填写或选择供应商" class="selectedInput" />
-    <n-button style="padding: 0 8px" @click="selectContract()">
-      <NwIcon name="icon-sousuo1" :size="15"></NwIcon>
+    <n-button style="padding: 0 8px;height: 36px;" @click="selectContract()">
+      <NwIcon name="icon-n-y-sousuo" :size="15"></NwIcon>
     </n-button>
   </n-input-group>
   <n-modal v-model:show="showModal" :mask-closable="false" preset="dialog" title="选择供应商信息" content="你确认"
     positive-text="确认" negative-text="取消" style="width: 1200px">
     <n-grid>
-      <n-grid-item :span="24" style="height: 650px">
+      <n-grid-item :span="24" style="height: 480px">
         <n-spin :show="spinShow">
           <vxe-toolbar style="height: 40px">
             <template v-slot:buttons>
@@ -101,7 +101,7 @@ export default defineComponent({
     };
     const gridOptions = reactive({
       border: true,
-      height: 600,
+      height: 450,
       rowConfig: {
         keyField: "id",
       },

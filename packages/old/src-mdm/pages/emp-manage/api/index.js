@@ -37,6 +37,17 @@ export function  empLists(params) {
         data: params
     })
   }
+
+  // 修改密码
+  export function updatePwd (params) {
+    
+    return request({
+        url: `/main/mdmUser/updatePassword`,
+        method: 'post',
+        data: params
+    })
+  }
+
    //  删除人员
   export function del (id) {
     return request({
@@ -136,7 +147,7 @@ export function empSort (params) {
       data:params
   })
 }
-// 导出
+// 导出模板
 export function exportUser () {
   const token = cookies.get("token");
   const tokenType = cookies.get("tokenType");
@@ -147,6 +158,41 @@ export function exportUser () {
         headers: new Headers({
           Authorization: `${tokenType} ${token}`
         }),
+        responseType: "blob"
+      }
+    )
+      .then(response => response.arrayBuffer())
+      .then(res => {
+        var a = document.createElement("a");
+        a.style.display = "none";
+        var url = URL.createObjectURL(
+          new Blob([res], {
+            type:
+              "application/zip;charset=UTF-8"
+          })
+        );
+        a.href = url;
+        a.download = 'users.xls';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url); 
+        document.body.removeChild(a);
+        
+      }).catch(e=>{
+     })
+}
+// 导出人员
+export function exportUserData (data) {
+  const token = cookies.get("token");
+  const tokenType = cookies.get("tokenType");
+  return fetch(
+    `${Setting.apiBaseURL}/main/mdmUser/exportAllUserExcel`,
+      {
+        method: "get",
+        headers: new Headers({
+          Authorization: `${tokenType} ${token}`
+        }),
+       
         responseType: "blob"
       }
     )

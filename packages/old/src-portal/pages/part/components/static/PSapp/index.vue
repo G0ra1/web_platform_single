@@ -1,9 +1,10 @@
 <template>
   <n-card class="portal-panel p-sapp" :bordered="false" title="待办信息" size="small">
-    <p class="app-item" v-for="item in dataList" :key="item.id" @click="()=>handelClick(item)">
+    <p class="app-item" v-for="item, index in dataList" :key="item.id" @click="() => handelClick(item)"
+      :title="item.sysName">
       <img style="height:32px;" src="../../../../../../public/assets/image/123.png" alt="">
-      <span class="bubbles">0</span>
-      <span>{{item.sysName}}</span>
+      <span class="bubbles">{{ countMap[index] }}</span>
+      <span>{{ item.sysName }}</span>
     </p>
     <!-- <n-pagination v-model:page="page" :page-count="pageCount" /> -->
   </n-card>
@@ -60,11 +61,23 @@ export default defineComponent({
       // const token = cookies.get("token");
       // const tokenType = cookies.get("tokenType");
       // window.open(`${row.sysPcBizUrl}&token=${tokenType} ${token}`)
-      window.open(item.sysUrl, 'newwindow');
+      let url = item.sysUrl
+      if (item.isHaveToken) {
+        const token = window.localStorage.getItem('ssologin')
+        if (token) {
+          if (item.sysUrl.indexOf("?") != -1) {
+            url += `&token=${token}`
+          } else {
+            url += `?token=${token}`
+          }
+        }
+      }
+      window.open(url, 'newwindow');
     }
     const page = ref(1)
     const pageCount = ref(1)
     const dataList = ref([])
+    const countMap = ref({})
     const getData = (p) => {
       request({
         url: `portal/portalContentSysjoints/listForShow`,
@@ -78,9 +91,24 @@ export default defineComponent({
         pageCount.value = res.pages
         page.value = res.current
         console.log(dataList.value)
+        dataList.value.forEach((d, i) => {
+          getCount(d.taskCountUrl, i)
+        })
 
       })
     }
+    const getCount = (url, i) => {
+      if (!url) { countMap.value[i] = 0; return }
+      request({
+        url,
+        method: 'get',
+      }).then(res => {
+        countMap.value[i] = res.taskCount
+      }).catch(e => {
+        countMap.value[i] = 0
+      })
+    }
+
     onMounted(() => {
       getData()
     })
@@ -91,7 +119,9 @@ export default defineComponent({
       dataList,
       pageCount,
       handelClick,
-      page
+      page,
+      getCount,
+      countMap
     }
   }
 })
@@ -152,6 +182,9 @@ $vxe-table-row-height-mini: 16px !default;
     margin: 0px;
     cursor: pointer;
     position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
     span.bubbles {
       position: absolute;

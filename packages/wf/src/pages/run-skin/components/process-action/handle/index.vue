@@ -1,5 +1,5 @@
 <template>
-    <n-button type="primary" @click="handleSubmit">办理</n-button>
+    <n-button type="primary" @click="handleSubmit" class="liuchengBtn">办理</n-button>
     <handle-modal ref="HandleModalRef" />
 </template>
 

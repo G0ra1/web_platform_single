@@ -55,7 +55,7 @@
             </template>
             {{ `是否确定删除此${selected.length}条数据` }}
           </n-popconfirm>
-           <n-button
+           <!-- <n-button
             type="info"
             size="small"
             :loading="isTableLoading"
@@ -63,7 +63,7 @@
             style="margin-right: 5px"
             @click="clientTemplate"
             >模板下载</n-button
-          >
+          > -->
         </template>
         <template #header-right>
          

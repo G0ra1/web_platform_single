@@ -58,7 +58,7 @@ export default defineComponent({
     onMounted(() => {
       query({}).then(res => {
         let field_id = res.filter(d => d.isShow == 1).map(d => d.fieldId).join(',')
-        src.value = `http://192.168.0.196:8992/webroot/ReportServer?reportlet=WorkBook5.cpt&op=view&__showtoolbar__=false&clos=${field_id}`
+        src.value = `http://10.188.247.48:30001/webroot/ReportServer?reportlet=WorkBook5.cpt&op=view&__showtoolbar__=false&clos=${field_id}`
       })
     })
 

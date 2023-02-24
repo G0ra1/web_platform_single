@@ -11,11 +11,11 @@
     style="width:500px;"
   >
     <n-spin :show="isLoading">
-      <n-form  :model="model.data" ref="formRef" :rules="rules">
+      <n-form  :model="model.data" style="padding:10px" ref="formRef" :rules="rules">
         <n-grid x-gap="8" :cols="1" >
             <n-grid-item>
                 <n-form-item label="父级节点" path="parentCode">
-                    <n-tree-select  :options="parentList" size="small" 
+                    <n-tree-select  :options="parentList" 
                       :default-value="model.data.parentCode"
                       placeholder="请选择" 
                       v-model:value=" model.data.parentCode" 
@@ -26,12 +26,12 @@
             </n-grid-item>
             <n-grid-item>
                 <n-form-item label="字典名称" path="dictName">
-                    <n-input size="small" placeholder="请输入" v-model:value="model.data.dictName" />
+                    <n-input  placeholder="请输入" v-model:value="model.data.dictName" />
                 </n-form-item>
             </n-grid-item>
             <n-grid-item>
                 <n-form-item label="字典code" path="dictCode">
-                    <n-input size="small" placeholder="请输入" v-model:value="model.data.dictCode" />
+                    <n-input  placeholder="请输入" v-model:value="model.data.dictCode" />
                 </n-form-item>
             </n-grid-item>
              
@@ -122,6 +122,7 @@ export default defineComponent({
             fn( model.data ).then((res)=>{
               if(res){
                 context.emit('update:callback');
+                model.data = {}
                 showModalRef.value = false
               }
 

@@ -22,7 +22,7 @@
         >
             <vxe-column field="paperName" title="试卷名称" >
               <template v-slot="{ row }">
-                    <span style="color:#2080f0;cursor:pointer" @Click="()=>{studyExamPaperAdjDetailShow(row)}">
+                    <span style="color:#2080f0;cursor:pointer" @click="()=>{studyExamPaperAdjDetailShow(row)}">
                       {{row.paperName}}
                     </span>
                 </template>
@@ -107,7 +107,7 @@
         >
           <nw-form-view
             ref="formRef"
-            src="/html/forms/study-paper-form.html"
+            src="/web-study/forms/study-paper-form.html"
           />
           
         </n-drawer-content>

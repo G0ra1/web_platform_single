@@ -14,23 +14,30 @@
         <n-form-item-gi :span="6" label="验收编号" path="code">
           <n-input placeholder="验收编号" v-model:value="dataModel.code" disabled />
         </n-form-item-gi>
-        <n-form-item-gi :span="6" label="验收人" path="applyUserName">
+        <n-form-item-gi :span="6" label="申请单位" path="applyUserOrgName">
+          <n-input placeholder="申请单位" v-model:value="dataModel.applyUserOrgName" disabled />
+        </n-form-item-gi>
+        <n-form-item-gi :span="6" label="申请部门" path="applyUserDeptName">
+          <n-input placeholder="申请部门" v-model:value="dataModel.applyUserDeptName" disabled />
+        </n-form-item-gi>
+        <n-form-item-gi :span="6" label="申请时间" path="applyTime">
+          <n-input placeholder="申请时间" v-model:value="dataModel.applyTime" disabled />
+        </n-form-item-gi>
+        <n-form-item-gi :span="6" label="申请人" path="applyUserName">
           <n-input-group>
-            <n-input placeholder="验收人" v-model:value="dataModel.applyUserName" class="selectedInput" disabled />
+            <n-input placeholder="申请人" v-model:value="dataModel.applyUserName" class="selectedInput" disabled />
           </n-input-group>
         </n-form-item-gi>
-        <n-form-item-gi :span="6" label="验收部门" path="applyUserDeptName">
-          <n-input placeholder="验收部门" v-model:value="dataModel.applyUserDeptName" disabled />
+        <n-form-item-gi :span="6" label="购置申请" path="applyId">
+          <n-input placeholder="购置申请" v-model:value="dataModel.applyCode" disabled />
         </n-form-item-gi>
-        <n-form-item-gi :span="6" label="验收法人" path="applyUserOrgName">
-          <n-input placeholder="验收法人" v-model:value="dataModel.applyUserOrgName" disabled />
+        <n-form-item-gi :span="6" label="验收日期" path="acceptanceDate">
+          <n-input placeholder="验收日期" v-model:value="dataModel.acceptanceDate" disabled />
         </n-form-item-gi>
-        <n-form-item-gi :span="6" label="验收时间" path="applyTime">
-          <n-input placeholder="验收时间" v-model:value="dataModel.applyTime" disabled />
-        </n-form-item-gi>
-        <n-form-item-gi :span="6" label="采购登记" path="registerId">
-          <purchaseRegistrationPick v-model:value="dataModel.registerId" v-model:code="dataModel.registerCode">
-          </purchaseRegistrationPick>
+        <n-form-item-gi :span="6" label="验收人" path="acceptanceUserName">
+          <n-input-group>
+            <n-input placeholder="验收人" v-model:value="dataModel.acceptanceUserName" class="selectedInput" disabled />
+          </n-input-group>
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="验收说明" v-if="brules['explanation'] !== 'hide'" path="explanation">
           <n-input :disabled="brules['explanation'] === 'readonly'" type="textarea" placeholder="请输入验收说明"
@@ -52,90 +59,9 @@
                   addAsset();
                 }
               " circle type="info">
-              <nw-icon name="icon-add-bold" :size="15" />
+              <nw-icon name="icon-n-y-add" :size="15" />
             </n-button>
             <acceptanceDetails ref="acceptanceDetailsRef"></acceptanceDetails>
-            <!-- <vxe-table ref="detailTable" show-overflow border :data="assetsList" :column-config="{ resizable: true }"
-              :row-config="{ keyField: 'rowId' }" :edit-config="{
-                trigger: 'click',
-                mode: 'row',
-                enabled: true,
-                showIcon: true,
-              }">
-              <vxe-column type="seq" title="序号" width="60"></vxe-column>
-              <vxe-column field="itemName" title="物项名称" width="135">
-              </vxe-column>
-              <vxe-column field="itemCode" title="物项编码" width="135">
-              </vxe-column>
-              <vxe-column field="itemCode" title="物项属性" width="135">
-              </vxe-column>
-              <vxe-column field="registerNumber" title="采购数量" width="135">
-              </vxe-column>
-              <vxe-column field="unitName" title="计量单位" width="135">
-              </vxe-column>
-              <vxe-column field="acceptanceNumber" title="验收数量" width="135" :edit-render="{}">
-                <template #edit="{ row, column }">
-                  <vxe-input v-model="row.acceptanceNumber" type="text">
-                  </vxe-input>
-                </template>
-              </vxe-column>
-              <vxe-column field="status" title="状态" width="135" :edit-render="{}">
-                <template #edit="{ row, column }">
-                  <vxe-input v-model="row.status" type="text">
-                  </vxe-input>
-                </template>
-              </vxe-column>
-              <vxe-column field="exteriorCheck" title="物资外观" width="135" :edit-render="{}">
-                <template #edit="{ row, column }">
-                  <vxe-input v-model="row.exteriorCheck" type="text">
-                  </vxe-input>
-                </template>
-              </vxe-column>
-              <vxe-column field="qualityAcceptance" title="质量" width="135" :edit-render="{}">
-                <template #edit="{ row, column }">
-                  <vxe-input v-model="row.qualityAcceptance" type="text">
-                  </vxe-input>
-                </template>
-              </vxe-column>
-              <vxe-column field="document" title="资料" width="135" :edit-render="{}">
-                <template #edit="{ row, column }">
-                  <vxe-input v-model="row.document" type="text">
-                  </vxe-input>
-                </template>
-              </vxe-column>
-              <vxe-column field="acceptanceAmount" title="验收单价" width="135">
-              </vxe-column>
-              <vxe-column field="acceptanceTaxRate" title="验收税率" width="135">
-              </vxe-column>
-              <vxe-column field="acceptanceSumAmount" width="135" title="总价">
-              </vxe-column>
-              <vxe-column field="explanation" width="135" title="备注">
-              </vxe-column>
-              <vxe-column title="操作" fixed="right" show-overflow width="135">
-                <template #default="{ row }">
-                  <span style="
-                      cursor: pointer;
-                      color: #6b84fc;
-                      margin-right: 12px;
-                      font-size: 12px;
-                    " @click="
-                      () => {
-                        assetsAcceptance(row);
-                      }
-                    ">验收</span>
-                  <span style="
-                      cursor: pointer;
-                      color: #e62525;
-                      margin-right: 15px;
-                      font-size: 12px;
-                    " @click="
-                      () => {
-                        delIemRow(row);
-                      }
-                    ">删除</span>
-                </template>
-              </vxe-column>
-            </vxe-table> -->
           </div>
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="" path="">
@@ -153,7 +79,7 @@
   </acceptancePick>
 </template>
 <script>
-import { defineComponent, ref, onMounted, watch } from "vue";
+import { defineComponent, ref, onMounted, watch, nextTick } from "vue";
 import purchaseRegistrationPick from "../../components/purchaseRegistrationPick/index.vue";
 import {
   useMessage,
@@ -203,6 +129,8 @@ import employeePick from "../../components/employeePick/index.vue";
 import acceptancePick from "../../components/acceptancePick/index.vue";
 import fileInfo from "../../components/fileInfo/index.vue";
 import acceptanceDetails from "./acceptanceDetails.vue";
+import { Utils } from '@platform/main'
+const { reduceData, enlargeData } = Utils
 
 import { NwIcon } from '@platform/main'
 
@@ -258,20 +186,35 @@ export default defineComponent({
     watch(
       () => dataModel.value.registerId,
       (d, od) => {
-        if(od) acceptanceDetailsRef.value.setTableValue()
+        if (od) acceptanceDetailsRef.value.setTableValue()
+      }
+    );
+    watch(
+      () => acceptanceDetailsRef.value,
+      (d, od) => {
+        nextTick(() => {
+          // window.DM_SET_VALUE(dataModel.value)
+        })
       }
     );
     const tabsChange = (v) => {
       activeItemType.value =
         dataModel.value.itemType[dataModel.value.itemTypeName.indexOf(v)];
-      console.log(dataModel.value.itemType);
-      console.log(dataModel.value.itemTypeName);
     };
     onMounted(() => {
       dictItemLists("ASSETS_TAX_RATE").then((res) => {
         console.log(res);
         taxRateList.value = res;
       });
+      let v = dataModel.value
+      if (v.detailList && v.detailList.length > 0 && acceptanceDetailsRef.value) {
+        v.detailList = enlargeData(v.detailList)
+        acceptanceDetailsRef.value.setTableValue(v.detailList.map(d => {
+          d.productionDate = d.productionDate ? d.productionDate.slice(0, 10) : null
+          d.factoryDate = d.factoryDate ? d.factoryDate.slice(0, 10) : null
+          return d
+        }))
+      }
     });
     return {
       dataModel,
@@ -309,7 +252,8 @@ export default defineComponent({
   box-sizing: border-box;
   position: relative;
   background: #f8f8f8;
-  min-height: 100vh;
+  height: 640px;
+  overflow: auto;
 
   .n-anchor {
     position: absolute;

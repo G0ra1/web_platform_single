@@ -65,7 +65,8 @@ const getFunAdd = (data: any) => {
         isAsync: true,
         // 这里加入初始化
         code: `// ----
-        Utils.SetFormValue(Utils.GetParams() || {})    
+        Utils.SetFormValue(Utils.GetParams() || {}) 
+        await Utils.RunScript()
     return {}`
     }
     const saveScript = getSaveScript(data._requestUrl, 'add')
@@ -105,6 +106,7 @@ const getFunEdit = (data: any) => {
     .catch(error => false)
     Utils.SetSpin(false)
     Utils.SetFormValue(r)
+    await Utils.RunScript()
     Utils.DispatchEvent()
     return r`
     }

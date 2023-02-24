@@ -7,7 +7,7 @@
  */
 
 import { ref } from 'vue';
-import { FormInst, SelectOption } from 'naive-ui';
+import { FormInst } from 'naive-ui';
 import TableEntity from '../data/model/TableEntity';
 import { getDs, saveEntity, updateEntity } from '../api/index';
 import TableEntityRule from '../data/model/TableEntityRule';
@@ -49,18 +49,12 @@ const rules = new TableEntityRule();
  */
 const tableNameOptions = ref();
 
-/**
- * 表与数据源的map结构
- */
-//let tableNameOptionsMap = new Map<String, Array<NsOption.OptionSelect>>();
+let tableMap = new Map<String, string>();
 
 /**
  * 控制是否显示
  */
 const show = (tableEntity: TableEntity) => {
-    /* console.log("show====> ", tableEntity);
-    console.log("formValueRef.value====> ", formValueRef.value); */
-    //console.log("formValueRef====> ", formValueRef);
     //因为提前加载了数据源，已经设置了表单的默认数据源值，这里tableEntity会直接负盖，所以先解构一下，再重新赋值；
     const { dbSource, dbSourceId, appId, appCode, appName } = { ...formValueRef.value }
     formValueRef.value = tableEntity;
@@ -70,8 +64,6 @@ const show = (tableEntity: TableEntity) => {
     formValueRef.value.appCode = appCode;
     formValueRef.value.appName = appName;
     showModalRef.value = true;
-    //异步调一下，下一步即将要打开的数据源的接口
-    //initDs();
 }
 
 /**
@@ -85,90 +77,33 @@ const switchCreateTypeHandle = (value: number) => {
 }
 
 /**
- * 修改数据源后，切换tableOptions
- * @param value 
- * @param option 
- */
-/* const handleUpdateDs = (value: string, option: SelectOption) => {
-    console.log('value: ' + JSON.stringify(value))
-    console.log('option: ' + JSON.stringify(option))
-    //更改表单的数据源及id
-    formValueRef.value.dbSource = option.label as string;
-    formValueRef.value.dbSourceId = value;
-    //把当前表名对应的mention的options也做下变动
-    tableNameOptions.value = tableNameOptionsMap.get(formValueRef.value.dbSource);
-} */
-
-/**
  * 提示用户表
  * @param e 
  * @returns 
  */
-const tableNameChangeHandle = (e: FocusEvent) => {
-    console.log('e: ' + e);
-    let tabelName = formValueRef.value.tableName;
-    if (tabelName.startsWith("#")) {
-        formValueRef.value.tableName = tabelName = tabelName.slice(1);
-        if (tabelName.includes("#")) {
-            formValueRef.value.tableName = '';
-            return;
+const tableNameChangeHandle = (value: string, context: { e: MouseEvent | KeyboardEvent }) => {
+    if (tableMap.has(formValueRef.value.tableName)) {
+        formValueRef.value.tableNameCh = tableMap.get(formValueRef.value.tableName) as string;
+        let values = formValueRef.value.tableName.split("_");
+        if (values.length >= 3) {
+            formValueRef.value.tablePrefix = values[0] + "_" + values[1] + "_";
+            formValueRef.value.packageName = "com.netwisd." + values[1];
+            formValueRef.value.moduleName = values[2]
         }
     }
-
-    tabelName = formValueRef.value.tableName;
-    if (tabelName.indexOf("@=>") !== -1) {
-        formValueRef.value.tableName = tabelName.slice(0, tabelName.indexOf("@=>"));
-        formValueRef.value.tableNameCh = tabelName.slice(tabelName.indexOf("@=>") + 3).trim();
-        tableOtherInfoHandle(formValueRef.value.tableName);
-    }
-}
-
-/**
- * 处理表中包名，前缀、模块等信息
- * @param tableName 
- */
-const tableOtherInfoHandle = (tableName: string) => {
-    let values = tableName.split("_");
-    if (values.length >= 3) {
-        formValueRef.value.tablePrefix = values[0] + "_" + values[1] + "_";
-        formValueRef.value.packageName = "com.netwisd." + values[1];
-        formValueRef.value.moduleName = values[2]
-    }
-
 }
 
 /**
  * 获取数据源以及对应的表
  */
 const initDs = (dsId: String) => getDs(dsId)
-    /* .then((data) => {
-        //console.log("data--->", data)
-        if (data) {
-            generalOptions.value = data.map(
-                (ds) => new NsOption.OptionSelect(ds.poolName, ds.id)
-            )
-            //遍历集合，处理tableNameOptionsMap和tableNameOptions
-            for (let item of data) {
-                let value = item.tableEntityList.map(
-                    (tableEntity: TableEntity) => new NsOption.OptionSelect(tableEntity.tableName + "@=>" + tableEntity.tableNameCh, tableEntity.tableName + "@=>" + tableEntity.tableNameCh)
-                );
-                //默认数据源（有且只有一个）
-                if (item.isDefault === 1) {
-                    tableNameOptions.value = value
-                    //把默认数据源设置为源的下拉的默认值
-                    formValueRef.value.dbSource = item.poolName;
-                    formValueRef.value.dbSourceId = item.id;
-                    console.log("默认数据源：", formValueRef.value);
-                }
-                tableNameOptionsMap.set(item.poolName, value);
-            }
-        }
-    }) */
     .then((data) => {
-        console.log("data--->", data)
         if (data) {
             let value = data.tableEntityList.map(
-                (tableEntity: TableEntity) => new NsOption.OptionSelect(tableEntity.tableName + "@=>" + tableEntity.tableNameCh, tableEntity.tableName + "@=>" + tableEntity.tableNameCh)
+                (tableEntity: TableEntity) => {
+                    tableMap.set(tableEntity.tableName, tableEntity.tableNameCh);
+                    return new NsOption.OptionAutoComplete(tableEntity.tableName, tableEntity.tableNameCh)
+                }
             );
             tableNameOptions.value = value
             //把默认数据源设置为源的下拉的默认值

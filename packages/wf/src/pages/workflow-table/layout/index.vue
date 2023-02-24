@@ -1,16 +1,12 @@
 <template>
   <n-layout has-sider class="nw-layout-full">
-    <n-layout-sider
-      bordered
-      width="225"
-      content-style="padding: 5px;"
-      style="margin-right: -1px"
-    >
+    <n-layout-sider bordered width="225" content-style="padding: 5px;" style="margin-right: -1px">
       <h3 style="margin: 0; padding-left: 10px;">任务中心</h3>
       <n-menu :options="menuOptions" @update:value="handleUpdateValue" default-value="todo" />
     </n-layout-sider>
     <n-layout class="nw-layout-full">
-      <router-view />
+      <router-view v-if="!isHttp" />
+      <iframe v-else ref="iframeRef" :src="route.path" style="border: 0;width: 100%;height: 100%;overflow: hidden" />
     </n-layout>
   </n-layout>
   <n-drawer v-model:show="drawerActive" width="100%" content-style="overflow:hidden">
@@ -70,6 +66,7 @@ export default defineComponent({
     const route = useRoute()
     const message = useMessage();
     const pageTitle = ref("我的待办")
+    const isHttp = ref(false)
     const menuOptions = [
       {
         label: () => h(RouterLink, {
@@ -79,6 +76,15 @@ export default defineComponent({
         }, { default: () => "我的待办" }),
         key: "todo",
         name: "我的待办"
+      },
+      {
+        label: () => h(RouterLink, {
+          to: {
+            path: "/web-main/pages/my-news.html",
+          }
+        }, { default: () => "我的消息" }),
+        key: "my-news",
+        name: "我的消息",
       },
       {
         label: () => h(RouterLink, {
@@ -142,7 +148,7 @@ export default defineComponent({
           }
         }, { default: () => "收到的知会" }),
         key: "receive-notify",
-        name:"收到的知会"
+        name: "收到的知会"
       },
       {
         label: () => h(RouterLink, {
@@ -151,7 +157,17 @@ export default defineComponent({
           }
         }, { default: () => "发出的知会" }),
         key: "send-notify",
-        name:"发出的知会"
+        name: "发出的知会"
+      }
+      ,
+      {
+        label: () => h(RouterLink, {
+          to: {
+            path: "/web-main/pages/all-news.html",
+          }
+        }, { default: () => "所有消息" }),
+        key: "all-news",
+        name: "所有消息",
       }
       // {
       //   label: () => h(RouterLink, {
@@ -164,16 +180,18 @@ export default defineComponent({
       // },
     ]
     watch(() => route.path, (to) => {
+      isHttp.value = ~to.indexOf('html')
       // console.log('监听到变化')
       // console.log(to)
       // console.log(to.split('/')[1])
       // console.log(menuOptions.filter(d=>d.key == to.split('/')[1])[0].name)
-      pageTitle.value = menuOptions.filter(d => d.key == to.split('/')[1])[0].name
+      // pageTitle.value = menuOptions.filter(d => d.key == to.split('/')[1])[0].name
     })
     return {
       drawerActive,
       iframeUrl,
       route,
+      isHttp,
       menuOptions,
       pageTitle,
       handleUpdateValue(key, item) {

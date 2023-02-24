@@ -4,7 +4,7 @@ import { getDetailByAssetsList } from "./api/index.js";
 import { dataModel } from "./store.js";
 
 import { Utils } from '@platform/main'
-const { reduceData,enlargeData } = Utils
+const { reduceData, enlargeData } = Utils
 export const detailTable = ref(null);
 export const assetsList = ref([]);
 export const assetsPickRef = ref(null);
@@ -63,14 +63,17 @@ export const assetsAcceptance = (row) => {
 };
 
 export const addAsset = () => {
+  console.log(dataModel.value, 'dataModel.valuedataModel.value')
   if (!dataModel.value.registerId) {
-    message.value.info('请选择采购登记')
+    // message.value.info('请选择采购登记')
+    message.value.info('没有购置申请单信息！')
     return
   }
   assetsPickRef.value.sonFn(reduceData(assetsList.value));
 };
 
 export const callbackSetItem = (d) => {
+  debugger
   d.forEach(e => {
     e.acceptanceAmount = 0
     e.acceptanceTaxRate = 0
@@ -79,6 +82,7 @@ export const callbackSetItem = (d) => {
     assetsList.value = enlargeData(res)
     console.log(res, 'enlargeData(res)')
     acceptanceDetailsRef.value.setTableValue(assetsList.value)
+    console.log(assetsList.value, 'assetsList.value')
     calculationAmount()
   })
 

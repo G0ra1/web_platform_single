@@ -32,7 +32,7 @@
                             ].filter(d=>d.value ==item.questionCode)[0].label}}
                     </span>
                 </template>
-                <n-radio-group  name="radiogroup" @update:value="(value)=>{formData.questionList[index].userAnswer = value}" v-if="item.questionCode == 0">
+                <n-radio-group  name="radiogroup" v-model:value="formData.questionList[index].userAnswer" @update:value="(value)=>{formData.questionList[index].userAnswer = value}" v-if="item.questionCode == 0">
                     <n-grid  :y-gap="5" :cols="1">
                         <n-gi v-for="(i,_index) in item.answers" :key="_index">
                             <n-radio  :value="i.answer" >
@@ -60,7 +60,7 @@
                         </n-input-group>
                     </n-gi>
                 </n-grid>
-                <n-radio-group  name="radiogroup" @update:value="(value)=>{formData.questionList[index].userAnswer = value}" v-if="item.questionCode == 3">
+                <n-radio-group  name="radiogroup" v-model:value="formData.questionList[index].userAnswer" @update:value="(value)=>{formData.questionList[index].userAnswer = value}" v-if="item.questionCode == 3">
                     <n-grid  :y-gap="18" :cols="1">
                         <n-gi >
                         <n-radio value="对">对</n-radio>

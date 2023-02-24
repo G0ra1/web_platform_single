@@ -6,9 +6,7 @@
     label-placement="left"
     :label-width="80"
     size="small"
-    :style="{
-      padding:'10px'
-    }"
+    class="LForm"
   >
     <n-grid :cols="2" :x-gap="24">
         <n-grid-item>
@@ -474,7 +472,6 @@ export default defineComponent({
       removeEvent,
       removeEvent1,
       chooseQuestionBank,
-      questionNumber,
       sum,
       message,
       paperTypes:reactive([

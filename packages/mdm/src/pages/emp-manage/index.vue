@@ -555,7 +555,8 @@
           { field: 'parentDeptName', title: '所属部门', showHeaderOverflow: true, width: 200 },
           { field: 'idCard', title: '证件号', showOverflow: true, width: 200 },
           { field: 'postName', title: '主岗', showOverflow: true, width: 200 },
-          
+          { field: 'phoneNum', title: '手机号', showOverflow: true, width: 200 },
+          { field: 'education', title: '学历', showOverflow: true, width: 200 },
           { field: 'sex', title: '性别', showOverflow: true, width: 80,
             slots: {
               default: ({row}) => {
@@ -568,12 +569,12 @@
             }
           
           },
-           { field: "status", title: "启用状态",showHeaderOverflow: true, showOverflow: true,
+           { field: "status", title: "在职离职",showHeaderOverflow: true, showOverflow: true,
             slots: {
                 default: ({row}) => {
                   return [
                     <span>
-                      {row.status == 1 ? '启用' : '禁用'}
+                      {row.status == 1 ? '在职' : '离职'}
                     </span>,
                   ];
                 },

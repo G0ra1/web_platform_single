@@ -2,7 +2,7 @@
   <n-layout class="nw-layout-full" >
     <n-layout-header class="nw-layout-header" >
       <n-space :size="5" style="padding: 0 5px">
-        <NwFunctionPredefine code="sync-workcontractcode"/>
+        <NwFunctionPredefine code="work-hour-standard_add"/>
       </n-space>
       <n-space :size="5" style="padding: 0 5px">
         <n-input-group>
@@ -58,5 +58,4 @@
   nextTick().then(() => {
     reset({})
   })
-
 </script>

@@ -39,7 +39,7 @@ import {
     useDialog
 } from "naive-ui";
 
-import { NwIcon, RequestPaging, VxeHelper } from '@platform/main'
+import { NwIcon, RequestPaging, VxeHelper, Db } from '@platform/main'
 
 import { Ws } from './store.ts'
 
@@ -62,7 +62,6 @@ export default defineComponent({
         NDrawerContent
     },
     setup (props) {
-
         const {
             state
         } = new Ws(useDialog())

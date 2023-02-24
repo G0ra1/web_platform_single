@@ -1,6 +1,6 @@
 <template>
-  <n-select :disabled="props.disabled" v-if="type == 'select'" :value="props.value" :options="options" v-on="onUpdate" :size="attrs.size"
-    :multiple="props.multiple" />
+  <n-select :disabled="props.disabled" v-if="type == 'select'" :value="props.value" :options="options" v-on="onUpdate"
+    :size="attrs.size" :multiple="props.multiple" v-bind="props.selectOptions" />
   <n-checkbox-group :disabled="props.disabled" :value="props.value" v-on="onUpdate" v-else-if="type == 'checkbox'">
     <n-space item-style="display: flex;">
       <n-checkbox v-for="i in options" :key="i.value" :value="i.value" :label="i.label" :size="attrs.size" />
@@ -71,7 +71,19 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: "请选择",
-    }
+    },
+    selectOptions: {
+      type: Object,
+      default: () => ({})
+    },
+    selectFirst: {
+      type: Boolean,
+      default: false,
+    },
+    // checkboxOptions: {
+    //   type: Object,
+    //   default: () => ({})
+    // }
   },
   components: {
     NSelect,
@@ -106,6 +118,8 @@ export default defineComponent({
           //   .map((d) => d.label);
           context.emit("update:value", v, vo);
           context.emit("update:label", vo1);
+          context.emit("update:valueText", v.toString());
+          context.emit("update:labelText", vo1.toString());
         } else {
           const option = options.value.find((d) => d.value === v) || {};
 
@@ -120,9 +134,9 @@ export default defineComponent({
         }
       },
     };
-    const query = () => {
+    const query = async () => {
       if (props.dictCode) {
-        request({
+        await request({
           url: `/main/dictItem/list?dictCode=${props.dictCode}`,
           method: 'get',
         }).then((res) => {
@@ -135,7 +149,7 @@ export default defineComponent({
       }
       // 默认使用XHR
       if (props.request.XHR) {
-        props.request.XHR(props.request.params).then((res) => {
+        await props.request.XHR(props.request.params).then((res) => {
           options.value = [
             ...props.staticItems,
             ...props.response.dataMethod(res),
@@ -143,7 +157,7 @@ export default defineComponent({
         });
       } else if (props.request.url) {
         const method = props.request.method || "get";
-        request({
+        await request({
           url: props.request.url,
           method,
           [`${method === "get" ? "params" : "data"}`]: props.request.params,
@@ -155,7 +169,18 @@ export default defineComponent({
         });
       }
     };
-    onMounted(() => { query() });
+    onMounted(async () => {
+      await query()
+      if (props.selectFirst) {
+        const option = options.value[0];
+        context.emit("update:value", option.value, option);
+        context.emit("update:label", option.label, option);
+        // 这里进行反射
+        props.reflect.forEach((d) => {
+          context.emit(`update:${d}`, option[d], option);
+        });
+      }
+    });
     // watch(props.label, (d) => {
     //   console.log(props.label, 'props.label')
     // })
@@ -171,4 +196,5 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
+
 </style>

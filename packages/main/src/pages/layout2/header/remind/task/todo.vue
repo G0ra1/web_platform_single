@@ -41,7 +41,7 @@ import {
 
 import { NwIcon, RequestPaging, VxeHelper } from '@platform/main'
 
-import { TaskData } from '../store'
+import { TaskData, WfRunModalRef } from '../store'
 
 export default defineComponent({
     props: {
@@ -74,11 +74,7 @@ export default defineComponent({
         return {
             props,
             handle () {
-                window.open(
-                    props.url,
-                    '_blank',
-                    'top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no'
-                )
+                WfRunModalRef.value.show(props.url)
             }
         }
     }

@@ -14,6 +14,7 @@ export const AppItems = ref<Array<AppInst>>([])
 // 当前活动
 export const ActiveApp = ref<string>('')
 
+export const IsShowSystem = ref<boolean>(false)
 // appinfo
 // 注册哈希监听------------------
 export const registerListener = () => {
@@ -36,6 +37,8 @@ export const activeTick = () => {
         ActiveApp.value = p1 // appCode
     } else if (layoutType === 'portalframe') {
         ActiveApp.value = 'portalframe'
+    } else if (layoutType === 'iframe-inner') {
+        ActiveApp.value = p1
     }
 }
 
@@ -44,7 +47,9 @@ export const init = async function () {
     await Db.get('bizMenuInfo').then((apps: Array<AppInst>) => {
         AppItems.value = apps.filter(d => d.appType === 'service')
     })
-
+    await Db.get('userInfo').then((user: any) => {
+        IsShowSystem.value = user.userName === 'admin'
+    })
 }
 
 // 跳转赋值菜单
@@ -63,4 +68,7 @@ export const setMenuHash = (app: any) => {
     // window.location.hash = `#app/${AppCode.value}/${code}`
 }
 
-
+// 跳转内嵌iframe
+export const setMenuHashIframeInner = (app: any) => {
+    window.location.hash = `#iframe-inner/${app.appCode}/${window.btoa(window.encodeURI(`${app.appName}$$${app.url}`))}`
+}

@@ -5,10 +5,6 @@ export default {
     category: 'container',
     icon: 'icon-n-y-form',
     label: '表单',
-    internalOptions: {
-        isFormPage: true,
-        isTabs: true,
-    },
     slots: {
         default: [
             {
@@ -17,8 +13,6 @@ export default {
                 category: 'container',
                 icon: 'icon-n-y-tabs',
                 label: '页签',
-                internalOptions: {
-                },
                 slots: {
                     default: [
                         {
@@ -28,312 +22,340 @@ export default {
                             icon: 'icon-n-y-tabs',
                             label: '页签面板',
                             internal: true,
-                            internalOptions: {
-                            },
                             slots: {
                                 default: [
                                     {
-                                        key: 'n-grid_1',
-                                        type: 'n-grid',
+                                        key: 'n-scrollbar_1',
+                                        type: 'n-scrollbar',
                                         category: 'container',
-                                        icon: 'icon-n-y-grid',
-                                        label: '栅格',
+                                        icon: 'icon-n-y-scrollbar',
+                                        label: '滚动',
                                         internal: true,
                                         slots: {
                                             default: [
                                                 {
-                                                    key: 'n-gi_1',
-                                                    type: 'n-gi',
+                                                    key: 'n-grid_1',
+                                                    type: 'n-grid',
                                                     category: 'container',
                                                     icon: 'icon-n-y-grid',
-                                                    label: '栅格列',
+                                                    label: '栅格',
                                                     internal: true,
                                                     slots: {
                                                         default: [
                                                             {
-                                                                key: 'n-form-item_1',
-                                                                type: 'n-form-item',
+                                                                key: 'n-gi_1',
+                                                                type: 'n-gi',
                                                                 category: 'container',
-                                                                icon: 'icon-n-y-form',
-                                                                label: '表单字段',
+                                                                icon: 'icon-n-y-grid',
+                                                                label: '栅格列',
                                                                 internal: true,
+                                                                internalOptions: {
+                                                                    realTagName: 'n-input',
+                                                                    realLabel: '输入框'
+                                                                },
                                                                 slots: {
                                                                     default: [
                                                                         {
-                                                                            key: 'n-input_1',
-                                                                            type: 'n-input',
-                                                                            category: 'field',
-                                                                            icon: 'icon-n-y-input',
-                                                                            label: '输入框',
+                                                                            key: 'n-form-item_1x',
+                                                                            type: 'n-form-item',
+                                                                            category: 'container',
+                                                                            icon: 'icon-n-y-form',
+                                                                            label: '表单字段',
+                                                                            internal: true,
+                                                                            slots: {
+                                                                                default: [
+                                                                                    {
+                                                                                        key: 'n-input_1x',
+                                                                                        type: 'n-input',
+                                                                                        category: 'field',
+                                                                                        icon: 'icon-n-y-input',
+                                                                                        label: '输入框',
+                                                                                        options: {
+                                                                                            disabled: {
+                                                                                            type: 'boolean',
+                                                                                            value: false
+                                                                                            },
+                                                                                            clearable: {
+                                                                                            type: 'boolean',
+                                                                                            value: false
+                                                                                            },
+                                                                                            type: {
+                                                                                            type: 'string',
+                                                                                            value: 'text'
+                                                                                            },
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            },
                                                                             options: {
-                                                                                disabled: {
-                                                                                type: 'boolean',
-                                                                                value: false
+                                                                                label: {
+                                                                                    type: 'string',
+                                                                                    value: '姓名'
                                                                                 },
-                                                                                clearable: {
-                                                                                type: 'boolean',
-                                                                                value: false
-                                                                                },
-                                                                                type: {
-                                                                                type: 'string',
-                                                                                value: 'text'
+                                                                                path: {
+                                                                                    type: 'string',
+                                                                                    value: 'name'
                                                                                 },
                                                                             }
                                                                         }
                                                                     ]
                                                                 },
                                                                 options: {
-                                                                    label: {
-                                                                        type: 'string',
-                                                                        value: '姓名'
-                                                                    },
-                                                                    path: {
-                                                                        type: 'string',
-                                                                        value: 'name'
-                                                                    },
+                                                                    span: {
+                                                                        type: 'number',
+                                                                        value: 12
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                key: 'n-gi_2',
+                                                                type: 'n-gi',
+                                                                category: 'container',
+                                                                icon: 'icon-n-y-grid',
+                                                                label: '栅格列',
+                                                                internal: true,
+                                                                internalOptions: {
+                                                                    realTagName: 'n-input',
+                                                                    realLabel: '输入框'
+                                                                },
+                                                                slots: {
+                                                                    default: [
+                                                                        {
+                                                                            key: 'n-form-item_1y',
+                                                                            type: 'n-form-item',
+                                                                            category: 'container',
+                                                                            icon: 'icon-n-y-form',
+                                                                            label: '表单字段',
+                                                                            internal: true,
+                                                                            slots: {
+                                                                                default: [
+                                                                                    {
+                                                                                        key: 'n-input_1y',
+                                                                                        type: 'n-input',
+                                                                                        category: 'field',
+                                                                                        icon: 'icon-n-y-input',
+                                                                                        label: '输入框',
+                                                                                        options: {
+                                                                                            disabled: {
+                                                                                            type: 'boolean',
+                                                                                            value: false
+                                                                                            },
+                                                                                            clearable: {
+                                                                                            type: 'boolean',
+                                                                                            value: false
+                                                                                            },
+                                                                                            type: {
+                                                                                            type: 'string',
+                                                                                            value: 'text'
+                                                                                            },
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            },
+                                                                            options: {
+                                                                                label: {
+                                                                                    type: 'string',
+                                                                                    value: '年龄'
+                                                                                },
+                                                                                path: {
+                                                                                    type: 'string',
+                                                                                    value: 'age'
+                                                                                },
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                options: {
+                                                                    span: {
+                                                                        type: 'number',
+                                                                        value: 12
+                                                                    }
                                                                 }
                                                             }
                                                         ]
                                                     },
                                                     options: {
-                                                        span: {
+                                                        cols: {
                                                             type: 'number',
-                                                            value: 12
+                                                            value: 24
+                                                        },
+                                                        layoutShiftDisabled: {
+                                                            type: 'boolean',
+                                                            value: false
+                                                        },
+                                                        xGap: {
+                                                            type: 'number',
+                                                            value: 10
+                                                        },
+                                                        yGap: {
+                                                            type: 'number',
+                                                            value: 0
                                                         }
                                                     }
                                                 },
                                                 {
-                                                    key: 'n-gi_1',
-                                                    type: 'n-gi',
+                                                    key: 'n-grid_2',
+                                                    type: 'n-grid',
                                                     category: 'container',
                                                     icon: 'icon-n-y-grid',
-                                                    label: '栅格列',
+                                                    label: '栅格',
                                                     internal: true,
                                                     slots: {
                                                         default: [
                                                             {
-                                                                key: 'n-form-item_1',
-                                                                type: 'n-form-item',
+                                                                key: 'n-gi_3',
+                                                                type: 'n-gi',
                                                                 category: 'container',
-                                                                icon: 'icon-n-y-form',
-                                                                label: '表单字段',
+                                                                icon: 'icon-n-y-grid',
+                                                                label: '栅格列',
                                                                 internal: true,
+                                                                internalOptions: {
+                                                                    realTagName: 'n-input',
+                                                                    realLabel: '输入框'
+                                                                },
                                                                 slots: {
                                                                     default: [
                                                                         {
-                                                                            key: 'n-input_1',
-                                                                            type: 'n-input',
-                                                                            category: 'field',
-                                                                            icon: 'icon-n-y-input',
-                                                                            label: '输入框',
+                                                                            key: 'n-form-item_1z',
+                                                                            type: 'n-form-item',
+                                                                            category: 'container',
+                                                                            icon: 'icon-n-y-form',
+                                                                            label: '表单字段',
+                                                                            internal: true,
+                                                                            slots: {
+                                                                                default: [
+                                                                                    {
+                                                                                        key: 'n-input_1z',
+                                                                                        type: 'n-input',
+                                                                                        category: 'field',
+                                                                                        icon: 'icon-n-y-input',
+                                                                                        label: '输入框',
+                                                                                        options: {
+                                                                                            disabled: {
+                                                                                            type: 'boolean',
+                                                                                            value: false
+                                                                                            },
+                                                                                            clearable: {
+                                                                                            type: 'boolean',
+                                                                                            value: false
+                                                                                            },
+                                                                                            type: {
+                                                                                            type: 'string',
+                                                                                            value: 'text'
+                                                                                            },
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            },
                                                                             options: {
-                                                                                disabled: {
-                                                                                type: 'boolean',
-                                                                                value: false
+                                                                                label: {
+                                                                                    type: 'string',
+                                                                                    value: '字段名1'
                                                                                 },
-                                                                                clearable: {
-                                                                                type: 'boolean',
-                                                                                value: false
-                                                                                },
-                                                                                type: {
-                                                                                type: 'string',
-                                                                                value: 'text'
+                                                                                path: {
+                                                                                    type: 'string',
+                                                                                    value: 'field1'
                                                                                 },
                                                                             }
                                                                         }
                                                                     ]
                                                                 },
                                                                 options: {
-                                                                    label: {
-                                                                        type: 'string',
-                                                                        value: '年龄'
-                                                                    },
-                                                                    path: {
-                                                                        type: 'string',
-                                                                        value: 'age'
-                                                                    },
+                                                                    span: {
+                                                                        type: 'number',
+                                                                        value: 12
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                key: 'n-gi_4',
+                                                                type: 'n-gi',
+                                                                category: 'container',
+                                                                icon: 'icon-n-y-grid',
+                                                                label: '栅格列',
+                                                                internal: true,
+                                                                internalOptions: {
+                                                                    realTagName: 'n-input',
+                                                                    realLabel: '输入框'
+                                                                },
+                                                                slots: {
+                                                                    default: [
+                                                                        {
+                                                                            key: 'n-form-item_1n',
+                                                                            type: 'n-form-item',
+                                                                            category: 'container',
+                                                                            icon: 'icon-n-y-form',
+                                                                            label: '表单字段',
+                                                                            internal: true,
+                                                                            slots: {
+                                                                                default: [
+                                                                                    {
+                                                                                        key: 'n-input_1n',
+                                                                                        type: 'n-input',
+                                                                                        category: 'field',
+                                                                                        icon: 'icon-n-y-input',
+                                                                                        label: '输入框',
+                                                                                        options: {
+                                                                                            disabled: {
+                                                                                            type: 'boolean',
+                                                                                            value: false
+                                                                                            },
+                                                                                            clearable: {
+                                                                                            type: 'boolean',
+                                                                                            value: false
+                                                                                            },
+                                                                                            type: {
+                                                                                            type: 'string',
+                                                                                            value: 'text'
+                                                                                            },
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            },
+                                                                            options: {
+                                                                                label: {
+                                                                                    type: 'string',
+                                                                                    value: '字段名1'
+                                                                                },
+                                                                                path: {
+                                                                                    type: 'string',
+                                                                                    value: 'field1'
+                                                                                },
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                options: {
+                                                                    span: {
+                                                                        type: 'number',
+                                                                        value: 12
+                                                                    }
                                                                 }
                                                             }
                                                         ]
                                                     },
                                                     options: {
-                                                        span: {
+                                                        cols: {
                                                             type: 'number',
-                                                            value: 12
+                                                            value: 24
+                                                        },
+                                                        layoutShiftDisabled: {
+                                                            type: 'boolean',
+                                                            value: false
+                                                        },
+                                                        xGap: {
+                                                            type: 'number',
+                                                            value: 10
+                                                        },
+                                                        yGap: {
+                                                            type: 'number',
+                                                            value: 0
                                                         }
                                                     }
                                                 }
                                             ]
                                         },
                                         options: {
-                                            cols: {
-                                                type: 'number',
-                                                value: 24
-                                            },
-                                            layoutShiftDisabled: {
-                                                type: 'boolean',
-                                                value: false
-                                            },
-                                            xGap: {
-                                                type: 'number',
-                                                value: 10
-                                            },
-                                            yGap: {
-                                                type: 'number',
-                                                value: 0
-                                            }
-                                        }
-                                    },
-                                    {
-                                        key: 'n-grid_2',
-                                        type: 'n-grid',
-                                        category: 'container',
-                                        icon: 'icon-n-y-grid',
-                                        label: '栅格',
-                                        internal: true,
-                                        slots: {
-                                            default: [
-                                                {
-                                                    key: 'n-gi_1',
-                                                    type: 'n-gi',
-                                                    category: 'container',
-                                                    icon: 'icon-n-y-grid',
-                                                    label: '栅格列',
-                                                    internal: true,
-                                                    slots: {
-                                                        default: [
-                                                            {
-                                                                key: 'n-form-item_1',
-                                                                type: 'n-form-item',
-                                                                category: 'container',
-                                                                icon: 'icon-n-y-form',
-                                                                label: '表单字段',
-                                                                internal: true,
-                                                                slots: {
-                                                                    default: [
-                                                                        {
-                                                                            key: 'n-input_1',
-                                                                            type: 'n-input',
-                                                                            category: 'field',
-                                                                            icon: 'icon-n-y-input',
-                                                                            label: '输入框',
-                                                                            options: {
-                                                                                disabled: {
-                                                                                type: 'boolean',
-                                                                                value: false
-                                                                                },
-                                                                                clearable: {
-                                                                                type: 'boolean',
-                                                                                value: false
-                                                                                },
-                                                                                type: {
-                                                                                type: 'string',
-                                                                                value: 'text'
-                                                                                },
-                                                                            }
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                options: {
-                                                                    label: {
-                                                                        type: 'string',
-                                                                        value: '字段名1'
-                                                                    },
-                                                                    path: {
-                                                                        type: 'string',
-                                                                        value: 'field1'
-                                                                    },
-                                                                }
-                                                            }
-                                                        ]
-                                                    },
-                                                    options: {
-                                                        span: {
-                                                            type: 'number',
-                                                            value: 12
-                                                        }
-                                                    }
-                                                },
-                                                {
-                                                    key: 'n-gi_1',
-                                                    type: 'n-gi',
-                                                    category: 'container',
-                                                    icon: 'icon-n-y-grid',
-                                                    label: '栅格列',
-                                                    internal: true,
-                                                    slots: {
-                                                        default: [
-                                                            {
-                                                                key: 'n-form-item_1',
-                                                                type: 'n-form-item',
-                                                                category: 'container',
-                                                                icon: 'icon-n-y-form',
-                                                                label: '表单字段',
-                                                                internal: true,
-                                                                slots: {
-                                                                    default: [
-                                                                        {
-                                                                            key: 'n-input_1',
-                                                                            type: 'n-input',
-                                                                            category: 'field',
-                                                                            icon: 'icon-n-y-input',
-                                                                            label: '输入框',
-                                                                            options: {
-                                                                                disabled: {
-                                                                                type: 'boolean',
-                                                                                value: false
-                                                                                },
-                                                                                clearable: {
-                                                                                type: 'boolean',
-                                                                                value: false
-                                                                                },
-                                                                                type: {
-                                                                                type: 'string',
-                                                                                value: 'text'
-                                                                                },
-                                                                            }
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                options: {
-                                                                    label: {
-                                                                        type: 'string',
-                                                                        value: '字段名1'
-                                                                    },
-                                                                    path: {
-                                                                        type: 'string',
-                                                                        value: 'field1'
-                                                                    },
-                                                                }
-                                                            }
-                                                        ]
-                                                    },
-                                                    options: {
-                                                        span: {
-                                                            type: 'number',
-                                                            value: 12
-                                                        }
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        options: {
-                                            cols: {
-                                                type: 'number',
-                                                value: 24
-                                            },
-                                            layoutShiftDisabled: {
-                                                type: 'boolean',
-                                                value: false
-                                            },
-                                            xGap: {
-                                                type: 'number',
-                                                value: 10
-                                            },
-                                            yGap: {
-                                                type: 'number',
-                                                value: 0
-                                            }
                                         }
                                     }
                                 ]

@@ -1,265 +1,169 @@
 <template>
-  <div class="form-panel" >
+  <div class="form-panel">
     <div class="header">
-      
+      <Tools />
     </div>
-    <div class="content"
-      
-    >
-      <n-scrollbar class="page" @click="handleForm">
-        <div style="padding: 0 12px">
-          <!-- 这里直接写入n-form 根 -->
-          <n-form
-            :label-width="RootOptions.labelWidth"
-            :size="RootOptions.size"
-            :label-placement="RootOptions.labelPlacement"
-            :label-align="RootOptions.labelAlgin"
-          >
-            <template v-if="RootInternalOptions.isTabs">
-              <n-tabs type="line" animated>
-                <n-tab-pane v-for="pane in TabsSlots.default" :key="pane.options.name" :name="pane.options.name" :tab="pane.options.tab">
-                  <!-- <n-card
-                    size="small"
-                    title="卡片分段示例"
-                    :segmented="{
-                      content: true
-                    }"
-                  >
-                    <n-grid :cols="4" :x-gap="24">
-                      <n-form-item-gi :span="2" label="姓名" path="user.name">
-                        <n-input placeholder="输入姓名" />
-                      </n-form-item-gi>
-                      <n-gi :cols="4" >
-                        123
-                      </n-gi>
-                      <n-form-item-gi :span="2" label="年龄" path="user.age">
-                        <n-input placeholder="输入年龄" />
-                      </n-form-item-gi>
-                      <n-form-item-gi :span="2" label="电话号码" path="phone">
-                        <n-input placeholder="电话号码" />
-                      </n-form-item-gi>
-                      <n-form-item-gi :span="2" label="电话号码" path="phone">
-                        <n-input placeholder="电话号码" />
-                      </n-form-item-gi>
-                      <n-form-item-gi :span="2" label="电话号码" path="phone">
-                        <n-input placeholder="电话号码" />
-                      </n-form-item-gi>
-                      <n-form-item-gi :span="2" label="电话号码" path="phone">
-                        <n-input placeholder="电话号码" />
-                      </n-form-item-gi>
-                    </n-grid>
-                  </n-card> -->
-                  <!-- 这里加入拖拽 -->
-                  <draggable
-                      class="widget-group"
-                      tag="div"
-                      :list="pane.slots.default"
-                      item-key="key"
-                      :group="{name: 'dragGroup', put: false}"
-                      ghost-class="ghost"
-                      :sort="true"
-                      :move="() => {}"
-                      @end="() => {}"
-                  
-                  >
-                      <template #item="{ element: item }">
-                          <div class="widget-item">
-                            <n-grid v-bind="item.options">
-                              <template v-for="gi, key in item.slots.default" :key="gi.key">
-                                <n-gi :span="gi.options.span">
-                                  <!-- 最小单元控制 -->
-                                  <div class="form-item" @click="handleField">
-                                    <template v-if="gi.slots.default[0].tagName === 'n-form-item'">
-                                      <n-form-item
-                                        :label="gi.slots.default[0].options.label"
-                                        :path="gi.slots.default[0].options.path"
-                                      >
-                                        <component :is="gi.slots.default[0].slots.default[0].tagName"  >
-                                        </component>
-                                      </n-form-item>
-                                    </template>
-                                    <template v-else>
-                                      <component :is="`${item.tagName}`"  >
-                                      </component>
-                                    </template>
-                                  </div>
-                                </n-gi>
-                              </template>
+    <div class="content">
+      <JsonView v-if="switchType === 'json'" />
+      <!-- <div class="page" >
+        {{ SourceWidget  }}
+      </div> -->
+      <div class="page" v-if="switchType === 'design'" ref="formRef" @click="handleForm">
+        <!-- 这里直接写入n-form 根 -->
+        <n-form
+          
+          :label-width="FormOptions.labelWidth"
+          :size="FormOptions.size"
+          :label-placement="FormOptions.labelPlacement"
+          :label-align="FormOptions.labelAlgin"
+        >
+          <template v-if="isTabs">
+            <n-tabs type="line" :tabs-padding="10" animated>
+              <n-tab-pane
+                v-for="pane in TabPaneWidgets"
+                :key="pane.options.value.name"
+                :name="pane.options.value.name"
+                :tab="pane.options.value.tab"
+              >
+                <n-scrollbar>
+                  <GridWidget :value="pane.config.value.slots.default[0].slots.default" />
+                </n-scrollbar>
+              </n-tab-pane>
+              <!-- <n-tab-pane
+                v-for="pane in TabPaneWidgets"
+                :key="pane.options.value.name + '1'"
+                :name="pane.options.value.name + '1'"
+                :tab="pane.options.value.tab + '1'"
+              >
+                <n-scrollbar >
+                  <GridWidget :value="pane.config.value.slots.default[0].slots.default" />
+                </n-scrollbar>
+              </n-tab-pane> -->
+            </n-tabs>
 
-                            </n-grid>
-                            
-                          </div>
-                      </template>
-                  </draggable>
-                  <!-- <template v-for="item in pane.slots.default" :key="item.key">
-                    <n-grid :cols="item.options.cols">
-                      <template v-for="gi in item.slots.default" :key="gi.key">
-                        <n-gi :span="gi.options.span">
-                          <div style="outline: 1px solid #ccc">
-                            <template v-if="gi.slots.default[0].tagName === 'n-form-item'">
-                            
-                            </template>
-                            <template v-else>
-                              <component :is="`${item.tagName}`"  >
-                              </component>
-                            </template>
-                          </div>
-                        </n-gi>
-                      </template>
-
-                    </n-grid>
-                  </template> -->
-                  <!-- <n-grid :cols="4" :x-gap="24">
-                    <n-form-item-gi :span="2" label="姓名" path="user.name">
-                      <n-input placeholder="输入姓名" />
-                    </n-form-item-gi>
-                    <n-gi :cols="4" >
-                      123
-                    </n-gi>
-                    <n-form-item-gi :span="2" label="年龄" path="user.age">
-                      <n-input placeholder="输入年龄" />
-                    </n-form-item-gi>
-                    <n-form-item-gi :span="2" label="电话号码" path="phone">
-                      <n-input placeholder="电话号码" />
-                    </n-form-item-gi>
-                  </n-grid> -->
-                </n-tab-pane>
-              </n-tabs>
-            </template>
-            <template v-else>
-              <n-grid :cols="4" :x-gap="24">
-                <n-form-item-gi :span="2" label="姓名" path="user.name">
-                  <n-input placeholder="输入姓名" />
-                </n-form-item-gi>
-                <n-gi :cols="4" >
-                  123
-                </n-gi>
-                <n-form-item-gi :span="2" label="年龄" path="user.age">
-                  <n-input placeholder="输入年龄" />
-                </n-form-item-gi>
-                <n-form-item-gi :span="2" label="电话号码" path="phone">
-                  <n-input placeholder="电话号码" />
-                </n-form-item-gi>
-              </n-grid>
-              <n-grid :cols="4" :x-gap="24">
-                <n-form-item-gi :span="2" label="姓名1" path="user.name">
-                  <n-input placeholder="输入姓名" />
-                </n-form-item-gi>
-                <n-form-item-gi :span="2" label="年龄1" path="user.age">
-                  <n-input placeholder="输入年龄" />
-                </n-form-item-gi>
-                <n-form-item-gi :span="2" label="电话号码1" path="phone">
-                  <n-input placeholder="电话号码" />
-                </n-form-item-gi>
-              </n-grid>
-            </template>
+          </template>
+          <template v-else>
+          
+            <n-scrollbar :style="
+              {
+                'paddingRight': isAnchor ? '140px' : '0px'
+              }
+            "  >
+              <GridWidget :value="FormConfig.slots.default[0].slots.default" />
+            </n-scrollbar>
+            <n-anchor
+              v-if="isAnchor"
+              offset-target=".widget-group"
+              style="position: absolute; width: 120px; right: 0px; top: 20px;padding-right: 20px;"
+              :show-rail="true"
+              :show-background="true"
+            >
+              <n-anchor-link title="基础字段" href="#n-grid_1" />
+              <n-anchor-link title="子表1" href="#ignore-gap.vue" />
+              <n-anchor-link title="子表2" href="#ignore-gap.vue" />
+            </n-anchor>
+          </template>
             
-           
-          </n-form>
-        </div>
-      </n-scrollbar>
+          
+        </n-form>
+      </div>
     </div>
   </div>
 </template>
 
-<script lang="jsx">
-import { ref, reactive, defineComponent, nextTick, h, onMounted, provide } from 'vue'
+<script lang="tsx">
+import {
+  ref,
+  reactive,
+  computed,
+  defineComponent,
+  nextTick,
+  h,
+  onMounted,
+  provide,
+  toRaw,
+} from "vue";
 // import type { ComponentPublicInstance, Ref, ReactiveEffect } from 'vue'
 // import type { VxeGridProps, VxeGridInstance } from 'vxe-table'
 
-import {
-  NwIcon, RequestPaging, VxeHelper, request,
-} from '@platform/main'
+import { NwIcon, RequestPaging, VxeHelper, request } from "@platform/main";
 
-import { designer } from '../../store/index'
-import { compileConfig } from '../../utils/index'
+import { designer } from "../../store/index";
+import { compileConfig } from "../../utils/index";
+
+import { Widget, WidgetRoot } from "../../model/widget";
+
+import GridWidget from "./grid.vue";
+
+import Tools from "./tools.vue"
+
+import JsonView from './json/index.vue'
+
+// import { tools } from '../../model/tools'
 
 export default defineComponent({
   components: {
-    NwIcon
+    NwIcon,
+    GridWidget,
+    Tools,
+    JsonView
   },
   setup(props, context) {
+    const { SourceWidget, handleActiveWidget, ActiveWidget, Tools } = designer;
+    const { switchType } = Tools
     const {
-      SourceWidget,
-      RootWidget,
-      handleActiveWidget,
-      ActiveWidget
-    } = designer
-    const {
-      config: RootConfig,
-      internalOptions: RootInternalOptions,
-      options: RootOptions,
-      slots: RootSlots,
-      isActive: RootIsActive
-    } = RootWidget
+      config: FormConfig,
+      options: FormOptions,
+      isTabs,
+      isAnchor,
+      TabPaneWidgets
+    } = new WidgetRoot(SourceWidget.value!);
+    // 这里
+
     
-    let setup = {
-      ActiveWidget,
-      RootIsActive,
-      RootOptions,
-      RootInternalOptions,
-      test () {
-        RootConfig.value.options.size.value = 'large'
+    let setup: any = {
+      switchType,
+      FormConfig,
+      FormOptions,
+      isTabs,
+      isAnchor,
+      TabPaneWidgets
+    };
+    const formRef = ref()
+    nextTick().then(() => {
+      console.log('=======formRef====', formRef)
+    })
+    return {
+      ...setup,
+      SourceWidget,
+      formRef,
+      handleForm() {
+        handleActiveWidget(SourceWidget.value!);
       },
-      handleForm () {
-        handleActiveWidget(RootWidget)
-      },
-      handleField () {
-
-      }
-    }
-    // 这里根据isTabs判断
-    if (RootInternalOptions.value.isTabs) {
-      // 页签模式
-      const {
-        config: TabsConfig,
-        internalOptions: TabsInternalOptions,
-        options: TabsOptions,
-        slots: TabsSlots
-      } = RootSlots.default.value[0]
-      console.log('===', TabsSlots)
-      setup = {
-        ...setup,
-        TabsConfig,
-        TabsInternalOptions,
-        TabsOptions,
-        TabsSlots,
-      }
-    } else {
-      // 没有页签的情况
-
-      setup = {
-        ...setup,
-        slotDefault: RootSlots.default,
-      }
-    }
-
-    return setup
-  }
-})
-
+    };
+  },
+});
 </script>
 
-<style  lang='less'>
-
+<style lang="less">
 .form-panel {
-  
   box-sizing: border-box;
   height: 100%;
-  >.header {
+  > .header {
     height: 32px;
     box-sizing: border-box;
     border-bottom: var(--border);
   }
-  >.content {
-    height: calc(~'100% - 32px');
+  > .content {
+    height: calc(~"100% - 32px");
     padding: 20px;
     box-sizing: border-box;
     background: var(--light-gray5);
-    >.page {
+    > .page {
+      position: relative;
       height: 100%;
       border: 1px solid #ccc;
-      box-shadow: 0 0 6px rgba(0,0,0,.3);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
       box-sizing: border-box;
       // background: #fff;
       // background-image: linear-gradient(90deg, rgba(60, 10, 30, .08) 3%, transparent 0), linear-gradient(1turn, rgba(60, 10, 30, .08) 3%, transparent 0);
@@ -268,18 +172,30 @@ export default defineComponent({
       background-repeat: repeat;
       background-color: #fff;
       // padding: 10px;
+      >.n-form {
+        height: 100%;
+        >.n-tabs {
+          height:100%;
+          display: flex;
+          flex-direction: column;
+          >.n-tabs-pane-wrapper {
+            flex: 1;
+            >.n-tab-pane {
+              height: 100%;
+              box-sizing: border-box;
+              >.n-scrollbar {
+                padding: 0 10px;
+                box-sizing: border-box;
+              }
+            }
+          }
+        }
+        >.n-scrollbar {
+          // padding: 20px 10px;
+          box-sizing: border-box;
+        }
+      }
     }
-  }
-}
-.form-item {
-  padding: 5px;
-  cursor: move;
-  >div {
-    pointer-events: none;
-  }
-  &:hover {
-    background: #f4f4f4;
-    border-radius: 4px;
   }
 }
 </style>

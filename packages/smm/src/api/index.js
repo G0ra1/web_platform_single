@@ -11,6 +11,29 @@ export function dictItemLists(dictCode) {
         method: 'get',
     })
 }
+// 
+//字典 
+export function kehuLists(code) {
+    return request({
+        url: `/smm/smmHebooilClient/${code}`,
+        method: 'get',
+    })
+}
+//轻烃字典 
+export function qingtingKehuLists(code) {
+    return request({
+        url: `/smm/smmHebooilNglClient/${code}`,
+        method: 'get',
+    })
+}
+//其它客户字典 
+export function qitaKehuLists(code) {
+    return request({
+        url: `/smm/smmHebooilProduct/${code}`,
+        method: 'get',
+    })
+}
+
 //树形字典 
 export function treeDict(dictCode) {
     return request({
@@ -100,6 +123,50 @@ export function portalContentFiles(data = {}) {
         data
     })
 }
-
-
-
+// 轻烃产品接口
+export function smmHebooilNglClients(params) {
+    return request({
+      url: `/smm/smmHebooilNglClient/list`,
+      method: 'post',
+      data: params
+    })
+  }
+  
+  // 原油项目接口
+export function smmHebooilClients(params) {
+    return request({
+      url: `/smm/smmHebooilClient/list`,
+      method: 'post',
+      data: params
+    })
+  }
+  
+// qitashiyou产品字典
+export function smmHebooilProducts(params) {
+    return request({
+      url: `/smm/smmHebooilProduct/list`,
+      method: 'post',
+      data: params
+    })
+  }
+  
+  
+  
+// 储油单位
+  
+export function smmHboilDepots(params) {
+    return request({
+      url: `/smm/smmHboilDepot/list`,
+      method: 'post',
+      data: params
+    })
+  }
+  
+  
+  // 出游地址
+export function smmHboilDepotDet(id) {
+    return request({
+        url: `/smm/smmHboilDepot/${id}`,
+        method: 'get',
+    })
+}

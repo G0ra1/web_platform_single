@@ -37,6 +37,9 @@ export const ProcessActionRef = ref<any>()
 // 字段权限
 export const FieldRules = ref<any>()
 
+// sha256
+export const FormDataSha256 = ref<string>('')
+
 // 设定字段权限
 export const setFieldRules = (field: any) => {
     const rules: RulesType = {}
@@ -68,6 +71,7 @@ export const WfSendData = ref<WfSendDataInst>({
     }]
 })
 
+export const RespFormDto = ref<any>({})
 // 其他数据缓存
 // 表单
 // export const WfFormData = ref<any>({})

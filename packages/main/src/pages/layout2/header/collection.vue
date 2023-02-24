@@ -1,7 +1,6 @@
 
 <template>
-    <n-menu v-if="visible" class="shoucangjia" mode="horizontal" :on-update:value="updateMenu" :options="menuOptions"
-        style="width:26px" />
+    <n-menu v-if="visible" class="shoucangjia" mode="horizontal" :on-update:value="updateMenu" :options="menuOptions" />
     <favorites-manage ref="favoritesManageRef" @callback="callback"></favorites-manage>
 </template>
 <script lang="jsx">
@@ -67,7 +66,7 @@ export default defineComponent({
                     label: '',
                     key: 'dance-dance-dance',
                     icon: () => {
-                        return <NwIcon size={26} name="icon-y-shoucangjia"></NwIcon>
+                        return <div style="width: 40px;text-align: center;"><NwIcon size={20} name="icon-n-y-shoucangjia"></NwIcon></div>
                     },
                     children: [
                     ]

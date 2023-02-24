@@ -125,7 +125,7 @@ export default defineComponent({
                 case 'logout':
                     // 这里登出
                     AccountLogout().then(() => {
-                        window.location.href = '/web-main/pages/login.html'
+                        window.location.href = '/web-main/pages/login2.html'
                     })
                 break;
                 case 'setting':

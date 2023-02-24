@@ -10,10 +10,10 @@
     @positive-click="onPositiveClick"
     @negative-click="onNegativeClick"
     negative-text="取消"
-    style="width:1500px;"
+    style="width:1200px;"
   >
      <n-grid > 
-        <n-grid-item span="6" style="height: 800px;" v-if="showSide">
+        <n-grid-item span="6" style="height: 500px;" v-if="showSide">
             <div class="sider">
                 <n-input v-model:value="pattern" placeholder="搜索" />
                 <n-spin :show="leftSpinShow" style="padding-top: 6px">
@@ -22,7 +22,7 @@
                         highlight-current-row
                         ref="aTable"
                         row-id="id"
-                        height="760px"
+                        height="500px"
                     
                         :data="topic.studyExamDatabaseDefList"
                     >
@@ -43,9 +43,9 @@
                 </n-spin>
             </div>
         </n-grid-item>        
-            <n-grid-item :span="showSide ? 18 : 24" style="height: 800px;">
+        <n-grid-item :span="showSide ? 18 : 24" style="height: 508px;">
                  <n-spin :show="spinShow" >
-                    <vxe-toolbar style="height:40px">
+                    <!-- <vxe-toolbar style="height:40px">
                         <template v-slot:buttons>
                             <vxe-form>
                                 <vxe-form-item v-if="multiple">
@@ -53,26 +53,17 @@
                                       待选择题目
                                     </template>
                                 </vxe-form-item>
-                                <!-- <vxe-form-item>
-                                    <template #default>
-                                        <vxe-input placeholder="搜索" v-model="topicName"></vxe-input>
-                                    </template>
-                                </vxe-form-item>
-                                <vxe-form-item>
-                                    <template #default>
-                                        <vxe-button status="primary" @click="searchEvent">查询</vxe-button>
-                                    </template>
-                                </vxe-form-item> -->
+                              
                                 
                             </vxe-form>
                         </template>
-                    </vxe-toolbar>
+                    </vxe-toolbar> -->
                     <vxe-table
                         resizable
                         highlight-current-row
                         ref="xTable"
                         row-id="id"
-                        :height="!multiple ? '760px' : '380px'"
+                        :height="!multiple ? '440px' : '200px'"
                         :data="topic.topicList"
                     >
                        <vxe-column type="expand" field="questionCode" title="类型" >
@@ -127,23 +118,13 @@
                         :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
                         @page-change="handlePageChange">
                     </vxe-pager>
-                      <vxe-toolbar style="height:40px" v-if="multiple">
-                        <template v-slot:buttons>
-                            <vxe-form>
-                                <vxe-form-item>
-                                    <template #default>
-                                      已选择题目
-                                    </template>
-                                </vxe-form-item>
-                            </vxe-form>
-                        </template>
-                    </vxe-toolbar>
+                     
                     <vxe-table
                         resizable
                         highlight-current-row
                         ref="bTable"
                         row-id="id"
-                        height="340px"
+                        height="240px"
                     
                         v-if="multiple"
                         :data="topic.alreadyTopicList"

@@ -1,6 +1,6 @@
 
 import { ref, Ref, reactive } from 'vue'
-import type { VxeGridProps, VxeGridInstance, SizeType, VxeGridPropTypes } from 'vxe-table'
+import type { VxeGridProps, VxeGridInstance, VxeGridListeners, SizeType, VxeGridPropTypes } from 'vxe-table'
 import { AxiosRequestPaging } from '../request/index.d'
 import { VxeGridPagingInstance, VxeGridNormalInstance } from './index.d'
 import { cloneDeep } from 'lodash'
@@ -21,10 +21,13 @@ const demoPagingBind: VxeGridProps = {
     //     tools: 'bar-right'
     //   }
     // },
+    rowConfig: {
+        isHover: true,
+    },
     columns: [],
     pagerConfig: {
-        pageSize: 20,
-        pageSizes: [10, 20, 50]
+        pageSize: 15,
+        pageSizes: [15, 30, 50, 100]
     },
     // proxyConfig: {
     //     autoLoad: false,
@@ -34,6 +37,9 @@ const demoPagingBind: VxeGridProps = {
     //     },
     //     ajax: {}
     // }
+}
+const demoGridEvents:VxeGridListeners = {
+    "resizableChange":()=>{}
 }
 // 一般数据列表
 class VxeGrid<T> implements VxeGridNormalInstance {
@@ -46,7 +52,9 @@ class VxeGrid<T> implements VxeGridNormalInstance {
 
 // 分页配置
 class VxeGridPaging<T> implements VxeGridPagingInstance<T> {
-    readonly bind: VxeGridProps<T> = cloneDeep(demoPagingBind)
+    // readonly bind: VxeGridProps<T> = cloneDeep(demoPagingBind)
+    bind = ref<VxeGridProps<T>>(cloneDeep(demoPagingBind))
+    gridEvents = ref<VxeGridListeners>(cloneDeep(demoGridEvents))
     gridRef = ref<VxeGridInstance>() // vxe实例
     t1 = ref<object>({a: 1, b:2}) // vxe实例
     filterData: Ref
@@ -66,7 +74,8 @@ class VxeGridPaging<T> implements VxeGridPagingInstance<T> {
     constructor (bind: VxeGridProps, request?: AxiosRequestPaging, shaping?: any) {
         this.filterData = ref<T>({} as T)
         // this.bind = cloneDeep(demoPagingBind) // 赋值默认
-        if (request) this.bind.proxyConfig = {
+        // if (request) this.bind.proxyConfig = {
+        if (request) this.bind.value.proxyConfig = {
             autoLoad: false,
             props: {
                 // list: 'list',
@@ -101,7 +110,8 @@ class VxeGridPaging<T> implements VxeGridPagingInstance<T> {
         //         size: page.pageSize
         //     }
         // })}
-        Object.assign(this.bind, bind)
+        // Object.assign(this.bind, bind)
+        Object.assign(this.bind.value, bind)
     }
 
 }

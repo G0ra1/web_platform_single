@@ -1,25 +1,16 @@
 <template>
 
-  <n-button
-    :disabled="props.disabled"
-    :size="props.size"
-    type="info"
-    @click="handleModal"
-    
-  >选择</n-button>
+  <n-button :disabled="props.disabled" v-bind="props.buttonOptions" :size="props.size" type="info"
+    @click="handleModal">{{
+        props.buttonLabel
+    }}</n-button>
   <!-- <mechanism-modal
     ref="MechanismModalRef"
     @callback="updateValue"
   /> -->
-  
-  <n-modal
-    v-model:show="visible"
-    preset="dialog"
-    style="width: 800px; padding: 0"
-    :show-icon="true"
-    :mask-closable="true"
-    :closable="true"
-  >
+
+  <n-modal v-model:show="visible" preset="dialog" style="width: 800px; padding: 0" :show-icon="true"
+    :mask-closable="true" :closable="true">
     <template #icon>
       <div class="iconfont icon-bpmn-ditu"></div>
       <nw-icon name="icon-yonghu" :size="20" color="rgb(103, 194, 58)" />
@@ -33,14 +24,8 @@
       <user-grid :value="selected" @callback="callback" />
     </div>
     <div style="border-top: 1px solid #ccc ;padding: 5px;text-align: right">
-      <n-button
-      type="info"
-      size="small"
-      style="margin-right: 5px"
-      @click="handleModalComplete"
-      >确定</n-button>
-      <n-button  size="small"
-      @click="visible = false" >取消</n-button>
+      <n-button type="info" size="small" style="margin-right: 5px" @click="handleModalComplete">确定</n-button>
+      <n-button size="small" @click="visible = false">取消</n-button>
     </div>
   </n-modal>
 </template>
@@ -79,7 +64,7 @@ export default {
     NwIcon,
     UserGrid
   },
-  props:{
+  props: {
     value: {
       type: String,
       default: ''
@@ -95,15 +80,29 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    buttonLabel: {
+      type: String,
+      default: '选择'
+    },
+    buttonOptions: {
+      type: Object,
+      default: () => { }
     }
   },
-  emits: ['updateValue', 'updateExpreParamValueText', 'updateExpreParamSource'],
-  setup (props, context) {
+  emits: ['updateValue', 'updateExpreParamValueText', 'updateExpreParamSource', 'updateVAndT'],
+  setup(props, context) {
     const visible = ref(false)
-    const handleModal = () => {
+    const show = (v) => {
+      handleModal(v)
+    }
+    const handleModal = (v) => {
       visible.value = true
       // 赋值默认
-      const ids = props.value.split(',')
+      let ids = []
+      if (v) { ids = v.split(',') } else {
+        ids = props.value.split(',')
+      }
       const names = props.expreParamValueText.split(',')
       selected.value = ids.filter(d => d).map((id, i) => ({
         id,
@@ -124,6 +123,7 @@ export default {
     const handleModalComplete = () => {
       context.emit('updateValue', selected.value.map(d => d.id).join(','))
       context.emit('updateExpreParamValueText', selected.value.map(d => d.name).join(','))
+      context.emit('updateVAndT', selected.value.map(d => d.id).join(','), selected.value.map(d => d.name).join(','))
       nextTick().then(() => {
         visible.value = false
       })
@@ -132,8 +132,9 @@ export default {
       visible,
       props,
       handleModal,
+      show,
       handleModalComplete,
-      callback (f, id, name) {
+      callback(f, id, name) {
         if (f) {
           // context.emit('updateValue', d)
           // context.emit('updateExpreParamValueText', t)
@@ -160,8 +161,10 @@ export default {
 .value-input {
   display: flex;
   height: 20px;
+
   :deep(.n-select) {
     display: flex;
+
     .n-base-selection__border {
       border-left: none;
       // border-right: none;

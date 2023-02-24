@@ -4,8 +4,16 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
-    
-    "rootDir": "../../"
+    "rootDir": "../../",
+    "outDir": "./"
   },
-  "include": ["../../config/**/*.ts", "setting.ts", "vite.config.ts"]
+  "include": [
+    "../../config/**/*.ts",
+    "setting.ts",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

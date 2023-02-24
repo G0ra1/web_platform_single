@@ -65,7 +65,7 @@ Axios.interceptors.response.use(
         case 401:
           error.message = "未授权，请登录";
           // 判断是否有父级
-          window.parent.location.href = "/web-main/pages/login.html"
+          window.parent.location.href = "/web-main/pages/login2.html"
           break;
         case 408:
           error.message = "请求超时,后台无响应";

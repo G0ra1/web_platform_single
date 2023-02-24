@@ -5,7 +5,7 @@ export default (title: string, main: string, base: string) => `
         <meta charset="UTF-8" />
         <link rel="icon" href="/clogo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>${title}</title>
+        <title>劳务系统</title>
     </head>
     <body style="padding: 0 !important; margin: 0 !important;overflow: hidden">
         <div id="app" style="height: 100vh">
@@ -13,8 +13,8 @@ export default (title: string, main: string, base: string) => `
                 <img src="/../web-main/loading.svg" />
             </div>
         </div>
-        <script type="module" src="//at.alicdn.com/t/c/font_3535585_7umesbgskc6.js"></script>
+        <script type="module" src="//at.alicdn.com/t/c/font_3535585_wvmfmbkmq9m.js"></script>
         <script type="module" src="${main}"></script>
     </body>
     </html>
-`
+` 

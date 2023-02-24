@@ -82,8 +82,15 @@ import { queryLog } from "../../api/index";
 
 import LogModal from "./logModal.vue";
 
+import { NButton, NScrollbar, NTimeline, NTimelineItem, NSpin } from 'naive-ui'
+
 export default defineComponent({
   components: {
+    NButton,
+    NScrollbar,
+    NTimeline,
+    NTimelineItem,
+    NSpin,
     LogModal,
     NwIcon,
   },

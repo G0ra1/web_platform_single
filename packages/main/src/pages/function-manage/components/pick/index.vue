@@ -36,7 +36,7 @@
     class="nw-modal"
     v-model:show="visible"
     preset="dialog"
-    style="width: 800px; padding: 0"
+    style="width: 1000px; height: 565px;padding: 0"
     :show-icon="true"
     :mask-closable="true"
     :closable="true"
@@ -56,26 +56,23 @@
       <n-button type="info" size="small" style="margin-right: 5px" >确定</n-button>
       <n-button  size="small" >取消</n-button>
     </div> -->
-    <n-layout class="nw-modal-layout" >
-      
-      <n-layout-content>
-        <vxe-grid
-          class="nw-vxe-grid"
-          ref="gridRef"
-          v-bind="gridOption"
+    <n-layout has-sider class="nw-modal-layout" >
+      <n-layout-sider width="250">
+        <NwAppTreeGrid
+          rootName="全部"
+          @callback="selectApp"
         />
+      </n-layout-sider>
+      <n-layout-content>
+        <vxe-grid v-bind="bind" ref="gridRef">
+        </vxe-grid>
       </n-layout-content>
     </n-layout>
-    <div class="nw-modal-action">
-      <!-- <n-button
-      type="info"
-      size="small"
-      style="margin-right: 5px"
-      @click="handleModalComplete"
-      >确定</n-button> -->
-      <n-button  size="small"
+    <template #action>
+      <n-button
       @click="visible = false" >取消</n-button>
-    </div>
+    </template>
+
   </n-modal>
   </n-config-provider>
 </template>
@@ -94,7 +91,7 @@ import {
   NSpin,
   NModal,
 } from 'naive-ui'
-import { NwIcon, request } from '@platform/main'
+import { NwIcon, RequestPaging, VxeHelper, request, NwAppTreeGrid, Page } from '@platform/main'
 
 export default {
   components: {
@@ -109,7 +106,8 @@ export default {
     NSpin,
     NModal,
     NButton,
-    NwIcon
+    NwIcon,
+    NwAppTreeGrid
   },
   props:{
     value: {
@@ -129,112 +127,77 @@ export default {
   setup(props, context){
     // 模态展示
     const visible = ref(false)
+    const appInfo = ref({ appCode: ''})
 
-    const gridRef = ref(null)
-
-
-    // 所有备选表单
-    const formsData = ref([])
-    // props
-    // props.element.element.businessObject.extensionElements.values.find(d => d.$type === 'netwisd:Forms')
-
-    // 模态已选择的缓存
-    const selectedForms = ref([])
-
-    const cptsHash = ref({})
-    const queryFormList = () => {
-      selectedForms.value = []
-      formsData.value = []
-      request({
-        url: `/main/mdmCpts/lists`,
-        method: 'post',
-        data: {}
-      }).then(res => {
-        console.log('====res====', res)
-        const formHash = {}
-        res.forEach((d) => {
-          cptsHash.value[d.id] = d
-          if(!formHash[d.formId]) {
-            formHash[d.formId] = {
-              formId: d.formId,
-              formName: d.formName,
-              formNameCh: d.formNameCh,
-              formUrl: d.formUrl,
-              cpts: []
-            }
-          }
-          formHash[d.formId].cpts.push(d)
-        })
-        // formsData.value.
-        // 初始化复制默认勾选
-        formsData.value = Object.values(formHash)
-        console.log('===formsData.value===', formsData.value)
-      })
-    }
-    // 主备选表
-    const gridOption = ref({
-      rowId: 'id',
-      rowKey: false,
-      height: '400px',
-      size: 'mini',
-      showOverflow: false,
-      highlightHoverRow: true,
-      border: true,
-      // 
-      tableMenu: {
-         
-      },
-      expandConfig: {
-        expandAll: true
-      },
-      data: formsData,
-      columns: [
-        {
-          title: '表单名称',
-          showOverflow: 'title',
-          minWidth: 200,
-          type: 'expand',
-          slots: {
-            default: ({row}) => {
-              return  `${row.formNameCh}`
-            },
-            content: ({row}) => {
-
-
-              return <div class="cpts-list">
-                {row.cpts.length ? row.cpts.map(d => (
-                <div class={{
-                  'cpt-item': true,
-                  'active': props.value === row.id
-                }}
-                  onClick={() => {
-                    handleModalComplete(d)
-                  }}
-                >
-                  
-                  <div class="cpt-item-icon">
-                    <NwIcon size={60} name={d.icon} />
-                  </div>
-                  <div class="cpt-item-text">
-                    {d.shortName}
-                  </div>
-                </div>
-                )) : <div>
-                  没有其他版本
-                </div>}
-              </div>
-            }
-          }
-        }
-      ]
-    })
+    const {
+            bind,
+            gridRef,
+            filterData,
+            query,
+            reset
+        } = new VxeHelper.VxeGridPaging({
+            // border: 'inner',
+            columns: [
+                { field: "fullName", title: "功能名称"},
+                { field: "code", title: "功能编码" },
+                { field: "formNameCh", title: "表单"},
+                {
+                    title: "关联流程",
+                    slots: {
+                        default: ({ row }) => {
+                            // camundaProcdefKey
+                            if (row.camundaProcdefKey) {
+                                return [
+                                    <div style="display:flex; align-items: center">
+                                        已关联流程 &lt;{row.camundaProcdefKey}&gt;&nbsp;
+                                    </div>    
+                                ]
+                            } else {
+                                return [
+                                    `未关联流程`
+                                ]
+                            }
+                        }
+                    }
+                },
+                // { field: "type", width: '70px',title: "类型", showHeaderOverflow: true },
+                // { field: "createTime", title: "创建时间", showHeaderOverflow: true },
+                {
+                    title: '操作',
+                    showHeaderOverflow: true,
+                    width: '60px',
+                    fixed: true,
+                    slots: {
+                        default: ({ row }) => {
+                            return [
+                                <NButton
+                                    size="tiny"
+                                    type="primary"
+                                    style="margin-right: 5px;"
+                                    onClick={() => {
+                                      handleModalComplete(row)
+                                    }}
+                                >{{
+                                    default: () => '选择'
+                                }}</NButton>,
+                            ];
+                        },
+                    }
+                }
+            ]
+        }, new RequestPaging(
+            '/main/mdmCpts/list',
+            'post'
+        )
+        )
 
     // 模态
     const handleModalShow = () => {
       visible.value = true
-      //selectedForms 
-      // selectedForms.value = 
-      queryFormList()
+
+      nextTick().then(() => {
+        refresh()
+      })
     }
     // 选择完成，赋值到xml
     const handleModalComplete = (row) => {
@@ -247,47 +210,32 @@ export default {
       context.emit('callback', row)
       visible.value = false
     }
+    const refresh = () => {
+      reset({
+        appCode: appInfo.value.appCode
+      })
+    }
+
     return {
       props,
-      gridRef,
-      gridOption,
       visible,
       handleModalShow,
       handleModalComplete,
-      
-      theme: {
-                  
-        Button: {
-          heightSmall: '20px',
-          fontSizeSmall: '12px',
-          // 蓝色按钮
-          // colorInfo: '#0E639C',
-          // borderInfo: '#0E639C',
-          // // 灰色默认
-          // textColor: '#b9b9b9',
-          // textColorText: '#b9b9b9',
-          // border: '#0000000',
-          // borderHover: '1px solid #0000000',
-          // textColorHover: '#ccc',
-        },
-        Dialog: {
-          // color: '#2b2b2b',
-          // titleTextColor: '#ccc',
-          iconMargin: '0 3px 0 0',
-          titleFontSize: '14px',
-          titleFontWeight: 'bold',
-          titleTextColor: '#5e5e5e',
-          iconSize: '14px',
-          padding: '2px 5px',
-          closeSize: '14px',
-          closeMargin: '5px',
-          contentMargin: '0',
-          // textColor: '#ccc'
-        },
-        Modal: {
-          boxShadow: '1px 0px 7px 1px #00000060',
-          // textColor: '#ccc'
+      selectApp (d) {
+        console.log(d)
+        if (d.appType === 2) {
+          appInfo.value = d
+        } else if (d.appType === 0) {
+          // root
+          appInfo.value = { appCode: '' }
         }
+        refresh()
+      },
+      bind,
+      gridRef,
+      filterData,
+      query,
+      theme: {
       }
     }
   }

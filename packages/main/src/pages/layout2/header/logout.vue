@@ -3,14 +3,14 @@
     <!-- <n-button title="登出" @click="handle">
         <nw-icon :size="16" name="icon-n-y-logout" />
     </n-button> -->
-    <n-config-provider class="setting" style='line-height: 5px;'>
-        <n-dropdown
-            trigger="hover"
-            @select="handleSelect"
-            :options="options"
-            placement="bottom-end"
-        >
-           <img :src="userInfo.photoFileId?`http://incloud.com/${userInfo.photoFileId}`:'../img/boy.png'" style="width:40px;height:40px;border-radius:50%" >
+    <n-config-provider class="setting" style='lineHeight: 5px;'>
+        <n-dropdown trigger="click" @select="handleSelect" :options="options" placement="bottom-end">
+            <span
+                style="display: flex;align-items: center;font-size: 14px;font-family:'Microsoft YaHei';cursor: pointer;">
+                <nw-icon style="margin-right: 5px;" color="#4C90F0" :size="20" name="icon-n-y-yonghu" />{{
+                        userInfo.userNameCh ||
+                        userInfo.userName
+                }}<nw-icon style="margin-left: 5px;" color="#4C90F0" :size="14" name="icon-n-y-xiangxia" /></span>
         </n-dropdown>
     </n-config-provider>
 </template>
@@ -69,23 +69,24 @@ export default defineComponent({
         NConfigProvider,
         NDropdown
     },
-    setup (props) {
-        const userInfo:any = ref({})
+    setup(props) {
+        const userInfo: any = ref({})
         // 从db中获取用户信息
-        Db.get("userInfo").then((res:any) => {
+        Db.get("userInfo").then((res: any) => {
             userInfo.value = res
+            console.log(userInfo.value, 'userInfo.value')
         })
-        
+
         const options = [
             {
                 key: 'header',
                 type: 'render',
-                render: ()=> {
+                render: () => {
                     return h(
                         'div',
-                            {
-                             style: 'display: flex; align-items: center; padding: 8px 12px ;'
-                            },
+                        {
+                            style: 'display: flex; align-items: center; padding: 8px 12px ;'
+                        },
                         [
                             h(NwIcon, {
                                 name: 'icon-y-blueuser',
@@ -95,11 +96,11 @@ export default defineComponent({
                             h('div', null, [
                                 h('div', null, [h(NText, { depth: 2 }, { default: () => userInfo.value.userNameCh })]),
                                 h('div', { style: 'font-size: 12px;' }, [
-                                h(
-                                    NText,
-                                    { depth: 3 },
-                                    { default: () =>  userInfo.value.email }
-                                )
+                                    h(
+                                        NText,
+                                        { depth: 3 },
+                                        { default: () => userInfo.value.email }
+                                    )
                                 ])
                             ])
                         ]
@@ -110,16 +111,16 @@ export default defineComponent({
             {
                 label: '个人中心',
                 key: 'setting',
-           
+
             },
             {
                 label: '退出登录',
                 key: "logout",
             }
-         ]
-       
-        
-         const handleSelect = (key :any) => {
+        ]
+
+
+        const handleSelect = (key: any) => {
             // alert(key)
             switch (key) {
                 case 'logout':
@@ -127,14 +128,14 @@ export default defineComponent({
                     AccountLogout().then(() => {
                         window.location.href = '/web-main/pages/login2.html'
                     })
-                break;
+                    break;
                 case 'setting':
                     window.location.href = '/web-main/pages/setting.html'
                     break;
             }
         }
         nextTick().then(() => {
-             
+
         })
         return {
             options,
@@ -152,4 +153,5 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
+
 </style>

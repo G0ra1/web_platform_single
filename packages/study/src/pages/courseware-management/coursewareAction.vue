@@ -45,6 +45,11 @@
                 </n-form-item>
               </n-grid-item>
               <n-grid-item>
+                  <n-form-item label="课件来源" path="couSource">
+                      <n-input size="small" placeholder="请输入" v-model:value="model.couSource" />
+                  </n-form-item>
+              </n-grid-item>
+              <n-grid-item>
                   <n-form-item label="使用权限" path="useRange">
                       <n-select
                           v-model:value="model.useRange"

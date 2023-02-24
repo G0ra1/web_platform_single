@@ -146,7 +146,8 @@ export default defineComponent({
     NwSchemaEditor,
     NwOpenapiPick
   },
-  setup() {
+  emits: [ 'callback' ],
+  setup(props, context) {
     const action = ref<'create' | 'edit'>('create')
     const active = ref<boolean>(false)
     const basicFormData:FormModel = {
@@ -186,22 +187,23 @@ export default defineComponent({
     const cancel = () => {
       active.value = false
     }
-    const submit = () => {
+    const submit = async () => {
       formData.value.pageUrl = `/${formData.value.appCode}/${formData.value.pageCode}`
       formData.value.isEnable = (+formData.value.isEnable!) as (1 | 0 | undefined)
       if (action.value === 'create') {
         console.log('====formData======', formData.value)
         formData.value.pageUrl
-        add(formData.value).then(r => {
+        await add(formData.value).then(r => {
           console.log('====r====', r)
           active.value = false
         })
       } else if (action.value === 'edit') {
-        edit(formData.value).then(r => {
+        await edit(formData.value).then(r => {
           console.log('====r====', r)
           active.value = false
         })
       }
+      context.emit('callback')
     }
 
     return {

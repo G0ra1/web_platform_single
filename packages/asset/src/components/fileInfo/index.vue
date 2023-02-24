@@ -25,7 +25,7 @@
           circle
           type="info"
         >
-          <nw-icon name="icon-add-bold" :size="15" />
+          <nw-icon name="icon-n-y-add" :size="15" />
         </n-button>
       </n-upload>
     </div>

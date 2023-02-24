@@ -1,0 +1,32 @@
+.n-dialog {
+    &.text-modal-dialog {
+        >.n-dialog__content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+    >.n-dialog__title {
+
+        border-bottom: 1px solid #c6c6c6;
+        background: #fff ; // var(--n-red5);
+        padding-left: 5px;
+        height: 34px;
+    }
+    >.n-dialog__content {
+        min-height: 50px;
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+    }
+    >.n-dialog__action {
+        padding: 5px;
+    }
+    >.n-dialog__close {
+        top: 5px;
+        right: 4px;
+    }
+}
+.n-dialog.n-modal{
+    width: 300px;
+}

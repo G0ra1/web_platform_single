@@ -6,9 +6,7 @@
     label-placement="left"
     :label-width="80"
     size="small"
-    :style="{
-      padding:'10px'
-    }"
+    class="LForm"
   >
     <n-grid :cols="2" :x-gap="24">
         <n-grid-item>
@@ -29,7 +27,6 @@
          
               <n-tree-select
                 :options="types"
-                size="small"
                 placeholder="请选择"
                 v-model:value="dataModel.typeCode"
                 filterable

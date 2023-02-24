@@ -23,6 +23,7 @@
                         style='height:800px;padding:5px 0'
                         block-line 
                         virtual-scroll
+                        :pattern="pattern"
                         :default-expanded-keys="['0']"
                         @update:selected-keys="getPost" 
                     />
@@ -270,12 +271,17 @@ export default defineComponent({
             context.emit('update:callback',{...model.value,...post.alreadyPostList[0],});
            spinShow.value = false
         } else {
-            post.alreadyPostList.map((d)=>{
-                d.userName = model.value.userName
-                d.userId = model.value.userId
-                 d.userNameCh = model.value.userNameCh
-                //  d.postId = d.id
-            })
+            if( post.alreadyPostList.length>0) {
+                post.alreadyPostList.map((d)=>{
+                    d.userName = model.value.userName
+                    d.userId = model.value.userId
+                    d.userNameCh = model.value.userNameCh
+                    //  d.postId = d.id
+                })
+            } else {
+                post.alreadyPostList = [{id:0,userName:model.value.userName,userId:model.value.userId,userNameCh:model.value.userNameCh}]
+            }
+           
            
             context.emit('update:callback',post.alreadyPostList);
             spinShow.value = false

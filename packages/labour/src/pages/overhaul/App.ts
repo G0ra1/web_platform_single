@@ -1,15 +1,13 @@
 import { RequestPaging, VxeHelper, Page } from '@platform/main'
-import { count } from 'console'
+import { ref, h } from 'vue'
 
-const { bind, gridRef, filterData, query, reset } = new VxeHelper.VxeGridPaging(
+const { bind, gridRef, filterData, query, reset,gridEvents } = new VxeHelper.VxeGridPaging(
   {
     columns: [
       { field: 'orgname', title: '单位名称', showHeaderOverflow: true, width: '200px', align: 'center' },
       { field: 'overhaulRotation', title: '大修轮次', showHeaderOverflow: true, width: '300px', align: 'center', },
-      { field: 'overhaulCode', title: '大修编码', showHeaderOverflow: true, width: '300px', align: 'center', },
-      { field: 'overhaulName', title: '大修名称', showHeaderOverflow: true, width: '300px', align: 'center', },
+      { field: 'year', title: '年份', showHeaderOverflow: true, width: '200px', align: 'center', },
       { field: 'month', title: '月份', showHeaderOverflow: true, width: '200px', align: 'center', },
-      { field: 'ownerUnit', title: '业务单位', showHeaderOverflow: true, width: '300px', align: 'center', },
       { field: 'planWorkperiod', title: '计划工期', showHeaderOverflow: true, width: '200px', align: 'center' },
       { field: 'factWorkperiod', title: '实际工期', showHeaderOverflow: true, width: '200px', align: 'center',},
       { field: 'planStartTime', title: '计划开始时间', showHeaderOverflow: true, width: '300px', align: 'center' },
@@ -26,10 +24,9 @@ const { bind, gridRef, filterData, query, reset } = new VxeHelper.VxeGridPaging(
 
 
 const refresh = () => {
-  console.log("zheshi refresh");
   reset({})
 }
-
+const gridSearchRef = ref()
 export {
-  bind, gridRef, filterData, query, refresh, reset
+  bind, gridRef, filterData, query, refresh, reset,gridSearchRef, gridEvents
 }

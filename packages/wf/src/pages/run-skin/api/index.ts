@@ -89,3 +89,71 @@ export function reject (data: any) {
     data
   });
 }
+
+
+
+// 流程挂起
+export function suspendProcess (
+  camundaProcinsId: string,
+  camundaProcdefId: string,
+  camundaTaskId: string
+) {
+  return request({
+    url: `/wf/wfEngine/suspendProcess`,
+    method: 'put',
+    data: {
+      camundaProcinsId,
+      camundaProcdefId,
+      camundaTaskId
+    }
+  });
+}
+// 流程激活
+export function activateProcess (
+  camundaProcinsId: string,
+  camundaProcdefId: string,
+  camundaTaskId: string
+) {
+  return request({
+    url: `/wf/wfEngine/activateProcess`,
+    method: 'put',
+    data: {
+      camundaProcinsId,
+      camundaProcdefId,
+      camundaTaskId
+    }
+  });
+}
+
+// 流程终止
+export function endProcess (
+  camundaProcinsId: string,
+  camundaProcdefId: string,
+  camundaTaskId: string
+) {
+  return request({
+    url: `/wf/wfEngine/endProcess`,
+    method: 'put',
+    data: {
+      camundaProcinsId,
+      camundaProcdefId,
+      camundaTaskId
+    }
+  });
+}
+// 流程删除
+export function deleteProcess (
+  camundaProcinsId: string,
+  camundaProcdefId: string,
+  camundaTaskId: string
+) {
+  return request({
+    url: `/wf/wfEngine/deleteProcess`,
+    method: 'post',
+    data: {
+      camundaProcinsId,
+      camundaProcdefId,
+      camundaTaskId
+    }
+  });
+}

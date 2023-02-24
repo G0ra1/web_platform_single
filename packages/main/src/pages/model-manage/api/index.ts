@@ -2,16 +2,19 @@
  * @Author: zouliming 
  * @Date: 2022-10-14 17:52:28 
  * @Last Modified by: zouliming
- * @Last Modified time: 2022-10-21 12:44:38
+ * @Last Modified time: 2022-11-23 12:31:43
  * @Description 请求后台的接口
  */
 
-import { Request } from '@platform/main'
-import DbVo from '../data/vo/DbVo'
-import ModelingEntityVo from '../data/vo/ModelingEntityVo'
-import ModelingFieldVo from '../data/vo/ModelingFieldVo'
-import TableEntity from '../data/model/TableEntity'
-import ModelingEntityDto from '../data/dto/ModelingEntityDto'
+import { Request } from '@platform/main';
+import DbVo from '../data/vo/DbVo';
+import ModelingEntityVo from '../data/vo/ModelingEntityVo';
+import ModelingFieldVo from '../data/vo/ModelingFieldVo';
+import TableEntity from '../data/model/TableEntity';
+import ModelingEntityDto from '../data/dto/ModelingEntityDto';
+import MdmMenuTreeVo from "../data/vo/MdmMenuTreeVo";
+import MenuConfigDto from "../data/dto/MenuConfigDto";
+
 // 获取模型树
 export function getTableTree(id: string): Promise<Array<ModelingEntityVo>> {
     return new Request<string, Array<ModelingEntityVo>>(
@@ -108,10 +111,11 @@ export function ddl(modelingEntityDto: ModelingEntityDto): Promise<string> {
 }
 
 // 部署前端配置
-export function publicConfig(id: string): Promise<boolean> {
-    return new Request<string, boolean>(
-        `/main/modelPublishConfig/${id}`,
-        'post'
+export function publicConfig(menuConfigDto: MenuConfigDto): Promise<boolean> {
+    return new Request<MenuConfigDto, boolean>(
+        `/main/modelPublishConfig`,
+        'post',
+        menuConfigDto
     ).send()
 }
 
@@ -120,5 +124,13 @@ export function deleteConfig(id: string): Promise<boolean> {
     return new Request<string, boolean>(
         `/main/modelPublishConfig/${id}`,
         'delete'
+    ).send()
+}
+
+// 获取菜单树
+export function getMenuTree(): Promise<Array<MdmMenuTreeVo>> {
+    return new Request<undefined, boolean>(
+        `/main/mdmMenu/menuTree`,
+        'get'
     ).send()
 }

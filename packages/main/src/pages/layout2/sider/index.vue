@@ -2,7 +2,7 @@
 <template>
     <nw-logo />
     <nw-menu />
-    <nw-system />
+    <nw-system v-if="IsShowSystem" />
 </template>
 <script lang="ts">
 
@@ -33,7 +33,7 @@ import { NwIcon, RequestPaging, VxeHelper } from '@platform/main'
 import NwLogo from './logo.vue'
 import NwMenu from './menu.vue'
 import NwSystem from './system.vue'
-import { registerListener, init } from './store'
+import { registerListener, init, IsShowSystem } from './store'
 
 registerListener()
 export default defineComponent({
@@ -56,7 +56,7 @@ export default defineComponent({
   setup () {
     init()
     return {
-
+      IsShowSystem
     }
   }
 })

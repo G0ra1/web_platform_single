@@ -207,8 +207,8 @@
                   v-if="item.isDownload == 1"
                 >
                   <nw-icon
-                    name="icon-daochu"
-                    :size="30"
+                    name="icon-n-y-export"
+                    :size="25"
                     style="cursor: pointer; color: #2080f0"
                   />
                 </p>
@@ -301,7 +301,7 @@ import {
   nextTick,
   onBeforeUnmount,
 } from "vue";
-import { NwIcon } from '@platform/main'
+import { NwIcon,Cookies } from '@platform/main'
 
 import Video from "video.js";
 import { useRoute, useRouter } from "vue-router";
@@ -428,8 +428,8 @@ export default defineComponent({
     };
     // 下载
     const clientTemplate = (item) => {
-      var filename = `${item.marterialsName}.xls`;
-
+      var fileType  = item.fileUrl.substring(item.fileUrl.lastIndexOf('.')) 
+      var filename = `${item.marterialsName}${fileType}`;
       const token = Cookies.get("token");
       const tokenType = Cookies.get("tokenType");
       fetch(`${window.apiBaseURL}/main/aliyunFile/${item.fileId}`, {
@@ -542,7 +542,7 @@ export default defineComponent({
               videoKey.value = obj.id;
               if (obj.isOpen == 1) {
                 var url = obj.fileUrl; //要预览文件的访问地址
-                fileUrl.value = `${Setting.fileServerUrl}?url=${encodeURIComponent(
+                fileUrl.value = `${window.apiBaseURL.fileServerUrl}?url=${encodeURIComponent(
                   Base64.encode(url)
                 )}`;
                 fileType.value = obj.couType;
@@ -563,7 +563,7 @@ export default defineComponent({
             if (r.couList && r.couList[0].isOpen == 1) {
               if (r.couList[0] && r.couList[0].couType == 3) {
                 var url = r.couList[0].fileUrl; //要预览文件的访问地址
-                fileUrl.value = `${Setting.fileServerUrl}?url=${encodeURIComponent(
+                fileUrl.value = `${window.apiBaseURL.fileServerUrl}?url=${encodeURIComponent(
                   Base64.encode(url)
                 )}`;
                 fileType.value = r.couList[0].couType;
@@ -624,7 +624,7 @@ export default defineComponent({
           var videoTime = fileType.value !== 3 ? player.value.currentTime() : null;
           fileUrl.value =
             item.couType == 3
-              ? `${Setting.fileServerUrl}?url=${encodeURIComponent(
+              ? `${window.apiBaseURL.fileServerUrl}?url=${encodeURIComponent(
                   Base64.encode(item.fileUrl)
                 )}`
               : item.fileUrl;

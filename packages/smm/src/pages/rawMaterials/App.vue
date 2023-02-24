@@ -208,7 +208,7 @@ export default defineComponent({
                     negative-text="取消"
                   >
                     {{
-                      trigger: () => <a style="color:red;cursor: pointer;display:inline-block;margin-left:8px">{"删除"}</a>,
+                      trigger: () => <a style="color:#C91019;cursor: pointer;display:inline-block;margin-left:8px">{"删除"}</a>,
                       default: () => `是否删除物资${row.commodityItemName}？`
                     }}
 

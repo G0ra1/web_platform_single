@@ -48,3 +48,10 @@ export function  classifys(type) {
     method: 'get',
   })
 }
+
+export function detail(id) {
+  return request({
+      url: `/study/studySpecial/detailForAdj/${id}`,
+      method: 'get',
+  })
+}

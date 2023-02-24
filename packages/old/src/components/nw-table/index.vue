@@ -3,25 +3,15 @@
     <n-layout class="nw-table" ref="tbody">
       <n-layout-header class="nw-table-header">
         <div class="nw-table-header-left" style="display: flex">
-          <slot
-            name="header-left"
-            :selected="selected"
-            :searchFormData="searchFormCache.value"
-          ></slot>
+          <slot name="header-left" :selected="selected" :searchFormData="searchFormCache.value"></slot>
           <div style="width: 120px; line-height: 32px">
             {{ selected.length ? `已选择${selected.length}项` : "" }}
-            <nw-icon
-              v-if="selected.length"
-              name="icon-cuowu"
-              color="red"
-              style="cursor: pointer"
-              title="取消全选"
-              @click="clearSelected"
-            />
+            <nw-icon v-if="selected.length" name="icon-cuowu" color="red" style="cursor: pointer" title="取消全选"
+              @click="clearSelected" />
           </div>
         </div>
-        <div class="nw-table-header-right">
-          <slot name="header-right"></slot>
+        <div class="nw-table-header-right" style="display: flex;">
+          <slot name="header-right" :searchFormData="searchFormCache.value"></slot>
           <!-- 这里是表格基础工具 -->
           <!-- 这里放置表格功能 -->
         </div>
@@ -33,12 +23,7 @@
       </n-layout-header>-->
       <n-layout has-sider class="nw-table-content">
         <n-layout-content>
-          <vxe-grid
-            v-bind="gridOptions"
-            ref="gridComponent"
-            class="mytable-scrollbar"
-            v-on="gridEvent"
-          >
+          <vxe-grid v-bind="gridOptions" ref="gridComponent" class="mytable-scrollbar" v-on="gridEvent">
             <!-- <template #pager>
             <vxe-pager
               :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
@@ -67,45 +52,21 @@
         footer
       </n-layout-footer>-->
     </n-layout>
-    <n-drawer
-      :show="searchFormVisible"
-      width="100%"
-      :height="200"
-      placement="right"
-      :to="$refs.tbody && $refs.tbody.$el"
-    >
-      <n-drawer-content
-        title="高级搜索"
-        :header-style="{
-          padding: '10px',
-          'font-size': '16px',
-          'font-weight': 'bold',
-        }"
-        :footer-style="{
-          padding: '10px',
-        }"
-      >
-        <slot
-          name="search-form"
-          :searchFormData="searchFormCache.value"
-          :searchFormData2="searchFormCache.items"
-        ></slot>
+    <n-drawer :show="searchFormVisible" width="100%" :height="200" placement="right"
+      :to="$refs.tbody && $refs.tbody.$el">
+      <n-drawer-content title="高级搜索" :header-style="{
+        padding: '10px',
+        'font-size': '16px',
+        'font-weight': 'bold',
+      }" :footer-style="{
+  padding: '10px',
+}">
+        <slot name="search-form" :searchFormData="searchFormCache.value" :searchFormData2="searchFormCache.items">
+        </slot>
 
         <template #footer>
-          <n-button
-            type="info"
-            size="small"
-            style="margin-right: 5px"
-            @click="handleSearch"
-            >查询</n-button
-          >
-          <n-button
-            type="warning"
-            size="small"
-            style="margin-right: 5px"
-            @click="resetSearch"
-            >重置</n-button
-          >
+          <n-button type="info" size="small" style="margin-right: 5px" @click="handleSearch">查询</n-button>
+          <n-button type="warning" size="small" style="margin-right: 5px" @click="resetSearch">重置</n-button>
           <n-button size="small" @click="handleCancel">取消</n-button>
         </template>
       </n-drawer-content>
@@ -163,17 +124,17 @@ export default defineComponent({
     },
     rowClassName: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
     currentChange: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
     // 接口请求
     request: {
       type: Object,
       default: () => ({
-        XHR: () => {}, // promise 请求函数
+        XHR: () => { }, // promise 请求函数
         params: {},
         pageMethod: (current, size) => ({
           // 分页
@@ -385,7 +346,7 @@ export default defineComponent({
       searchFormVisible,
       gridOptions,
       gridEvent,
-      handlePageChange: () => {},
+      handlePageChange: () => { },
       refreshColumn() {
         console.log("grid===", gridOptions);
         gridComponent.value.reloadColumn(gridOptions.columns);
@@ -471,6 +432,7 @@ export default defineComponent({
 // 表格样式
 .nw-table {
   height: 100%;
+
   &-header {
     display: inline-flex;
     align-items: center;
@@ -486,19 +448,23 @@ export default defineComponent({
     //   // float: right;
     // }
   }
+
   &-content {
     height: calc(~"100% - 40px");
   }
 }
+
 /*滚动条整体部分*/
 .mytable-scrollbar ::-webkit-scrollbar {
   width: 18px;
   height: 18px;
 }
+
 /*滚动条的轨道*/
 .mytable-scrollbar ::-webkit-scrollbar-track {
   background-color: #ffffff;
 }
+
 /*滚动条里面的小方块，能向上向下移动*/
 .mytable-scrollbar ::-webkit-scrollbar-thumb {
   background-color: #ccc;
@@ -506,12 +472,15 @@ export default defineComponent({
   border: 1px solid #f1f1f1;
   // box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 }
+
 .mytable-scrollbar ::-webkit-scrollbar-thumb:hover {
   background-color: #a8a8a8;
 }
+
 .mytable-scrollbar ::-webkit-scrollbar-thumb:active {
   background-color: #787878;
 }
+
 /*边角，即两个滚动条的交汇处*/
 .mytable-scrollbar ::-webkit-scrollbar-corner {
   background-color: #ffffff;

@@ -27,6 +27,9 @@ window.DM_SET_VALUE = async function (v) {
       v.applyUserDeptId = res.parentDeptId;
       v.applyUserOrgName = res.parentOrgName;
       v.applyUserOrgId = res.parentOrgId;
+
+      v.assetUserId = res.id;
+      v.assetUserName = res.userNameCh;
     });
   }
   if (v.materialAcceptAssetsList && v.materialAcceptAssetsList.length > 0) {

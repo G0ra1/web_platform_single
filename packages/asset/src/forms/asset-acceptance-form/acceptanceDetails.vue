@@ -25,7 +25,11 @@
           </vxe-column>
           <vxe-column field="descshort" title="物资描述" width="135">
           </vxe-column>
-          <vxe-column field="acceptanceBatch" title="验收批次号" width="135">
+          <vxe-column field="acceptanceBatch" title="验收批次号" width="135" :edit-render="{}">
+            <template #edit="{ row, column }">
+              <vxe-input v-model="row.acceptanceBatch" type="text" @change="dataChangeEvent({ row, column })">
+              </vxe-input>
+            </template>
           </vxe-column>
 
 
@@ -84,7 +88,7 @@
                 <n-image width="30" height="30" v-if="row.fileIds" :src="getUrl(row.fileIds)" />
                 <fileUploadButton v-model:fileIds="row.fileIds" :showFileList="false">
                   <n-button text>
-                    <nw-icon name="icon-add-bold" :size="25" />
+                    <nw-icon name="icon-n-y-add" :size="25" />
                   </n-button>
                 </fileUploadButton>
               </div>
@@ -99,7 +103,7 @@
                 <fileUploadButton ref="fileUploadButtonRef" v-model:fileIds="row.document" :showFileList="false"
                   :showLookOver="true" :multiple="true">
                   <n-button text>
-                    <nw-icon name="icon-add-bold" :size="25" />
+                    <nw-icon name="icon-n-y-add" :size="25" />
                   </n-button>
                 </fileUploadButton>
               </div>

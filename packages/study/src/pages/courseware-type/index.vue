@@ -1,16 +1,6 @@
 <template>
-  <n-layout class="nw-layout-full">
-    <n-layout-header>
-      <h1>课件分类</h1>
-      <div class="nw-page-header-right">
-        <ONwTableFun v-if="!formVisible" :table="nwTable"></ONwTableFun>
-      </div>
-    </n-layout-header>
-
-    <n-layout-content>
-      <n-card content-style="padding: 0;" style="height: 100%">
-          <ONwTable
-            
+  <div style="height:100%">
+    <ONwTable
             ref="nwTable"
             :columns="columns"
             :data="null"
@@ -31,7 +21,7 @@
                 size="small"
                 @click="show({})"
                 style="margin-right: 5px"
-                >新设字典</NButton
+                >新设字典1</NButton
               >
               <!--  <NButton size="small">修改</NButton>
                       <NButton size="small">删除</NButton>-->
@@ -60,9 +50,7 @@
                       <NButton type="info" size="small">其他</NButton> -->
             </template>
           </ONwTable>
-      </n-card>
-    </n-layout-content>
-  </n-layout>
+  </div>
 
   <AddCategory
     ref="addCategory"
@@ -254,5 +242,7 @@
   })
 </script>
 <style lang='less'>
-
+  .nw_content{
+    height: calc(~'100% - 100px')
+  }
 </style>

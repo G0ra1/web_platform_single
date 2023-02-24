@@ -37,12 +37,12 @@
                     searchFormData.bizSysCodes = value.join(',');
                   }
                 " multiple :response="{
-                  dataMethod: (res) =>
-                    res.map(({ dictItemCode: value, dictItemName: label }) => ({
-                      label,
-                      value,
-                    })),
-                }" />
+  dataMethod: (res) =>
+    res.map(({ dictItemCode: value, dictItemName: label }) => ({
+      label,
+      value,
+    })),
+}" />
             </n-form-item>
             <n-form-item label="任务名称" path="jobName">
               <n-input placeholder="请输入任务名称" v-model:value="searchFormData.jobName" />
@@ -70,8 +70,8 @@
       'font-size': '16px',
       'font-weight': 'bold',
     }" :footer-style="{
-      padding: '10px',
-    }">
+  padding: '10px',
+}">
       <template #footer>
         <n-button style="margin-right: 5px" size="small" @click="formVisible = false">取消</n-button>
         <n-button type="info" size="small" @click="handleSave">保存</n-button>
@@ -150,12 +150,11 @@ export default defineComponent({
       })
     }
     const getHtmlQuery = () => {
-      console.log(location)
-      console.log(location.search)
-      if (!location.search.split("?")[1]) return {}
+      let _location = window.parent.location
+      if (!_location.search.split("?")[1]) return {}
       try {
         let m = {}
-        location.search.split("?")[1].split('&').forEach(e => {
+        _location.search.split("?")[1].split('&').forEach(e => {
           m[e.split('=')[0]] = e.split('=')[1]
         });
         return m

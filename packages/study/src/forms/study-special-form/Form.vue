@@ -7,9 +7,13 @@
     :label-width="120"
     size="small"
     :style="{
+     
+      height: '100%',
+      width: '100%',
+      overflowY: 'scroll',
     }"
   >
-  <n-card :bordered="false" title="基本信息" size="small" >
+  <n-card style='padding:10px 0' :bordered="false" title="基本信息" size="small" >
       <n-grid :cols="2" :x-gap="24">
         <n-grid-item>
           <n-form-item label="专题标签" path="label">

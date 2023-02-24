@@ -24,9 +24,10 @@
                         block-line
                         label-field='orgName'
                         key-field='id'
+                        ref="treeGrid"
                         children-field='kids'
                         :pattern="pattern"
-                        :default-expanded-keys="['0']"
+                        :default-expanded-keys="defaultExpandedKeys"
                         :render-prefix="renderPrefix"
                         :render-suffix="renderSuffix"
                         @update:selected-keys="getPost"
@@ -115,7 +116,7 @@ import {
 import { NwIcon, NwDic, NwIconPick, MenuPick, NwPickPage } from '@platform/main';
 
 
-import {  setRolePostUserRel, getRolePostUserRel,rightList,allPostList,empLists,postLists  } from '../api/index.js'
+import {  setRolePostUserRel, getRolePostUserRel,rightList,allPostList,empLists,postLists,getRolePostandEmp  } from '../api/index.js'
 
 
 export default ({
@@ -155,6 +156,8 @@ export default ({
         const isLoading = ref(false)
         const empOptions = ref([])
         const postOptions = ref([])
+        const treeGrid = ref()
+        const defaultExpandedKeys = ref([])
         const empV = ref([])
         const postV = ref([])
         const orgId = ref('')
@@ -170,6 +173,7 @@ export default ({
         }
         const renderSuffix = ({ option }) =>{
           return <div>
+            
               <span style={`color:${allEmpV.value.get(option.id)?'#2080f0':''}`}> {allEmpV.value.get(option.id)?allEmpV.value.get(option.id).length : 0 } 人</span>
               <span style={`color:${allPostV.value.get(option.id)?'#2080f0':''}`}> {allPostV.value.get(option.id)?allPostV.value.get(option.id).length : 0} 岗</span>
             </div>
@@ -179,19 +183,19 @@ export default ({
           showModal.value = true
           treeShow.value = true
           rightList({isDefault:0,status:1,}).then((res) => {
-            
             treeList.value = res
             treeShow.value = false
+            defaultExpandedKeys.value = res.map(d=>d.id)
           })
           
           getRolePostUserRel({id:e.id}).then((res)=>{
             // 回显
               res.roleUsers.map((d)=>{
-                d.orgId = d.createUserParentOrgId
+                d.orgId = d.parentDeptId
                 return d
               })
                res.rolePosts.map((d)=>{
-                d.orgId = d.createUserParentOrgId
+                d.orgId = d.parentDeptId
                 return d
               })
               const userOrgIds = Array.from(new Set(res.roleUsers.map(d=>d.orgId)))
@@ -199,6 +203,7 @@ export default ({
               userOrgIds.map((d)=>{
                allEmpV.value.set(d,res.roleUsers.filter(f=>f.orgId == d).map(d=>d.userId))
               })
+              // allEmpV.value.set('100',['1569596493643599874','1569596493643599875','1569596493643599876','1585555196595343362','1615188024735404033',])
               postOrgIds.map((d)=>{
                allPostV.value.set(d,res.roleUsers.filter(f=>f.orgId == d).map(d=>d.postId))
               })
@@ -213,31 +218,48 @@ export default ({
                 empV.value = []
                 postV.value = []
                 orgId.value = e[0]
-                empLists({parentOrgId:e[0]}).then((res)=>{
-                    empOptions.value = res.map(d=>{
+                getRolePostandEmp(orgId.value).then((r)=>{
+                  empOptions.value =  r.userList ? r.userList.map(d=>{
                         d.label = d.userNameCh
                         d.value = d.id
                         d.key = d.id
                         return d
-                    })
+                    }) : []
                     empV.value = allEmpV.value.get(e[0])
-                    if(tabV.value == '人员'){
-                        isLoading.value = false
-                    }
-                    
-                })
-                postLists({parentOrgId:e[0]}).then((res)=>{
-                    postOptions.value = res.map(d=>{
+                    postOptions.value =  r.postList ?  r.postList.map(d=>{
                         d.label = d.postName
                         d.value = d.id
                         d.key = d.id
                         return d
-                    })
+                    }) : []
                     postV.value = allPostV.value.get(e[0])
-                    if(tabV.value == '岗位'){
-                        isLoading.value = false
-                    }
+                    isLoading.value = false
                 })
+                // empLists({parentOrgId:e[0]}).then((res)=>{
+                //     empOptions.value = res.map(d=>{
+                //         d.label = d.userNameCh
+                //         d.value = d.id
+                //         d.key = d.id
+                //         return d
+                //     })
+                //     empV.value = allEmpV.value.get(e[0])
+                //     if(tabV.value == '人员'){
+                //         isLoading.value = false
+                //     }
+                    
+                // })
+                // postLists({parentOrgId:e[0]}).then((res)=>{
+                //     postOptions.value = res.map(d=>{
+                //         d.label = d.postName
+                //         d.value = d.id
+                //         d.key = d.id
+                //         return d
+                //     })
+                //     postV.value = allPostV.value.get(e[0])
+                //     if(tabV.value == '岗位'){
+                //         isLoading.value = false
+                //     }
+                // })
             } else {
                 
             }
@@ -276,7 +298,6 @@ export default ({
         //   人员穿梭值改变时调用
         const empChange = (v)=>{
           allEmpV.value.set(orgId.value,v)
-          console.log( allEmpV.value,' allEmpV.value')
         }
         const postChange = (v) => {
           allPostV.value.set(orgId.value,v)
@@ -315,8 +336,10 @@ export default ({
         return {
             renderPrefix,
             renderSuffix,
+            treeGrid,
             pattern,
             treeList,
+            defaultExpandedKeys,
             data, 
             allEmpV,//所有已选人员
             allPostV, //所有已选岗位

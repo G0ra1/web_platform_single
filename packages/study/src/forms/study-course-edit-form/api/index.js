@@ -31,3 +31,13 @@ export function courseClassification (type) {
         method: 'get',
     })
 }
+
+// 调整详情
+export function detail(id) {
+    return request({
+        url: `/study/studyLesson/detailForAdj/${id}`,
+        method: 'get',
+    })
+    // /study/studyLesson/procDetail
+  }
+  

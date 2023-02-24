@@ -1,1 +1,0 @@
-import{C as t,bK as o,r}from"./index.0e7eb3bd.js";const n=()=>new Promise((e,s)=>{t.remove("token"),t.remove("tokenType"),o.clear(),e(1)});function i(e){return r({url:"/portal/favoritesType/list",method:"post",data:{}})}export{n as A,i as f};

@@ -4,7 +4,7 @@
       <h1>课件管理</h1>
      
     </n-layout-header>
-    <n-layout position="absolute"  has-sider style="top: 36px; " ref="page">
+    <n-layout position="absolute"  has-sider style="top: 50px; " ref="page">
      <n-layout-sider
         collapse-mode="width"
         :collapsed-width="400"
@@ -51,7 +51,7 @@
         <template v-slot:header-right="{ selected }">
           <n-button
             type="info"
-            size="small"
+            class="liuchengBtn"
             style="margin-right: 5px"
             @click="show({labelCode,labelName})"
             >添加</n-button
@@ -194,7 +194,7 @@ export default defineComponent({
     }
     const renderPrefix = ({ option }) => {
       return h(
-        <NwIcon name="icon-bumen1" style="margin-right:5px;" size={15} 
+        <NwIcon name="icon-n-y-fenlei" style="margin-right:5px;" size={15} 
         />
       )
     }
@@ -287,9 +287,29 @@ export default defineComponent({
                 },
               }
         },
-        { field: "fileSizeView", title: "文件大小", showHeaderOverflow: true,
+        { field: "", title: "文件大小", showHeaderOverflow: true,
+          slots: {
+            default: ({row}) => {
+              return [
+                <span>
+                  { row.fileSizeView }
+                  
+                </span>,
+              ];
+            },
+          }
         },
-        { field: "createTime", title: "创建时间", showOverflow: true,},
+        { field: "", title: "创建时间",   slots: {
+            default: ({row}) => {
+              return [
+                <span>
+                  { row.createTime }
+                  
+                </span>,
+              ];
+            },
+          }
+        },
         { field: "createUserName", title: "创建人", showOverflow: true,},
          {
             field: '',

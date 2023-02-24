@@ -1,5 +1,5 @@
 <template>
-    <n-button type="primary" @click="sendHandle">驳回</n-button>
+    <n-button type="primary" class="liuchengBtn" @click="sendHandle">驳回</n-button>
     <reject />
 </template>
 

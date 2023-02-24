@@ -12,14 +12,14 @@
     style="width: 700px"
   >
     <n-grid>
-      <n-grid-item span="24" style="height: 650px" v-if="showSide">
+      <n-grid-item span="24" style="height: 520px" v-if="showSide">
         <div class="sider mytable-scrollbar">
           <!-- <n-input v-model:value="pattern" placeholder="搜索" /> -->
           <n-spin :show="leftSpinShow">
             <n-tree
               placeholder="请选择"
               :data="tree.treeList"
-              style="height: 620px; padding: 5px 0"
+              style="height: 480px; padding: 5px 0"
               block-line
               virtual-scroll
               checkable

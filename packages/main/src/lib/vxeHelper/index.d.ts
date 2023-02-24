@@ -10,7 +10,8 @@ interface VxeGridNormalInstance {
 }
 
 interface VxeGridPagingInstance<T> {
-    readonly bind: VxeGridProps
+    // readonly bind: VxeGridProps
+    bind: Ref<VxeGridProps>
     gridRef: Ref<VxeGridInstance> // 表格组件实例
     filterData: Ref<T> // 查询数据对象
     query: (d?: T) => void // 查询函数

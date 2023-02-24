@@ -148,7 +148,7 @@
                   <NTooltip trigger="hover">
                     <template #trigger>
                       <NwIcon
-                        name="icon-add-bold"
+                        name="icon-n-y-add"
                         style="cursor: pointer"
                         :size="18"
                         @click="

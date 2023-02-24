@@ -36,7 +36,7 @@ const routes = [
   {
     path: '/send-notify',
     component: () => import('../pages/send-notify.vue'),
-  }
+  },
   // {
   //   path: 'wfmydrafttask',
   //   component: () => import('../pages/wfmydrafttask.vue'),

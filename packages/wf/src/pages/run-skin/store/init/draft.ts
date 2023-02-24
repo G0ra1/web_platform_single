@@ -10,10 +10,12 @@ import {
     ProcdefInfoRef,
     WfSendData,
     FieldRules,
-    setFieldRules
-    
+    setFieldRules,
+    RespFormDto,
+    FormDataSha256
 } from '../index'
 
+import sha256 from 'js-sha256'
 
 // 运行
 export const run = async (
@@ -28,6 +30,7 @@ export const run = async (
     let FormData = {}
     StateModalRef.value!.setMsg('loadProcdef', '加载流程定义...', 'loading')
     const IsSuccessProc = await getFormInfo('draft', ParamId).then((res: any) => {
+        RespFormDto.value = res.respFormDto
         const respFormDto = res.respFormDto
         console.log('======res=====', res)
 
@@ -45,14 +48,14 @@ export const run = async (
 
         FormData = JSON.parse(respFormDto.bizDataList[0].params)
 
-        setFieldRules(res.wfFormDefs[0].formVarDefVoList)
+        setFieldRules(res.wfFormDefs[0].formVarDefVoList || [])
         // 设置流程信息
-        ProcdefInfoRef.value!.setValue({
-            procdefTypeName: res.procdefTypeName,
-            procdefName: res.procdefName,
-            priority: res.wfNodeDef.priority || '无',
-            bizPriority: 'general',
-        })
+        // ProcdefInfoRef.value!.setValue({
+        //     procdefTypeName: res.procdefTypeName,
+        //     procdefName: res.procdefName,
+        //     priority: res.wfNodeDef.priority || '无',
+        //     bizPriority: 'general',
+        // })
 
         // 设置按钮权限
         ProcessActionRef.value!.setRule(res.wfButtonDefs)
@@ -69,18 +72,18 @@ export const run = async (
     StateModalRef.value!.setMsg('loadProcdef', '流程定义加载完成', 'success')
 
     // ------------------ 获取用户信息
-    StateModalRef.value!.setMsg('loadUser', '加载用户信息...', 'loading')
-    await Db.get('userInfo').then((res: any) => {
-        console.log('=======', res)
-        // 赋值用户信息
-        // 设置用户信息
-        UserInfoRef.value!.setValue({
-            createUserName: res.userNameCh,
-            createUserParentDeptName: res.parentDeptName,
-            createUserParentOrgName: res.parentOrgName
-        })
-    })
-    StateModalRef.value!.setMsg('loadUser', '用户信息加载完成', 'success')
+    // StateModalRef.value!.setMsg('loadUser', '加载用户信息...', 'loading')
+    // await Db.get('userInfo').then((res: any) => {
+    //     console.log('=======', res)
+    //     // 赋值用户信息
+    //     // 设置用户信息
+    //     UserInfoRef.value!.setValue({
+    //         createUserName: res.userNameCh,
+    //         createUserParentDeptName: res.parentDeptName,
+    //         createUserParentOrgName: res.parentOrgName
+    //     })
+    // })
+    // StateModalRef.value!.setMsg('loadUser', '用户信息加载完成', 'success')
 
     // ------------------ 加载表单页面
     StateModalRef.value!.setMsg('loadForm', '加载表单页面...', 'loading')
@@ -105,10 +108,9 @@ export const run = async (
     // FormFrameRef.value.setValue({
     //     sumBudgetExecuteAmount: 987
     // })
+    await FormFrameRef.value.getValue().then((r: any) => {
+        FormDataSha256.value = (sha256 as any)(JSON.stringify(r))
+    })
     FormFrameRef.value.setRules(FieldRules.value)
-
-
-
-
     return true
 }

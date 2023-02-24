@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-import { NForm, NInput, NDivider, NSwitch, NSelect, NGrid, NFormItemGi, NDatePicker, NUpload, useDialog, useMessage, NButton } from "naive-ui";
+import { NForm, NInput, NDivider, NSwitch, NSelect, NGrid, NFormItemGi, NDatePicker, NUpload, useDialog, useMessage, NButton,NTag } from "naive-ui";
 import { FormModal, initDialog, fileUrl, headers, finishType } from "./App";
 import { FormPermissionEnum } from "../../lib/constant/FormPermissionEnum"
 import { UploadFileInfo } from 'naive-ui';
 import { timestampToDate } from "../../lib/util/date"
+import { NwIcon, NwDic } from '@platform/main';
+
 
 initDialog(useDialog(), useMessage());
 const { formRef, dataModel, rules, dataPermits, educationOptions, outerDisciplineOptions, handleDownload,
-    contractList, insureList, examList, idCardList, handleFinish, } = new FormModal();
+    contractList, insureList, examList, idCardList, handleFinish,checkidCard,checkPhoneNmber } = new FormModal();
 console.log("======", idCardList.value);
 </script>
 <template>
@@ -19,45 +21,50 @@ console.log("======", idCardList.value);
                 <n-input placeholder="姓名" v-model:value="dataModel.userNameCh"
                     :disabled="dataPermits.userNameCh === FormPermissionEnum.READONLY" />
             </n-form-item-gi>
+            <n-form-item-gi :span="12" label="身份证" path="idCard" v-if="dataPermits.idCard !== FormPermissionEnum.HIDE">
+                <n-input placeholder="身份证" v-model:value="dataModel.idCard"
+                    :disabled="dataPermits.idCard === FormPermissionEnum.READONLY"  @blur="checkidCard(dataModel.idCard)" />
+            </n-form-item-gi>
             <n-form-item-gi :span="12" label="性别" path="sex" v-if="dataPermits.sex !== FormPermissionEnum.HIDE">
-                <n-switch :round="false" v-model:value="dataModel.sex" :checked-value=2 :unchecked-value=1
+                <!-- <n-switch :round="false" v-model:value="dataModel.sex" :checked-value=2 :unchecked-value=1
                     :disabled="dataPermits.sex === FormPermissionEnum.READONLY">
                     <template #checked>女 </template>
                     <template #unchecked> 男 </template>
-                </n-switch>
+                </n-switch> -->
+                <n-tag v-if="(dataModel.sex == 1)">男</n-tag>
+                <n-tag v-else-if="(dataModel.sex == 2)">女</n-tag>
             </n-form-item-gi>
             <n-form-item-gi :span="12" label="工资单位" path="parentOrgName"
                 v-if="dataPermits.parentOrgName !== FormPermissionEnum.HIDE">
                 {{ dataModel.parentOrgName }}
             </n-form-item-gi>
-            <n-form-item-gi :span="12" label="身份证" path="idCard" v-if="dataPermits.idCard !== FormPermissionEnum.HIDE">
-                <n-input placeholder="身份证" v-model:value="dataModel.idCard"
-                    :disabled="dataPermits.idCard === FormPermissionEnum.READONLY" />
-            </n-form-item-gi>
+           
             <n-form-item-gi :span="12" label="最高学历" path="educationId"
                 v-if="dataPermits.educationId !== FormPermissionEnum.HIDE">
                 <n-select v-model:value="dataModel.educationId" :options="educationOptions as any"
-                    @update:value="(d: string) => dataModel.educationName = d" placeholder="请选择"
+                    @update:value="(d) => dataModel.educationName = d" placeholder="请选择"
                     :disabled="dataPermits.educationId === FormPermissionEnum.READONLY">
                 </n-select>
             </n-form-item-gi>
-            <n-form-item-gi :span="12" label="从事专业" path="outerDisciplineId"
-                v-if="dataPermits.outerDisciplineId !== FormPermissionEnum.HIDE">
-                <n-select v-model:value="dataModel.outerDisciplineId" :options="outerDisciplineOptions as any"
-                    @update:value="(d: string) => dataModel.outerDisciplineName = d" placeholder="请选择"
-                    :disabled="dataPermits.outerDisciplineId === FormPermissionEnum.READONLY">
-                </n-select>
+            <n-form-item-gi :span="12" label="从事专业" path="outerDisciplineId">
+                <NwDic
+                    dictCode="professional_type"
+                    v-model:value="dataModel.postRankId"
+                    v-model:label="dataModel.postRankName"
+                    ></NwDic>
             </n-form-item-gi>
             <n-form-item-gi :span="12" label="出生日期" path="birthday"
                 v-if="dataPermits.birthday !== FormPermissionEnum.HIDE">
-                <n-date-picker v-model:formatted-value="dataModel.birthday" type="date" clearable
+
+                <n-input placeholder="出生日期" v-model:value="dataModel.birthday" disabled />
+                <!-- <n-date-picker v-model:formatted-value="dataModel.birthday" type="date" clearable
                     value-format="yyyy-MM-dd HH:mm:ss" :disabled="dataPermits.birthday === FormPermissionEnum.READONLY"
-                    placeholder="请选择日期" />
+                    placeholder="请选择日期" /> -->
             </n-form-item-gi>
             <n-form-item-gi :span="12" label="手机号" path="phoneNum"
                 v-if="dataPermits.phoneNum !== FormPermissionEnum.HIDE">
                 <n-input placeholder="手机号" v-model:value="dataModel.phoneNum"
-                    :disabled="dataPermits.phoneNum === FormPermissionEnum.READONLY" />
+                    :disabled="dataPermits.phoneNum === FormPermissionEnum.READONLY"  @blur="checkPhoneNmber(dataModel.phoneNum)"/>
             </n-form-item-gi>
             <n-form-item-gi :span="12" label="工作时间" path="jobDate"
                 v-if="dataPermits.jobDate !== FormPermissionEnum.HIDE">
@@ -73,7 +80,7 @@ console.log("======", idCardList.value);
             <n-form-item-gi :span="24" label="合同附件" path="contractFileId"
                 v-if="dataPermits.contractFileId !== FormPermissionEnum.HIDE">
                 <n-upload :action="fileUrl" :headers="headers" :show-file-list="true" show-download-button
-                    @download="(file: UploadFileInfo) => handleDownload(file, 'contract')"
+                    @download="(file: any) => handleDownload(file, 'contract')"
                     @finish="(finish: finishType) => handleFinish(finish, 'contract')" :max="1"
                     :default-file-list="contractList">
                     <n-button>上传合同附件</n-button>
@@ -110,4 +117,5 @@ console.log("======", idCardList.value);
     </n-form>
     <!-- <n-divider dashed>调试信息</n-divider>
     <pre>{{ JSON.stringify(dataModel, null, 2) }}</pre> -->
+    
 </template>

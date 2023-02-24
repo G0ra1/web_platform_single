@@ -3,7 +3,7 @@
     <n-layout-header>
       <h1>试题管理</h1>
     </n-layout-header>
-    <n-layout position="absolute"  has-sider style="top: 36px; " ref="page">
+    <n-layout position="absolute"  has-sider style="top: 50px; " ref="page">
       <n-layout-sider
         collapse-mode="width"
         :collapsed-width="400"
@@ -19,8 +19,8 @@
                     <n-button
                       type="info"
                       @click="showPopover = !showPopover"
-                      size="small"
-                       style="margin: 0 0 0 5px"
+                      class="liuchengBtn"
+                      style="margin: 0 0 0 5px"
                     >
                         <template #icon>
                          <NwIcon name="icon-n-y-add" style="cursor: pointer;" size={18}  />
@@ -105,7 +105,7 @@
         <template v-slot:header-left="{ selected }"> </template>
         <template #header-right>
           
-          <vxe-button content="单个录入" :disabled="(databaseId && databaseId=='0')">
+          <vxe-button content="单个录入" :disabled="(databaseId && databaseId=='0')"   style="height:36px">
             <template #dropdowns>
               <vxe-button type="text" content="单选题" @click="handleShow({databaseId,databaseName,questionCode:0})"></vxe-button>
               <vxe-button type="text" content="多选题" @click="handleShow({databaseId,databaseName,questionCode:1})"></vxe-button>
@@ -115,11 +115,11 @@
 
             </template>
           </vxe-button>
-          <vxe-button @click="()=>{
+          <vxe-button style="height:36px"  @click="()=>{
             showToLeadShow = true
             exportData = []
           }" :disabled="(databaseId && databaseId=='0')">文档导入</vxe-button>
-          <vxe-button @click="clientTemplate"  :loading="isTableLoading">模板导出</vxe-button>
+          <vxe-button @click="clientTemplate" style="height:36px"   :loading="isTableLoading">模板导出</vxe-button>
           
         </template>
         <template v-slot:search-form="{ searchFormData, searchFormData2 }">
@@ -476,7 +476,7 @@ export default defineComponent({
                 <NwIcon name="icon-n-n-eye" style="cursor: pointer;" size={18} onClick={()=>{ preview.value.sonFn(row)}} />
                 <NwIcon name="icon-bianji1" style="cursor: pointer;margin-left:5px;" size={18} onClick={()=>{ handleShow(row)}} />
                <NDropdown onSelect={(key)=>handleSelect(key,row)} trigger={"hover"} showArrow={true} options={dropdownOptions}>
-                  <NwIcon name="icon-qita" color="#010101" style="cursor: pointer;margin-left:5px;" size={18} />
+                  <NwIcon name="icon-n-y-qita" color="#010101" style="cursor: pointer;margin-left:5px;" size={18} />
               </NDropdown>
                 
               </div>,
@@ -576,7 +576,7 @@ export default defineComponent({
     }
     const renderPrefix = ({ option }) => {
       return h(
-         <NwIcon name="icon-bumen1" style="margin-right:5px;" size={15} onClick={()=>{
+         <NwIcon name="icon-n-y-fenlei" style="margin-right:5px;" size={15} onClick={()=>{
                databaseId.value = option.id
               databaseName.value = option.databaseName 
                 info(option.id)
@@ -587,11 +587,11 @@ export default defineComponent({
     }
     const renderLabel = ({ option }) => {
       return h(
-        <span onClick={()=>{
+        <div style='width:100%' onClick={()=>{
           databaseId.value = option.id
           databaseName.value = option.databaseName 
           info(option.id)
-        }}>{option.label}</span>
+        }}>{option.label}</div>
         
       )
     }
@@ -600,7 +600,7 @@ export default defineComponent({
       if((option.id == databaseId.value) && databaseId.value != '0'){
         return h(
           <div>
-            <NwIcon name="icon-edit" style="cursor: pointer;margin-right:5px;" size={15} onClick={()=>{
+            <NwIcon name="icon-n-y-edit" style="cursor: pointer;margin-right:5px;" size={15} onClick={()=>{
               modelRef.value = {...option,}
               showPopover.value = true
             }} />
@@ -611,7 +611,7 @@ export default defineComponent({
               
             >
               {{
-                trigger:()=>  <NwIcon name="icon-del" style="cursor: pointer;" size={15} />,
+                trigger:()=>  <NwIcon name="icon-n-y-shanchu" style="cursor: pointer;" size={15} />,
                 default:()=> '是否删除当前选项?'
               }}
               
@@ -718,7 +718,7 @@ export default defineComponent({
             fn(modelRef.value).then((res)=>{
               getTestQuestions()
                showPopover.value = false
-               modelRef.value = []
+               modelRef.value = {}
                 // context.emit('update:callback');
                 // showModalRef.value = false
               

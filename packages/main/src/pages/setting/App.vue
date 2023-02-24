@@ -65,6 +65,20 @@
                 </div>
               </template>
             </n-list-item>
+            
+            <n-list-item>
+              <template #prefix>
+                <div class="user-form-prefix">风格样式</div>
+              </template>
+              <div class="user-form-content">{{ themeNameComputed }}</div>
+              <template #suffix>
+                <div class="user-form-suffix">
+                  <a href="javascript: void(0)" @click="NwModalTheme.show()"
+                    >修改</a
+                  >
+                </div>
+              </template>
+            </n-list-item>
           </n-list>
         </div>
       </n-layout-content>
@@ -73,12 +87,13 @@
     <NwModalAvatar ref="NwModalAvatar" @callback="mdmUserByIds" />
     <NwModalEmail ref="NwModalEmail" @callback="mdmUserByIds" />
     <NwModalPhone ref="NwModalPhone" @callback="mdmUserByIds" />
+    <NwModalTheme ref="NwModalTheme" @callback="themeRefresh" />
     </n-message-provider>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, reactive, onMounted } from "vue";
+import { defineComponent, ref, reactive, onMounted, computed } from "vue";
 import {
   NLayout,
   NLayoutHeader,
@@ -108,7 +123,9 @@ import NwModalPwd from "./modal/pwd.vue";
 import NwModalAvatar from "./modal/avatar.vue";
 import NwModalEmail from "./modal/email.vue";
 import NwModalPhone from "./modal/phone.vue";
+import NwModalTheme from "./modal/theme.vue";
 
+import { Themes } from '../../theme/index'
 export default defineComponent({
   components: {
     NLayout,
@@ -133,6 +150,7 @@ export default defineComponent({
     NwModalAvatar,
     NwModalEmail,
     NwModalPhone,
+    NwModalTheme,
     NMessageProvider
   },
   setup() {
@@ -140,10 +158,15 @@ export default defineComponent({
     const NwModalAvatar = ref(null);
     const NwModalEmail = ref(null);
     const NwModalPhone = ref(null);
+    const NwModalTheme = ref(null);
     const email = ref("");
     const phoneNum = ref("");
     const avatarUrl = ref("");
-   
+    const theme = ref('');
+    const themeRefresh = () => {
+      theme.value = window.localStorage.getItem('theme')
+    }
+    themeRefresh()
     const callback = () =>{
       window.history.go(-1)
     }
@@ -177,10 +200,17 @@ export default defineComponent({
       NwModalAvatar,
       NwModalEmail,
       NwModalPhone,
+      NwModalTheme,
+      theme,
       email,
       phoneNum,
       avatarUrl,
       callback,
+      themeRefresh,
+      themeNameComputed: computed(() => {
+        const t = Themes.value.find(d => d.themeName === theme.value)
+        return t ? t.themeLabel : '-'
+      }),
       mdmUserByIds() {
         // 用户的id
         let id = "";

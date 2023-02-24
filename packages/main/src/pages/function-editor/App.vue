@@ -72,8 +72,8 @@
   />
 </template>
 
-<script>
-import { defineComponent, ref, computed, nextTick } from 'vue'
+<script lang="jsx">
+import { defineComponent, ref, computed, nextTick, h } from 'vue'
 
 import {
   NMessageProvider,
@@ -89,7 +89,9 @@ import {
   NDivider,
   NButton,
   NDrawer,
-  NScrollbar
+  NInput,
+  NScrollbar,
+  useDialog
 } from 'naive-ui'
 import FunctionDemo from './components/function-demo/index.vue'
 import FunBasic from './components/fun-basic/index.vue'
@@ -122,12 +124,14 @@ export default defineComponent({
     FunContent,
     FunScript,
     NButton,
+    NInput,
     NDrawer,
     NScrollbar,
     NwFunctionViewer
     // NwFunctionView
   },
   setup() {
+    const dialog = useDialog()
     const previewVisible = ref(false)
     const previewFunctionViewRef = ref(null)
     actionInit()
@@ -153,13 +157,43 @@ export default defineComponent({
       buttons,
       previewVisible,
       handleShowPreview() {
-
-        previewFunctionViewRef.value.show({
-          ...basic.value,
-          ...content.value,
-          buttons: JSON.stringify(buttons.value),
-          script: JSON.stringify(script.value),
-        }, {})
+        // 预览之前录入测试参数
+        const paramsStr = ref('[{}]')
+        const errorStr = ref('')
+        const previewDialog = dialog.warning({
+          title: '输入测试参数',
+          content: () => {
+            return [
+            <div style="padding: 5px;">
+              <NInput
+              value={paramsStr.value}
+              onUpdateValue={(d) => { paramsStr.value = d }}
+              type="textarea" style="height: 100px;" ></NInput>
+            </div>]
+          },
+          action: () => {
+            return [
+              <div style="color: red">{errorStr.value}</div>,
+              <NButton type="primary" onClick={() => {
+                try {
+                  
+                  const params = JSON.parse(paramsStr.value)
+                  // 关闭
+                  previewDialog.destroy()
+                  previewFunctionViewRef.value.show({
+                    ...basic.value,
+                    ...content.value,
+                    buttons: JSON.stringify(buttons.value),
+                    script: JSON.stringify(script.value),
+                  }, params)
+                } catch (error) {
+                  errorStr.value = 'JSON解析错误'
+                }
+              }}>确定</NButton>
+            ]
+          }
+        });
+        
 
         // 组装
         // console.log('buttons.value==', buttons.value)
@@ -201,7 +235,7 @@ export default defineComponent({
 
       },
       handleCancel () {
-        window.location.href = '/web-main/pages/function-manage.html'
+        window.parent.dispatchEvent(new Event('hashchange'))
       }
     }
   },

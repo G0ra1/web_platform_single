@@ -11,6 +11,7 @@ export default async () => {
     plugins: [vue()],
     base: `/${baseName}`,
     build: {
+      // target:['edge90','chrome90','firefox90','safari15'],
       outDir: `../../dist/${baseName}`,
       // lib: {
       //   entry: resolve(__dirname, 'src/export.ts'),

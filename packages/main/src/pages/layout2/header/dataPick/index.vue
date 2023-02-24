@@ -1,12 +1,16 @@
 
 <template>
-    <n-popover :theme-overrides="{ padding: 0}" placement="bottom-end" trigger="hover" :show-arrow="false">
+    <n-popover :theme-overrides="{ padding: 0}" placement="bottom-start" trigger="hover" :show-arrow="false">
         <template #trigger>
-        <n-button> {{ActiveMenuData.label}}</n-button>
+        <n-button style="max-width: 200px" :title="ActiveMenuData.label">
+            <div style="width: 100%;overflow:hidden;text-overflow:ellipsis;">
+            {{ActiveMenuData.label}}
+            </div>
+        </n-button>
         </template>
         <div>
             <div style="padding: 5px;">
-                <n-input size="small"></n-input>
+                <n-input size="small" :value="searchStr" @update:value=""></n-input>
             </div>
             <div style="padding: 5px 0 5px 5px;background:var(--light-gray5);border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">
                 
@@ -59,6 +63,7 @@ export default defineComponent({
     components: {
     },
     setup (props) {
+        const searchStr = ref<string>('')
         const scrollRef = ref<any>(null)
         const list = ref<Array<any>>([])
         const pageNum = ref(1)
@@ -78,6 +83,9 @@ export default defineComponent({
                     }
                 }
             }).then((res) => {
+                if (!res.records.length) {
+                    return true
+                }
                 list.value.push(...res.records.map((d: any) => ({
                     valueKey: ActiveMenuData.value.valueKey,
                     value: d[ActiveMenuData.value.valueKey],
@@ -93,7 +101,15 @@ export default defineComponent({
                 return res.current === res.pages
             })
         }
+        let st: any
+        const onInputSearch = () => {
+            clearTimeout(st)
+            st = setTimeout(() => {
+                alert(1)
+            }, 500);
+        }
         return {
+            searchStr,
             scrollRef,
             ActiveMenuData,
             list,
@@ -111,7 +127,8 @@ export default defineComponent({
             handle (item: any) {
                 Page.toLevel2Menu(item.valueKey, item.value, item.labelKey, item.label, item.row)
             },
-            handleParentMenu
+            handleParentMenu,
+            onInputSearch
         }
     }
 })

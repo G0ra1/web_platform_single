@@ -2,7 +2,7 @@
     <n-drawer v-model:show="active" width="900" :placement="placement">
         <n-drawer-content title="收藏夹管理">
             <n-form ref="formRef" :model="model" style="padding:10px" :rules="rules" label-placement="left"
-                label-width="80" require-mark-placement="right-hanging" :size="size">
+                label-width="80" require-mark-placement="right-hanging">
                 <n-form-item label="分类名称" path="typeName" v-if="modelType === 1">
                     <n-input v-model:value="model.typeName" placeholder="请输入分类" />
                 </n-form-item>
@@ -13,7 +13,7 @@
                     <n-input v-model:value="model.webUrl" placeholder="请输入链接" />
                 </n-form-item>
                 <n-form-item label="分类" path="typeId" v-if="modelType === 2">
-                    <n-select v-model:value="model.typeId" filterable placeholder="选择分类" :options="options" />>
+                    <n-select v-model:value="model.typeId" filterable placeholder="选择分类" :options="options" />
                 </n-form-item>
                 <n-form-item path="inputValue">
                     <n-space justify="end" style="width: 100%;">
@@ -33,7 +33,7 @@
 </template>
 <script lang="jsx">
 import { defineComponent, ref, reactive, onMounted } from 'vue'
-import { model, save, modelType, options, getTypeList, treeData, treeSelect, message, delHandle, sContext } from './store.tsx'
+import { model, rules, formRef, save, modelType, options, getTypeList, treeData, treeSelect, message, delHandle, sContext } from './store.tsx'
 import {
     NModal,
     NLayout,
@@ -95,7 +95,9 @@ export default defineComponent({
             message,
             options,
             delHandle,
-            sContext
+            sContext,
+            rules,
+            formRef
         }
     }
 })

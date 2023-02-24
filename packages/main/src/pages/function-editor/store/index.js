@@ -138,14 +138,13 @@ export const saveFun = () => {
     if (actionType.value === 'create') {
         
         create(data).then(res => {
-            window.location.href = `/main/pages/function-manage.html#/`
-
+            window.parent.dispatchEvent(new Event('hashchange'))
         })
 
     } else if (actionType.value === 'edit') {
 
         edit(data).then(res => {
-            window.location.href = `/main/pages/function-manage.html#/`
+            window.parent.dispatchEvent(new Event('hashchange'))
         })
     }
 }

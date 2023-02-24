@@ -91,6 +91,8 @@ export default defineComponent({
     .n-menu-item-content-header {
       padding-left: 15px;
     }
+    
   }
+  
 }
 </style>

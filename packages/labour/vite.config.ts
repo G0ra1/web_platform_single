@@ -12,14 +12,16 @@ export default async () => {
     plugins: [vue()],
     base: `/${baseName}`,
     build: {
+      // target: ['edge90', 'chrome90', 'firefox90', 'safari15'],
       outDir: `../../dist/${baseName}`,
+      //测试222
       // lib: {
       //   entry: resolve(__dirname, 'src/export.ts'),
       //   name: 'CommonNw',
       //   fileName: (format) => `commonnw.${format}.js`
       // },
       rollupOptions: {
-        input: buildHtml(fs, (file: string) =>  resolve(__dirname, `./${file}`), baseName),
+        input: buildHtml(fs, (file: string) => resolve(__dirname, `./${file}`), baseName),
         // output: {
         //   manualChunks(id) { // 分包
         //     console.log(id)
@@ -49,7 +51,8 @@ export default async () => {
       port: 3006,
       host: "0.0.0.0",
       proxy: {
-        ...proxy
+        ...proxy,
+      
       }
     }
   })

@@ -8,16 +8,24 @@
       bordered
       style="flex: 0 0 32px;border-bottom: var(--border);"
       >
+        <ToolbarPanel />
       </n-layout-header>
       <n-layout has-sider  >
         <n-layout-sider bordered style="border-right: var(--border);" :width="210" contentStyle="">
-          <WidgetPanel />
+          <n-tabs>
+            <n-tab-pane tab="组件" name="widget">
+              <WidgetPanel />
+            </n-tab-pane>
+            <n-tab-pane tab="变量" name="var">
+              1
+            </n-tab-pane>
+          </n-tabs>
         </n-layout-sider>
         <n-layout-content contentStyle="padding: 0;">
           <!-- <PagePanel /> -->
           <FormPanel />
         </n-layout-content>
-        <n-layout-sider style="border-left: var(--border);box-shadow: 0px 0px 3px #979797;" bordered  :width="210" contentStyle="padding: 2px;">
+        <n-layout-sider style="border-left: var(--border);box-shadow: 0px 0px 3px #979797;" bordered  :width="210" contentStyle="padding: 0px;">
           <AttributePanel />
         </n-layout-sider>
       </n-layout>
@@ -35,13 +43,15 @@ import { ref, reactive, defineComponent, nextTick, h, onMounted } from 'vue'
 // import type { VxeGridProps, VxeGridInstance } from 'vxe-table'
 
 import {
-  NwIcon, RequestPaging, VxeHelper, request
+  NwIcon, RequestPaging, VxeHelper, request, NwPickAny
 } from '@platform/main'
 
 import WidgetPanel from './components/widget-panel/index.vue'
 import PagePanel from './components/page-panel/index.vue'
 import FormPanel from './components/form-panel/index.vue'
 import AttributePanel from './components/attribute-panel/index.vue'
+
+import ToolbarPanel from './components/toolbar-panel/index.vue'
 
 import theme from './theme/index'
 
@@ -51,7 +61,9 @@ export default defineComponent({
     WidgetPanel,
     PagePanel,
     FormPanel,
-    AttributePanel
+    AttributePanel,
+    NwPickAny,
+    ToolbarPanel
   },
   setup(props, context) {
     return {

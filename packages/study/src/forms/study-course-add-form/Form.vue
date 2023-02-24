@@ -6,9 +6,7 @@
     label-placement="left"
     :label-width="80"
     size="small"
-    :style="{
-      padding:'10px'
-    }"
+    class="LForm"
   >
     <n-grid :cols="2" :x-gap="24">
         <n-grid-item>
@@ -19,7 +17,6 @@
                 v-model:label="dataModel.labelName"
                 placeholder
                 multiple
-                size="small"
                 :response="{dataMethod:res => res.map(({dictItemCode: value, dictItemName: label}) => ({label, value}))}"
               />
           </n-form-item>
@@ -29,7 +26,6 @@
          
               <n-tree-select
                 :options="types"
-                size="small"
                 placeholder="请选择"
                 v-model:value="dataModel.typeCode"
                 filterable

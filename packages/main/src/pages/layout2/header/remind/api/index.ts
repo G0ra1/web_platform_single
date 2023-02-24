@@ -22,7 +22,7 @@ export function queryMsg (data: any) {
         data: {
             page: {
                 current: 1,
-                size: 999
+                size: 10
             },
             ...data
         }

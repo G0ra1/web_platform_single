@@ -20,6 +20,8 @@
           />
            <NwFunctionPredefine
             code="PAPER_Edit"
+            :disabled="selected.length !==1 || selected[0] &&  selected[0].status !== 1"
+            :params="selected"
             descr="左上预留位置按钮2"  
           />
           <n-popconfirm
@@ -138,7 +140,7 @@
     >
       <nw-form-view
         ref="formRef"
-        src="/html/forms/study-paper-form.html"
+        src="/web-study/forms/study-paper-form.html"
       />
       
     </n-drawer-content>

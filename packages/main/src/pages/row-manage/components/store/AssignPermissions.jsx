@@ -147,7 +147,7 @@ export const setSysTabelData = (sysData) => {
                         // 这里需要区分目录、页面、按钮、流程入口
                         let icon = ''
                         switch (row[i].menuType) {
-                            case 0: 
+                            case 3: 
                                 icon = 'icon-y-caidan'
                                 break;
                             case 1:
@@ -156,9 +156,9 @@ export const setSysTabelData = (sysData) => {
                             case 2:
                                 icon = 'icon-y-anniu'
                                 break;
-                            case '3':
-                                icon = 'icon-y-liucheng'
-                                break;
+                            // case '3':
+                            //     icon = 'icon-y-liucheng'
+                            //     break;
                             default:
                                 icon = 'icon-bangzhu'
                                 break;

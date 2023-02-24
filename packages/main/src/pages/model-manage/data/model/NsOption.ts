@@ -17,6 +17,17 @@ export namespace NsOption {
         }
     }
 
+    export class OptionAutoComplete {
+        label!: string;
+        description!: string;
+        avatar!: string;
+        constructor(label: string, description: string, avatar?: string) {
+            this.label = label;
+            this.description = description;
+            if (avatar) this.avatar = avatar;
+        }
+    }
+
     export class OptionDropDown {
         label: string = '';
         key: string = '';

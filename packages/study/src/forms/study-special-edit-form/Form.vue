@@ -1,5 +1,4 @@
 <template>
- <n-config-provider :locale="zhCN" :date-locale="dateZhCN">
   <n-form
     :model="dataModel"
     :rules="rules"
@@ -7,9 +6,8 @@
     label-placement="left"
     :label-width="100"
     size="small"
-    :style="{
-      padding:'10px'
-    }"
+    class="LForm"
+    
   >
     
     <n-card :bordered="false" title="基本信息" size="small" >
@@ -201,7 +199,7 @@
                 v-model:value="dataModel.specialPaperName" 
               >
                  <template #suffix>
-                      <NwIcon name="icon-sousuo1"
+                    <NwIcon name="icon-n-y-sousuo"
                         style="color:#3F8FFF;cursor: pointer;"
                         @click="chooseSpecialPaper.sonFn({
                           specialPaperId:dataModel.specialPaperId,
@@ -575,7 +573,6 @@
         }
       "
     ></ChooseDept>
- </n-config-provider>
 </template>
 <script>
 import { defineComponent, ref, onMounted  } from "vue";

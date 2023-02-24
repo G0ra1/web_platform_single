@@ -33,18 +33,23 @@
 import { ref, reactive, nextTick, h, getCurrentInstance } from "vue";
 
 import { NwIcon, request } from "@platform/main";
-import { NTime } from 'naive-ui'
+import { NModal, NButton, NSpin } from 'naive-ui'
+
+import { queryLog } from "../../api/index";
 export default {
   components: {
-   
+    NModal,
+    NwIcon,
+    NButton,
+    NSpin
   },
-  props: {},
   emits: ["callback"],
   setup(props: any, context: any) {
     // const NTime = getCurrentInstance()!.appContext.components.NTime
     const visible = ref<boolean>(false)
     const LogData = ref<Array<any>>([])
     const gridOptions = reactive<any>({
+      loading: false,
       size: "small",
       stripe: true,
       border: false,
@@ -117,9 +122,32 @@ export default {
     return {
       visible,
       gridOptions,
-      show (data = []) {
+      show (id: string) {
         visible.value = true
-        LogData.value = data
+        gridOptions.loading = true
+        queryLog(id).then((res: any) => {
+          LogData.value = res.map((d: any) => {
+            return {
+              id: d.id,
+              type: d.type,
+              nodeType: d.nodeType,
+              nodeId: d.nodeId,
+              nodeName: d.nodeName,
+              updateTime: d.updateTime,
+              startTime: d.startTime,
+              userNameCh: d.userNameCh,
+              orgName: d.orgName,
+              deptName: d.deptName,
+              description: d.description
+            }
+          })
+          return true
+        }).catch(error => {
+          return false
+        }).finally(() => {
+          gridOptions.loading = false
+        })
+
       }
     };
   },

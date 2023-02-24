@@ -16,7 +16,7 @@
           </n-button>
           <n-button type="info" @click="() => { creatClassification() }" style="height: 34px; padding: 0 8px"
             size="small">
-            <NwIcon name="icon-add-bold" :size="20"></NwIcon>
+            <NwIcon name="icon-n-y-add" :size="20"></NwIcon>
           </n-button>
         </n-input-group>
         <n-spin :show="treeSpinShow">
@@ -43,7 +43,7 @@
                 @before-upload="beforeUpload"
               >
                 <n-button size="small" style="margin-right: 10px" type="info">
-                  <NwIcon name="icon-add-bold" :size="15" />导入
+                  <NwIcon name="icon-n-y-add" :size="15" />导入
                 </n-button>
               </n-upload> -->
               <n-button type="info" size="small" style="margin-right: 5px" @click="handleShow()"

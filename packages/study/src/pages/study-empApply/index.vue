@@ -269,6 +269,7 @@ export default defineComponent({
           }
       } else {
          dialog.error({
+                        class: 'text-modal-dialog',
               title: '提示',
               content: () => '请输入正确手机格式',
               positiveText: '关闭',
@@ -307,6 +308,7 @@ export default defineComponent({
             tree.treeList = res.data.data
         } else {
             dialog.error({
+                        class: 'text-modal-dialog',
               title: '提示',
               content: () => res.data.msg,
               positiveText: '确认',

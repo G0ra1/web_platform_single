@@ -1,12 +1,12 @@
 
 <template>
-  <article class="wrapper" >
+  <article class="wrapper">
     <aside class="sider">
       <nw-sider />
     </aside>
     <section class="container">
       <div class="layout">
-        <div class="layout-header" >
+        <div class="layout-header" style="flex: 0 0 48px;">
           <!-- 头部 -->
           <nw-header />
         </div>
@@ -65,7 +65,7 @@ export default defineComponent({
     NwHeader,
     NwAppContent
   },
-  setup () {
+  setup() {
 
     return {
 

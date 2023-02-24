@@ -1,13 +1,13 @@
 
 <template>
-    <div class="realtime" >
+    <div class="realtime">
         <n-button title="提醒" text @click="handle" style="display: flex; align-items: center">
-            <nw-icon color="#4C90F0" :size="26" name="icon-n-y-xinhao" />
+            <nw-icon :size="20" name="icon-n-y-xinhao2" />
         </n-button>
         <div class="state">
-            <nw-icon v-if="false" class="state loading" :size="14" name="icon-n-y-xinhao" />
-            <nw-icon v-if="false" class="error"  :size="14" name="icon-n-n-error" />
-            <nw-icon class="state success" :size="14" name="icon-n-n-yes" />
+            <nw-icon v-if="state === 'loading'" class="state loading rotate" :size="12" name="icon-y-loading" />
+            <nw-icon v-if="state === 'onclose'" class="error" :size="12" name="icon-n-n-error" />
+            <nw-icon v-if="state === 'onopen'" class="state success" :size="12" name="icon-n-n-yes" />
         </div>
     </div>
 </template>
@@ -39,7 +39,7 @@ import {
     useDialog
 } from "naive-ui";
 
-import { NwIcon, RequestPaging, VxeHelper } from '@platform/main'
+import { NwIcon, RequestPaging, VxeHelper, Db } from '@platform/main'
 
 import { Ws } from './store.ts'
 
@@ -61,7 +61,8 @@ export default defineComponent({
         NScrollbar,
         NDrawerContent
     },
-    setup (props) {
+    setup(props) {
+
 
         const {
             state
@@ -69,7 +70,7 @@ export default defineComponent({
 
         return {
             state,
-            handle () {
+            handle() {
             }
         }
     }
@@ -79,24 +80,38 @@ export default defineComponent({
 
 <style scoped lang="less">
 .realtime {
+    width: 40px;
+    text-align: center;
     position: relative;
+
     .state {
         position: absolute;
-        right: -2px;
+        right: 8px;
         bottom: -2px;
         display: block;
         font-size: 0;
         background-color: #fff;
-        .loading {
 
-        }
+        .loading {}
+
         .error {
             color: var(--n-red2)
         }
+
         .success {
-            
+
             color: var(--n-green2)
         }
+
+        .rotate {
+            animation: fadenum .3s linear infinite;
+        }
+    }
+}
+
+@keyframes fadenum {
+    100% {
+        transform: rotate(360deg);
     }
 }
 </style>

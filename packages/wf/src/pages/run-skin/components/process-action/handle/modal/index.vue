@@ -48,7 +48,7 @@
   </n-modal>
 </template>
 <script lang="tsx">
-import { ref, reactive, nextTick, h } from "vue";
+import { defineComponent, ref, reactive, nextTick, h } from "vue";
 import {
   NConfigProvider,
   NLayout,
@@ -84,7 +84,7 @@ import Circularize from './circularize/index.vue'
 import Notify from './notify/index.vue'
 
 import { handleVisible, sendSubmit } from '../store'
-export default {
+export default defineComponent({
   components: {
     NConfigProvider,
     NLayout,
@@ -114,7 +114,6 @@ export default {
     Circularize,
     Notify
   },
-  props: {},
   emits: ["callback"],
   setup(props: any, context: any) {
     const tabValue = ref<string>('handle');
@@ -124,7 +123,7 @@ export default {
       sendSubmit,
     };
   },
-};
+});
 </script>
 
 <style lang="less" scoped>

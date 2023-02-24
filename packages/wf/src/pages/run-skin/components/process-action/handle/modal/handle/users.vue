@@ -77,7 +77,7 @@ export default {
         align: null,
         data: [],
         columns: []
-      }
+      } as any
     };
   },
 };

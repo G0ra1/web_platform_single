@@ -45,10 +45,12 @@
                 >
 
                 </n-tree-select>
+                
               </n-form-item>
               <!--  -->
               <n-form-item label="流程定义KEY" path="inputValue">
                 <n-input
+                  :disabled="actionType === 'edit'"
                   placeholder=""
                   :value="actionElBusinessObject.id"
                   @update:value="e => updateProcdefKey(e)"
@@ -56,6 +58,7 @@
               </n-form-item>
               <n-form-item label="简称" path="inputValue">
                 <n-input 
+                  :disabled="actionType === 'edit'"
                   placeholder=""
                   v-model:value="actionElBusinessObject.procdefNameAbbr"
 
@@ -63,6 +66,7 @@
               </n-form-item>
               <n-form-item label="流程定义名称" path="inputValue">
                 <n-input 
+                  :disabled="actionType === 'edit'"
                   placeholder=""
                   v-model:value="actionElBusinessObject.name"
 
@@ -70,6 +74,7 @@
               </n-form-item>
               <n-form-item label="版本标识" path="inputValue">
                 <n-input
+                  :disabled="actionType === 'edit'"
                   placeholder=""
                   v-model:value="actionElBusinessObject.versionTag"
                 />
@@ -135,6 +140,7 @@ import PickForm from "../../field/PickForm/index.vue"
 import PanelEvent from "../../field/PanelEvent/index.vue"
 import { queryAll as queryAllDefType } from '../../../../procdeftype/api/index'
 
+import { actionType } from '../../../store/index'
 import {
   actionElBusinessObject
 } from "../../../store/bpmn"
@@ -185,6 +191,7 @@ export default {
     }
     queryDefTypeTree()
     return {
+      actionType,
       actionElBusinessObject,
       queryAllDefType,
       typeTree,

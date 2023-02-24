@@ -191,7 +191,7 @@
     style="width:1300px;"
   >
     <n-spin :show="isLoading">
-      <div style="height:700px">
+      <div style="height:700px;padding:20px">
         <n-list>
           <template #header>
             <h3 style="border: 2px solid #1198d7;
@@ -210,7 +210,7 @@
             </h3>
             <p style="text-align:center;">注：排行榜只显示前100名</p>
           </template>
-          <n-scrollbar style="max-height: 620px" trigger="none">
+          <n-scrollbar style="max-height: 550px" trigger="none">
             <n-list-item v-for="(item,index) in getMoreLessonRankings" :key="item.id">
               <n-grid  :cols="3" >
                 <n-gi style="text-align:left">
@@ -262,8 +262,8 @@
     style="width:1300px;"
   >
     <n-spin :show="isLoading">
-      <div style="height:700px">
-        <n-list>
+      <div style="height:700px;">
+        <n-list style="padding:20px;">
           <template #header>
             <h3 style="border: 2px solid #1198d7;
                 height: 50px;
@@ -281,7 +281,7 @@
             </h3>
             <p style="text-align:center;">注：排行榜只显示前100名</p>
           </template>
-          <n-scrollbar style="max-height: 620px" trigger="none">
+          <n-scrollbar style="max-height: 550px" trigger="none">
             <n-list-item v-for="(item,index) in getMoreSpecialRankings" :key="item.id">
               <n-grid  :cols="3" >
                 <n-gi style="text-align:left">
@@ -333,7 +333,7 @@
     style="width:1300px;"
   >
     <n-spin :show="isLoading">
-      <div style="height:700px">
+      <div style="height:700px;padding:20px">
         <n-list>
           <template #header>
             <h3 style="border: 2px solid #1198d7;
@@ -352,7 +352,7 @@
             </h3>
             <p style="text-align:center;">注：排行榜只显示前100名</p>
           </template>
-          <n-scrollbar style="max-height: 620px" trigger="none">
+          <n-scrollbar style="max-height: 550px" trigger="none">
             <n-list-item v-for="(item,index) in getMoreSchoolRankings" :key="item.id">
               <n-grid  :cols="3" >
                 <n-gi style="text-align:left">

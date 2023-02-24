@@ -7,19 +7,24 @@
     :label-width="80"
     size="small"
     :style="{
-      padding:'10px'
+      padding:'10px',
+      height: '100%',
+      width: '100%',
+      overflowY: 'scroll',
     }"
   >
+  <!-- overflow-y: 'scroll', height: '100%',
+      width: '100%' -->
     <n-grid :cols="2" :x-gap="24">
         <n-grid-item>
           <n-form-item label="试卷标签" path="typeName">
-            <n-input size="small" disabled v-model:value="dataModel.typeName" />
+            <n-input   disabled v-model:value="dataModel.typeName" />
           </n-form-item>
       </n-grid-item>
       
       <n-grid-item>
           <n-form-item label="试卷名称" path="paperName">
-              <n-input size="small" disabled placeholder="请输入" v-model:value="dataModel.paperName" />
+              <n-input   disabled placeholder="请输入" v-model:value="dataModel.paperName" />
           </n-form-item>
       </n-grid-item>
       <n-grid-item>
@@ -30,7 +35,7 @@
                   v-model:value="dataModel.paperType"
                   placeholder="请选择试卷类型"
                   :options="paperTypes"
-                  size="small" 
+                    
             />
           </n-form-item>
       </n-grid-item>
@@ -41,18 +46,18 @@
                   v-model:value="dataModel.paperCode"
                   placeholder="请选择出题类型"
                   :options="paperCodes"
-                  size="small" 
+                    
             />
           </n-form-item>
       </n-grid-item>
       <n-grid-item >
           <n-form-item label="试卷时长" path="specialExamTime">
-              <n-input  size="small" disabled placeholder="请输入" v-model:value="dataModel.specialExamTime" />
+              <n-input    disabled placeholder="请输入" v-model:value="dataModel.specialExamTime" />
           </n-form-item>
       </n-grid-item>
       <n-grid-item>
           <n-form-item label="合格分数" path="specialExamQualifiedScore">
-              <n-input size="small" disabled placeholder="请输入" v-model:value="dataModel.specialExamQualifiedScore" />
+              <n-input   disabled placeholder="请输入" v-model:value="dataModel.specialExamQualifiedScore" />
           </n-form-item>
       </n-grid-item>
       
@@ -99,7 +104,7 @@
             <vxe-column field="databaseName" title="所属题库" ></vxe-column>
             <vxe-table-column field="questionScore" title="单题分值" :edit-render="{}">
                 <template v-slot:edit="row">
-                  <vxe-input   v-model="row.row.questionScore" placeholder="" size="small" type="number" :min='0'></vxe-input>
+                  <vxe-input   v-model="row.row.questionScore" placeholder=""   type="number" :min='0'></vxe-input>
                 </template>
                 <template v-slot="{ row }">{{row.questionScore}}</template>
             </vxe-table-column>

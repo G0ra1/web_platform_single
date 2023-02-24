@@ -2,8 +2,10 @@
 import { NwIcon, NwAppTreeGrid } from '@platform/main'
 import ModelContent from './components/ModelContent.vue'
 import { NLayout, NLayoutSider, NLayoutHeader, NLayoutContent, NButton, NSpace, NInput, NInputGroup, useDialog, useMessage } from 'naive-ui'
-import { bind, gridRef, filterData, query, refresh, appInfo, modelContentRef, handleTree, initDialog } from "./App.ts"
+import { bind, gridRef, filterData, query, refresh, appInfo, modelContentRef, handleTree, initDialog, configShow, modelEntityId } from "./App.ts"
 import { provide } from "vue"
+import ModelMenuTree from './components/ModelMenuTree.vue';
+
 //因为使用了inject，所以只能在setup请求中使用，所以里传递一下；
 initDialog(useDialog(), useMessage());
 provide("appInfo", appInfo);
@@ -76,4 +78,5 @@ provide("appInfo", appInfo);
     <!-- 右侧内容区 end -->
   </n-layout>
   <model-content ref="modelContentRef" />
+  <model-menu-tree v-model:show="configShow" :model-entity-id="modelEntityId" />
 </template>

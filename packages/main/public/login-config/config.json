@@ -1,0 +1,7 @@
+{
+    "label": "中核检修劳务管理系统",
+    "theme": "theme1",
+    "default-url": "/web-main/pages/layout2.html#frame/task",
+    "logo-img": "/web-main/login-config/unlogo.png",
+    "page-title": "管理系统"
+}

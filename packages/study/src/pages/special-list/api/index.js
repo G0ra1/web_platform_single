@@ -76,14 +76,14 @@ export function studySpecialHisDetail(id) {
 
 export function  classifys(type) {
   return request({
-    url: `/dict/dictTree/childList/` + type,
+    url: `/main/dictTree/childList/` + type,
     method: 'get',
   })
 }
 //字典 调用
 export function dictItemLists (id) {
   return request({
-      url: `/dict/dictItem/list?dictCode=${id}`,
+      url: `/main/dictItem/list?dictCode=${id}`,
       method: 'get',
   })
 }

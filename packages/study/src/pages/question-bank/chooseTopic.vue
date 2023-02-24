@@ -347,7 +347,7 @@ export default defineComponent({
       dictItemLists,
       showModal: showModalRef,
       message:'_',
-      uploadUrl: `${window.apiBaseURL}/file/fileinfo?fileSource=study`,
+      uploadUrl: `${window.apiBaseURL}/main/fileinfo?fileSource=study`,
       token,
       letters:reactive([
         {label:'A',value:0},{label:'B',value:1},{label:'C',value:2},{label:'D',value:3},{label:'E',value:4},{label:'F',value:5},{label:'G',value:6},{label:'H',value:7},

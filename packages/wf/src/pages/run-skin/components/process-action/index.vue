@@ -1,15 +1,18 @@
 <template>
     <n-space :size="[5, 5]">
-        <n-button @click="closeAll" type="default" size="small" >关闭</n-button>
+        <n-button @click="closeAll" type="default" size="small" class="liuchengBtn">取消</n-button>
         <template v-if="props.actionType !== 'done'" >
-
+            <print v-if="rule.wf_print" />
             <save v-if="rule.wf_save" />
 
             <handle v-if="['todo', 'create', 'draft'].includes(props.actionType) && rule.wf_handle" />
 
             <reject v-if="props.actionType === 'todo' && rule.wf_back" />
 
-            <control v-if="false" />
+            <control
+                v-if="['todo', 'draft'].includes(props.actionType)"
+                :rules="rule"
+            />
         </template>
     </n-space>
 </template>
@@ -40,6 +43,7 @@ import {
 
 import { NwIcon } from '@platform/main'
 
+import Print from './print/index.vue'
 import Save from './save/index.vue'
 import Handle from './handle/index.vue'
 import Reject from './reject/index.vue'
@@ -73,6 +77,7 @@ components: {
     NPopconfirm,
     NMessageProvider,
     NwIcon,
+    Print,
     Save,
     Handle,
     Reject,

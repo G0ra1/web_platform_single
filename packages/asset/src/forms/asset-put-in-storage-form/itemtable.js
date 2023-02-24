@@ -80,8 +80,9 @@ export const callbackSetItem = (d) => {
     // e.storageAmount = e.assetsAmount
     // e.storageSumUntaxedAmount = 0
     // e.storageSumAmount = 0
-    e.id = null
-    return e
+    // e.id = null
+    delete e.id;
+    return e;
   });
   detailTable.value.loadData(detailList.value)
 };

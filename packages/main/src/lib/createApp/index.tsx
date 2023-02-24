@@ -1,39 +1,49 @@
 import {
-    createApp as vCreateApp, h, defineComponent, onBeforeMount, defineAsyncComponent, getCurrentInstance } from 'vue'
+    createApp as vCreateApp, h, defineComponent, onBeforeMount, defineAsyncComponent, getCurrentInstance
+} from 'vue'
 import type { CreateAppFunction, Component } from 'vue'
 import 'xe-utils'
+import XEUtils from 'xe-utils'
 import 'vxe-table/lib/style.css'
 import VXETable from 'vxe-table'
+VXETable.formats.add('myAmount', ({ cellValue }, digits = 2) => {
+    return '¥ ' + XEUtils.commafy(XEUtils.toNumber(cellValue), { digits })
+})
 import mitt from 'mitt'
-
+// 事件总线
+const mittIns: any = mitt()
 // import '../../theme/index.less'
-import { getStyleElement } from '../../theme/common'
-
-import '../../theme/index.less'
-import { 
+// import { getStyleElement } from '../../theme/common'
+// import '../../theme/index.less'
+import {
     NMessageProvider,
     NNotificationProvider,
     NDialogProvider,
     NConfigProvider,
     NGlobalStyle,
     useMessage,
-    useDialog
+    useDialog,
+    useNotification
 } from 'naive-ui'
 import { Utils, Cookies, Db } from '@platform/main'
 
 import RootFragment from './rootFragment/index.vue'
+
+import { verificationBrowser } from './getBrowserVersion'
 // 业务页面加载
 const queryPage = async () => {
 
 }
-
+window.addEventListener('wfComplete', () => {
+    mittIns.emit('function-complete')
+})
 // 回到登录
 const jumpToLogin = () => {
-    window.location.href = '/web-main/pages/login.html'
+    window.location.href = '/web-main/pages/login2.html'
 }
 // : CreateAppFunction<Element>
 const createApp = (component: Component, isLayout: boolean = false) => {
-    
+
     const LoadingComponent = defineComponent({
         provide: {},
         render: () => <div style="display:flex;height:100%;justify-content: center;align-items: center;" >
@@ -44,14 +54,17 @@ const createApp = (component: Component, isLayout: boolean = false) => {
     return vCreateApp(defineAsyncComponent({
         loader: async () => {
             // 这里生成样式静态变量
-            document.head.appendChild(getStyleElement())
+            // document.head.appendChild(getStyleElement())
+
+            // 验证浏览器版本
+            verificationBrowser()
 
             // 赋值apiBaseUrl
             window.apiBaseURL = window.localStorage.getItem('apiBaseURL') || ''
             window.websocketURL = window.localStorage.getItem('websocketURL') || ''
             window.fileServerUrl = window.localStorage.getItem('fileServerUrl') || ''
             window.ueServerUrl = window.localStorage.getItem('ueServerUrl') || ''
-            
+
             if (!window.apiBaseURL) {
                 jumpToLogin()
             }
@@ -78,7 +91,7 @@ const createApp = (component: Component, isLayout: boolean = false) => {
             return defineComponent({
                 provide: {
                     FnItem,
-                    Emitter: mitt()
+                    Emitter: mittIns
                 },
                 render: () => <RootFragment isLayout={isLayout}>
                     {{
@@ -118,7 +131,7 @@ const createApp = (component: Component, isLayout: boolean = false) => {
             //                                             // default: () => [
             //                                             //     h(component)
             //                                             // ],
-                                                        
+
             //                                             default: () => [
             //                                                 <Root>
             //                                                     {{
@@ -140,7 +153,7 @@ const createApp = (component: Component, isLayout: boolean = false) => {
             //     </NConfigProvider>,
             //     setup: (props, context) => {
             //         // 这里进行验证
-                    
+
             //         return {}
             //     }
             // })
@@ -154,6 +167,7 @@ const Root = defineComponent({
         const instance: any = getCurrentInstance();
         (window as any).NaiveMessage = useMessage();
         (window as any).NaiveDialog = useDialog();
+        (window as any).NaiveNotification = useNotification();
         return () => {
             return instance!.slots.default()
         }

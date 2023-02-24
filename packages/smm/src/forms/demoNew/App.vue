@@ -90,6 +90,7 @@
           <template #label> 测试单选 </template>
 
           <NwPickAny
+            rowKey="pageCode"
             button-label="业务选择"
             modal-title="业务选择"
             @update:value="
@@ -140,12 +141,30 @@
                 :requestParam="{
                   appCode: dataModel.taskTitle,
                 }"
+                mode="slow"
+              />
+              &nbsp;
+              <NwPickAny
+                rowKey="pageCode"
+                button-label="业务选择slow"
+                modal-title="业务选择"
+                @update:value="(d) => {dataModel.testGrid = [...(dataModel.testGrid || []),...d.map((m: any) => ({ name: m.pageName, code: m.pageCode }))]}"
+                :gridColumns="[
+                  { field: 'pageName', title: '名称' },
+                  { field: 'pageCode', title: '编码' },
+                ]"
+                requestUrl="/main/page/list"
+                :requestParam="{
+                  appCode: dataModel.taskTitle,
+                }"
+                mode="slow"
               />
             </template>
           </NwFieldGrid>
         </n-form-item-gi>
         <n-form-item-gi label="测试Grid1" :span="24" path="testGrid1">
           <NwFieldGrid
+            :is-readonly="dataPermits['testGrid1'] === 'readonly'"
             v-model:value="dataModel.testGrid1"
             style="width: 400px"
             :edit-enabled="true"
@@ -201,6 +220,7 @@
         >
           <!-- :ref="d => gridRefs.push(d)" -->
           <NwFieldGrid
+            :is-readonly="dataPermits['taskInfoDetailList'] === 'readonly'"
             :ref="(d: any) => gridRefs['taskInfoDetailList'] = d"
             v-model:value="dataModel.taskInfoDetailList"
             style="width: 400px"
@@ -226,6 +246,10 @@
                 slots: { edit: 'detailDatetime_edit' },
               },
             ]"
+            v-bind="{
+              size: 'large',
+              border: false
+            }"
           >
             <template #detailNamea_edit="{ row }">
               <n-input v-model:value="row.detailName"></n-input>
@@ -241,47 +265,104 @@
         <n-form-item-gi
           label="测试edit Grid2"
           :span="24"
-          path="taskInfoDetailList"
+          path="taskInfoDetailList1"
         >
+          <n-tabs type="line" animated>
+            <n-tab-pane name="oasis" tab="Oasis">
+              <NwFieldGrid
+                :ref="(d: any) => gridRefs['taskInfoDetailList1'] = d"
+                v-model:value="dataModel.taskInfoDetailList1"
+                style="width: 100%"
+                :rules="gridRules['taskInfoDetailList1']"
+                :data-permits="gridDataPermits['taskInfoDetailList1']"
+                :columns="[
+                  {
+                    field: 'detailName',
+                    width: '200px',
+                    title: '名称',
+                    editRender: { enabled: true },
+                    slots: { edit: 'detailNamea_edit' },
+                  },
+                  {
+                    field: 'detailType',
+                    
+                    width: '200px',
+                    title: '类型',
+                    editRender: { enabled: true },
+                    slots: { edit: 'detailType_edit' },
+                  },
+                  {
+                    field: 'detailDatetime',
+                    width: '200px',
+                    title: '日期',
+                    editRender: { enabled: true },
+                    slots: { edit: 'detailDatetime_edit' },
+                  },
+                ]"
+                :column-config="{
+                  resizable: true
+                }"
+              >
+                <template #detailNamea_edit="{ row }">
+                  <n-input v-model:value="row.detailName"></n-input>
+                </template>
+                <template #detailType_edit="{ row }">
+                  <n-input v-model:value="row.detailType"></n-input>
+                </template>
+                <template #detailDatetime_edit="{ row }">
+                  <n-input v-model:value="row.detailDatetime"></n-input>
+                </template>
+              </NwFieldGrid>
+            </n-tab-pane>
+            <n-tab-pane name="the beatles" tab="the Beatles">
+              <div style="height: 400px">
+              <NwFieldGrid
+                :ref="(d: any) => gridRefs['taskInfoDetailList1'] = d"
+                v-model:value="dataModel.taskInfoDetailList1"
+                style="width: 400px"
+                :rules="gridRules['taskInfoDetailList1']"
+                :data-permits="gridDataPermits['taskInfoDetailList1']"
+                :columns="[
+                  {
+                    field: 'detailName',
+                    title: '名称',
+                    editRender: { enabled: true },
+                    slots: { edit: 'detailNamea_edit' },
+                  },
+                  {
+                    field: 'detailType',
+                    title: '类型',
+                    editRender: { enabled: true },
+                    slots: { edit: 'detailType_edit' },
+                  },
+                  {
+                    field: 'detailDatetime',
+                    title: '日期',
+                    editRender: { enabled: true },
+                    slots: { edit: 'detailDatetime_edit' },
+                  },
+                ]"
+
+
+              >
+                <template #detailNamea_edit="{ row }">
+                  <n-input v-model:value="row.detailName"></n-input>
+                </template>
+                <template #detailType_edit="{ row }">
+                  <n-input v-model:value="row.detailType"></n-input>
+                </template>
+                <template #detailDatetime_edit="{ row }">
+                  <n-input v-model:value="row.detailDatetime"></n-input>
+                </template>
+              </NwFieldGrid>
+              </div>
+            </n-tab-pane>
+            <n-tab-pane name="jay chou" tab="周杰伦">
+              七里香
+            </n-tab-pane>
+          </n-tabs>
           <!-- :ref="d => gridRefs.push(d)" -->
-          <NwFieldGrid
-            :ref="(d: any) => gridRefs['taskInfoDetailList1'] = d"
-            v-model:value="dataModel.taskInfoDetailList1"
-            style="width: 400px"
-            :rules="gridRules['taskInfoDetailList1']"
-            :data-permits="gridDataPermits['taskInfoDetailList1']"
-            :columns="[
-              {
-                field: 'detailName',
-                title: '名称',
-                editRender: { enabled: true },
-                slots: { edit: 'detailNamea_edit' },
-              },
-              {
-                field: 'detailType',
-                title: '类型',
-                editRender: { enabled: true },
-                slots: { edit: 'detailType_edit' },
-              },
-              {
-                field: 'detailDatetime',
-                title: '日期',
-                editRender: { enabled: true },
-                slots: { edit: 'detailDatetime_edit' },
-              },
-            ]"
-          >
-            <template #detailNamea_edit="{ row }">
-              <n-input v-model:value="row.detailName"></n-input>
-            </template>
-            <template #detailType_edit="{ row }">
-              <div>{{row.detailType}}</div>
-              <n-input  :value="row.detailType"></n-input>
-            </template>
-            <template #detailDatetime_edit="{ row }">
-              <n-input v-model:value="row.detailDatetime"></n-input>
-            </template>
-          </NwFieldGrid>
+          
         </n-form-item-gi>
 
         <n-form-item-gi :span="24" path="taskInfoDetailList">
@@ -314,6 +395,8 @@ import {
   NSelect,
   NDatePicker,
   NScrollbar,
+  NTabs,
+  NTabPane
 } from "naive-ui";
 import {
   NwIcon,
@@ -342,6 +425,8 @@ export default defineComponent({
     NwPickAny,
     NwFieldGrid,
     NScrollbar,
+    NTabs,
+    NTabPane
   },
   setup() {
     const fm = new FormModal();
@@ -352,8 +437,7 @@ export default defineComponent({
       gridRules,
       dataPermits,
       gridDataPermits,
-      gridRefs,
-      gridOption,
+      gridRefs
     } = fm;
 
     return {
@@ -365,7 +449,6 @@ export default defineComponent({
       gridDataPermits,
       // brules,
       gridRefs,
-      gridOption,
       setRules() {
         fm.setRules({
           taskTitle: {
@@ -373,15 +456,32 @@ export default defineComponent({
             powerCode: "required",
             nameCh: "任务名称",
           },
-
+          //testGrid1
+          "testGrid1": {
+            dbType: "array",
+            powerCode: "readonly",
+            nameCh: "子表",
+          },
           "testGrid1.code": {
             dbType: "string",
             powerCode: "readonly",
             nameCh: "编码",
           },
+          // taskInfoDetailList1
+          "taskInfoDetailList1": {
+            dbType: "array",
+            powerCode: "required",
+            nameCh: "任务1",
+          },
           "taskInfoDetailList1.detailName": {
             dbType: "string",
             powerCode: "required",
+            nameCh: "名称",
+          },
+          // taskInfoDetailList
+          "taskInfoDetailList": {
+            dbType: "array",
+            powerCode: "readonly",
             nameCh: "名称",
           },
           "taskInfoDetailList.detailName": {
@@ -396,7 +496,7 @@ export default defineComponent({
           },
           "taskInfoDetailList.detailType": {
             dbType: "string",
-            powerCode: "hide",
+            powerCode: "readonly",
             nameCh: "类型",
           },
         });

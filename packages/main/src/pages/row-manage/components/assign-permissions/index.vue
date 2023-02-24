@@ -74,7 +74,7 @@
               </div>
             </n-layout-content>
         </n-layout>
-        <div class="nw-modal-action">
+        <div class="nw-modal-action" style='padding:10px'>
         
           <n-button
             type="info"

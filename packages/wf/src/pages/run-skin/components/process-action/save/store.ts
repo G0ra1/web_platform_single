@@ -7,12 +7,16 @@ import {
     FormFrameRef,
     ParamAction,
     WfSendData,
+    onComplete,
+    FormDataSha256
 } from '../../../store/index'
 
 import {
     timeFormat as d3TimeFormat,
     timeParse as d3TimeParse
 } from 'd3'
+
+import sha256 from 'js-sha256'
 
 const timeFormat = d3TimeFormat('%Y-%m-%d %H:%M:%S')
 
@@ -25,13 +29,16 @@ export const sendSave = async () => {
     }
     
     StateModalRef.value!.setMsg('getValue', '获取表单数据...', 'loading')
+
+    let RFormDataSha256 = ''
     const formData = await FormFrameRef.value.getValue().then((r: any) => {
-       
+        RFormDataSha256 = (sha256 as any)(JSON.stringify(r))
         return r
     })
     StateModalRef.value!.setMsg('getValue', '获取表单数据成功', 'success')
 
-    console.log('-=-=-表单数据=----', formData)
+    WfSendData.value.bizDataList[0].isChange = RFormDataSha256 !== FormDataSha256.value
+    
     // 这里要进行覆盖
     WfSendData.value.bizDataList[0].params = JSON.stringify({
         ...JSON.parse(WfSendData.value.bizDataList[0].params),
@@ -53,4 +60,5 @@ export const sendSave = async () => {
     if (!IsSuccessSend) return
     StateModalRef.value!.setMsg('send', '保存数据成功...', 'success')
     StateModalRef.value!.completeInit()
+    onComplete('')
 }

@@ -1,6 +1,5 @@
 // import { request } from '@platform/main'
 import { request } from '@platform/main'
-import { baseName } from '/setting'
 
 export function queryDefXml () {
     // return request({
@@ -8,7 +7,7 @@ export function queryDefXml () {
     //     method: 'get',
     // })
     return fetch(
-        `/${baseName}/bpmn/create.bpmn`,
+        `/web-wf/bpmn/create.bpmn`,
         // `/${baseName}/bpmn/test.bpmn`,
         {
         method: "get"

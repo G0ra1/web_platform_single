@@ -171,7 +171,8 @@ export default defineComponent({
     NwSchemaEditor,
     NwCodeMirror
   },
-  setup() {
+  emits: [ 'callback' ],
+  setup(props, context) {
     const loading = ref<boolean>(false)
     const formRef = ref<FormInst>()
     const iframeActive = ref<boolean>(false)
@@ -230,6 +231,7 @@ export default defineComponent({
             active.value = false
           }).finally(() => {
             loading.value = false
+            context.emit('callback')
           })
         } else if (action.value === 'edit') {
           edit(formData.value).then(r => {
@@ -237,6 +239,7 @@ export default defineComponent({
             active.value = false
           }).finally(() => {
             loading.value = false
+            context.emit('callback')
           })
         }
       })

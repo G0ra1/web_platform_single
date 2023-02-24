@@ -33,6 +33,7 @@ export const run = async (
             bizPriority: respFormDto.bizPriority || 'general',
             camundaTaskId: respFormDto.camundaTaskId,
             camundaProcdefKey: respFormDto.camundaProcdefKey,
+            camundaProcinsId: respFormDto.camundaProcinsId,
             reason: respFormDto.reason, // 跟标题并列
             bizKey: respFormDto.bizKey, // 不用管
             bizDataList: respFormDto.bizDataList
@@ -43,12 +44,12 @@ export const run = async (
 
         FormData = JSON.parse(respFormDto.bizDataList[0].params)
         // 设置流程信息
-        ProcdefInfoRef.value!.setValue({
-            procdefTypeName: res.procdefTypeName,
-            procdefName: res.procdefName,
-            priority: res.wfNodeDef.priority || '无',
-            bizPriority: 'general',
-        })
+        // ProcdefInfoRef.value!.setValue({
+        //     procdefTypeName: res.procdefTypeName,
+        //     procdefName: res.procdefName,
+        //     priority: res.wfNodeDef.priority || '无',
+        //     bizPriority: 'general',
+        // })
 
         // 设置按钮权限
         ProcessActionRef.value!.setRule(res.wfButtonDefs)
@@ -65,18 +66,18 @@ export const run = async (
     StateModalRef.value!.setMsg('loadProcdef', '流程定义加载完成', 'success')
 
     // ------------------ 获取用户信息
-    StateModalRef.value!.setMsg('loadUser', '加载用户信息...', 'loading')
-    await Db.get('userInfo').then((res: any) => {
-        console.log('=======', res)
-        // 赋值用户信息
-        // 设置用户信息
-        UserInfoRef.value!.setValue({
-            createUserName: res.userNameCh,
-            createUserParentDeptName: res.parentDeptName,
-            createUserParentOrgName: res.parentOrgName
-        })
-    })
-    StateModalRef.value!.setMsg('loadUser', '用户信息加载完成', 'success')
+    // StateModalRef.value!.setMsg('loadUser', '加载用户信息...', 'loading')
+    // await Db.get('userInfo').then((res: any) => {
+    //     console.log('=======', res)
+    //     // 赋值用户信息
+    //     // 设置用户信息
+    //     UserInfoRef.value!.setValue({
+    //         createUserName: res.userNameCh,
+    //         createUserParentDeptName: res.parentDeptName,
+    //         createUserParentOrgName: res.parentOrgName
+    //     })
+    // })
+    // StateModalRef.value!.setMsg('loadUser', '用户信息加载完成', 'success')
 
     // ------------------ 加载表单页面
     StateModalRef.value!.setMsg('loadForm', '加载表单页面...', 'loading')

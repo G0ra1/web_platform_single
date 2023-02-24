@@ -28,7 +28,11 @@
             </n-form-item-gi>
 
             <n-form-item-gi :span="24" label="表达式" path="conditionalExpression">
-              <n-input type="textarea" placeholder="表达式" v-model:value="formData.conditionalExpression" />
+              <!-- <n-input type="textarea" placeholder="表达式" v-model:value="formData.conditionalExpression" /> -->
+              <calc v-model:value="formData.targetList" ref="refCalc" />
+            </n-form-item-gi>
+            <n-form-item-gi :span="24" label=" ">
+
             </n-form-item-gi>
           </n-grid>
         </n-form>
@@ -80,7 +84,7 @@ import {
   NSwitch,
   FormInst
 } from 'naive-ui'
-import { add, edit, detail } from '../api'
+import { add, edit, detail, getInterfacesDetailByMthPath } from '../api'
 import {
   NwIcon,
   NwSchemaEditor,
@@ -94,6 +98,12 @@ import PickRole from './PickRole/index.vue'
 import type {
   FormModel
 } from '../model.d'
+
+import Calc from './calc/index.vue'
+
+import { getParamList } from '../store'
+
+
 
 export default defineComponent({
   components: {
@@ -118,7 +128,8 @@ export default defineComponent({
     NwSchemaEditor,
     NwCodeMirror,
     NwPickPage,
-    PickRole
+    PickRole,
+    Calc
   },
   setup(props, context) {
     const loading = ref<boolean>(false)
@@ -131,6 +142,7 @@ export default defineComponent({
     const basicFormData: FormModel = {
 
     }
+    const refCalc = ref()
     // const pageUrl = computed(() => {
     //   return `/htmlx/${formData.value.appCode}/${formData.value.pageCode}`
     // })
@@ -142,9 +154,10 @@ export default defineComponent({
         // 编辑
         action.value = 'edit'
         formData.value = row
-        // detail(id).then(r => {
-        //   formData.value = r
-        // })
+        detail(row.id).then(r => {
+          formData.value = r
+          getInterfaces(r.formListMethodType, r.formListUrl)
+        })
       } else {
         // 新建
         console.log(appInfo, 'appInfo')
@@ -158,10 +171,18 @@ export default defineComponent({
     const cancel = () => {
       active.value = false
     }
+    const getInterfaces = (formListMethodType: string, formListUrl: string) => {
+      getInterfacesDetailByMthPath(formListMethodType, formListUrl).then(res => {
+        console.log(JSON.parse(res.content), 'JSON.parse(res.content)')
+        getParamList(res.content)
+      })
+    }
     const updateForm = (d: string, o: any) => {
       formData.value.formListUrl = o.formListUrl
       formData.value.formListMethodType = o.formListMethodType
       formData.value.pageId = o.id
+      getInterfaces(o.formListMethodType, o.formListUrl)
+
     }
     const updateRole = (d: string, o: any) => {
       formData.value.roleName = o.roleName
@@ -169,7 +190,11 @@ export default defineComponent({
       formData.value.roleId = o.id
     }
     const submit = async () => {
-      console.log('======formData.value=======', formData.value)
+      console.log(refCalc.value.getExpData(), 'refCalc.value.getExpData()')
+      formData.value.targetList = refCalc.value.getExpData()
+      formData.value.conditionalExpression = formData.value.targetList?.map((d: any) => {
+        return d.type == 'string' ? `"${d.code}"` : d.code
+      }).join(' ')
       formRef.value!.validate().then((...r: any) => {
         loading.value = true
         if (action.value === 'create') {
@@ -198,15 +223,12 @@ export default defineComponent({
     return {
       loading,
       formRef,
+      refCalc,
+      getInterfaces,
       rules: {
         pageName: {
           required: true,
           message: '请选择业务台账',
-          trigger: ['input', 'blur']
-        },
-        conditionalExpression: {
-          required: true,
-          message: '请输入条件表达式',
           trigger: ['input', 'blur']
         },
       },

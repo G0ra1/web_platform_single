@@ -93,7 +93,7 @@ import {
 } from 'naive-ui'
 import { NwIcon, RequestPaging, VxeHelper, NwAppTreeGrid, Page } from '@platform/main'
 import GeneratorFunction from './components/generator/index.vue'
-import { del } from './api/index'
+import { del, unLinkWf } from './api/index'
 export default defineComponent({
     components: {
         NLayout,
@@ -115,7 +115,7 @@ export default defineComponent({
         
         const md = Page.getMenuData()
         // const { pm = '' } = Utils.parseQuery(window.location.search.substring(1))
-        const appInfo = ref({
+        const appInfo = ref<any>({
             ...md
         })
         const dialog = useDialog()
@@ -136,11 +136,48 @@ export default defineComponent({
                 {
                     title: "关联流程",
                     slots: {
-                        default: ({ row }) => {
+                        default: ({ row }: any) => {
                             // camundaProcdefKey
                             if (row.camundaProcdefKey) {
                                 return [
-                                    `已关联流程<${row.camundaProcdefKey}>`
+                                    <div style="display:flex; align-items: center">
+                                        已关联流程 &lt;{row.camundaProcdefKey}&gt;&nbsp;
+                                        <NButton
+                                            text
+                                            title="取消关联流程"
+                                            type='error'
+                                            onClick={() => {
+                                                dialog.error({
+                        class: 'text-modal-dialog',
+                                                    title: '解除流程关联',
+                                                    icon: () => <NwIcon name="icon-n-y-unlink" size={14} />,
+                                                    content: `确定解除与流程<${row.camundaProcdefKey}>的关联？`,
+                                                    positiveText: '确定',
+                                                    negativeText: '取消',
+                                                    maskClosable: false,
+                                                    onMaskClick: () => {
+                                                    },
+                                                    onPositiveClick: () => {
+                                                        unLinkWf(row.id).then(r => {
+                                                            console.log('===rr', r)
+                                                            if (r) {
+                                                                (window as any).NaiveMessage.success('解除关联成功')
+                                                            }
+                                                            refresh()
+                                                        })
+
+                                                    },
+                                                })
+                                            }}
+                                        >
+                                        {{
+                                            default: () => [<NwIcon
+                                                name="icon-n-y-unlink"
+                                                size={16}
+                                            />]
+                                        }}
+                                        </NButton>
+                                    </div>    
                                 ]
                             } else {
                                 return [
@@ -175,6 +212,7 @@ export default defineComponent({
                                     onClick={() => {
 
                                         dialog.error({
+                        class: 'text-modal-dialog',
                                             title: '删除',
                                             content: '确定删除？',
                                             positiveText: '确定',

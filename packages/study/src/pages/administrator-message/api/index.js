@@ -49,8 +49,8 @@ export function del (id) {
 
 export function getEmpDetail (id) {
   return request({
-      url: `/main/mdmUser/getByIds/${id}`,
-      method: 'get',
+    url: `main/mdmUser/getByIds?ids=${id}`,
+    method: 'get',
   })
 }
 

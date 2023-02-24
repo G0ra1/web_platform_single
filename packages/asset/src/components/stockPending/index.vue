@@ -2,7 +2,7 @@
   <n-modal v-model:show="showModal" :mask-closable="false" preset="dialog" title="选择物资待入库信息" content="你确认"
     positive-text="确认" negative-text="取消" style="width: 1200px">
     <n-grid>
-      <n-grid-item :span="24" style="height: 650px">
+      <n-grid-item :span="24" style="height: 520px">
         <n-spin :show="spinShow">
           <vxe-toolbar style="height: 40px">
             <template v-slot:buttons>
@@ -78,6 +78,10 @@ export default defineComponent({
       type: String,
       default: ''
     },
+    applyId: {
+      type: String,
+      default: ''
+    },
   },
 
   setup(props, context) {
@@ -118,7 +122,7 @@ export default defineComponent({
     const gridOptions = reactive({
 
       border: true,
-      height: 600,
+      height: 480,
       rowConfig: {
         keyField: "assetsDetailId",
       },
@@ -147,8 +151,8 @@ export default defineComponent({
             }
           }
         },
-        { field: "acceptanceNumber", title: "验收数量", minWidth: 120, showHeaderOverflow: true, showOverflow: true, },
-        { field: "storageNumber", title: "已入库数量", minWidth: 120, showHeaderOverflow: true, showOverflow: true, },
+        // { field: "acceptanceNumber", title: "验收数量", minWidth: 120, showHeaderOverflow: true, showOverflow: true, },
+        { field: "storageNumber", title: "未入库数量", minWidth: 120, showHeaderOverflow: true, showOverflow: true, },
         {
           field: "",
           title: "操作",
@@ -199,6 +203,7 @@ export default defineComponent({
               getDetailByAssets({
                 searchCondition: searchValue.value,
                 acceptanceId: props.acceptanceId,
+                applyId: props.applyId,
                 page: {
                   current: !currentPage ? page.currentPage : currentPage,
                   size: page.pageSize,
@@ -207,7 +212,7 @@ export default defineComponent({
                 resolve({
                   total: res.total,
                   result: res.map(d => {
-                    d.assetsDetailId = d.id
+                    //d.assetsDetailId = d.id
                     d.id = null
                     return d
                   })

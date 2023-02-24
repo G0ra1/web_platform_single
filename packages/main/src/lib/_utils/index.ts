@@ -68,7 +68,9 @@ const Utils = {
       }
       return res
     },
-    
+    radomKey (c: number = 10000) {
+      return `${new Date().getTime().toString(36)}X${Math.floor(Math.random() * c).toString(36)}`
+    }
 }
 
 const Page = {
@@ -85,6 +87,7 @@ const Page = {
     value: string,
     labelKey: string,
     label: string,
+    cache: string = '',
     row?: any,
     filterMenu?: (a: any, r: any) => boolean
   ) => {
@@ -96,7 +99,13 @@ const Page = {
         await Db.set(`MenuFilter-${p2}-${p3}`, filterMenu.toString())
       }
       
-      window.parent.location.hash = `${p1}/${p2}/${p3}/${window.btoa(window.encodeURI(`${valueKey}$$${value}$$${labelKey}$$${label}`))}`
+      const hash = `${p1}/${p2}/${p3}/${window.btoa(window.encodeURI(`${valueKey}$$${value}$$${labelKey}$$${label}$$${cache}`))}`
+      if (hash.length >= 4000) {
+        console.error('URL 长度加密后超过 4000字节')
+      } else {
+        window.parent.location.hash = hash
+      }
+      
     } else {
       alert('错误: 调用位置错误,没有找到父级主框架')
     }
@@ -111,6 +120,14 @@ const Page = {
       }
     }
     return {}
+  },
+  getMenuCache () {
+    const { pm = '' } = Utils.parseQuery(window.location.search.substring(1))
+    if (pm) {
+      const [ valueKey, value, labelKey, label, cache ] = window.decodeURI(window.atob(pm)).split('$$')
+      return cache
+    }
+    return ''
   },
   getMenuParam (pm: any) {
     const [ valueKey, value, labelKey, label ] = window.decodeURI(window.atob(pm)).split('$$')

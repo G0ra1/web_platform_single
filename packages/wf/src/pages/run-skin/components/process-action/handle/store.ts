@@ -7,7 +7,8 @@ import {
     FormFrameRef,
     ParamAction,
     WfSendData,
-    onComplete
+    onComplete,
+    FormDataSha256
 } from '../../../store/index'
 
 import {
@@ -15,6 +16,7 @@ import {
     timeParse as d3TimeParse
 } from 'd3'
 
+import sha256 from 'js-sha256'
 
 const timeFormat = d3TimeFormat('%Y-%m-%d %H:%M:%S')
 
@@ -22,7 +24,7 @@ const timeFormat = d3TimeFormat('%Y-%m-%d %H:%M:%S')
 export const handleVisible = ref<boolean>(false)
 
 // 提交节点
-export const NodeList = ref([])
+export const NodeList = ref<Array<any>>([])
 
 // 选择的节点
 export const ActiveNode = ref<any>(null)
@@ -68,12 +70,12 @@ export const BpmnNodeType = ref([
         typeName: '排它网关',
         value: 4
     },
-    // {
-    //     icon: '',
-    //     tagName: '',
-    //     typeName: '会签多任务节点',
-    //     value: 5
-    // },
+    {
+        icon: 'bpmn-icon-user-task',
+        tagName: 'bpmn:UserTask',
+        typeName: '会签多任务节点',
+        value: 5
+    },
     {
         icon: 'bpmn-icon-call-activity',
         tagName: 'bpmn:CallActivity',
@@ -85,7 +87,13 @@ export const BpmnNodeType = ref([
 // 办理请求
 export const sendHandle = async () => {
     
-
+    let stime = new Date().getTime()
+    const getTime = (k?:string) => {
+        const rt = `(${(new Date().getTime() - stime) / 1000}s)`
+        stime = new Date().getTime()
+        console.log(`---${k}--用时：${rt}秒----`)
+        return rt
+    }
 
     // 弹出办理窗口
 
@@ -104,18 +112,29 @@ export const sendHandle = async () => {
         }
     })
     if (!vflag) return;
-    StateModalRef.value!.setMsg('validate', '验证表单数据成功', 'success')
+    StateModalRef.value!.setMsg('validate', `验证表单数据成功(${getTime('验证表单数据')})`, 'success')
     
     
     StateModalRef.value!.setMsg('getValue', '获取表单数据...', 'loading')
+    let RFormDataSha256 = ''
     const formData = await FormFrameRef.value.getValue().then((r: any) => {
-       
+        RFormDataSha256 = (sha256 as any)(JSON.stringify(r))
         return r
     })
-    StateModalRef.value!.setMsg('getValue', '获取表单数据成功', 'success')
+
+    // FormDataSha256
+    // RFormDataSha256 === FormDataSha256.value
+
+    
+    StateModalRef.value!.setMsg('getValue', `获取表单数据成功(${getTime('获取表单数据')})`, 'success')
 
     //
     // console.log('-=-=-表单数据=----', formData)
+    // alert(RFormDataSha256 !== FormDataSha256.value)
+    WfSendData.value.bizDataList[0].isChange = RFormDataSha256 !== FormDataSha256.value
+
+    // console.log('====paramsparams=====', JSON.parse(WfSendData.value.bizDataList[0].params))
+    // console.log('====paramsparams=====', formData)
     WfSendData.value.bizDataList[0].params = JSON.stringify({
         ...JSON.parse(WfSendData.value.bizDataList[0].params),
         ...formData
@@ -127,13 +146,30 @@ export const sendHandle = async () => {
 
     StateModalRef.value!.setMsg('send', '正在提交数据...', 'loading')
     const IsSuccessSend = await handle(WfSendData.value).then(r => {
-
+        WfSendData.value.camundaTaskId = r.camundaTaskId
         // 赋值Node 和user
-        NodeList.value = r.users.map((d: any) => ({
-            ...d,
+        NodeList.value = r.users.map((d: any) => {
+            const { userList, ...oth } = d
+            if (userList.length === 1) {
+                userList[0]._isSelect = true
+            }
+            return {
+            ...oth,
+            userList,
             nodeType: getBpmnNodeType(d.nextcamundaNodeType)
-        }))
+        }})
+        // 这里要回写 bizDataList 数据
+        // console.log('====rr handle rr=====', JSON.parse(r.params))
+        if (r.forms && r.forms[0]) {
+            const params = {
+                ...JSON.parse(WfSendData.value.bizDataList[0].params),
+                ...JSON.parse(r.forms[0].params)
+            }
+            // console.log('======params=====', params)
+            FormFrameRef.value.setValue(params)
+            WfSendData.value.bizDataList[0].params = JSON.stringify(params)
 
+        }
         // 默认第一个
         ActiveNode.value = NodeList.value[0]
         return true
@@ -142,7 +178,7 @@ export const sendHandle = async () => {
         return false
     })
     if (!IsSuccessSend) return
-    StateModalRef.value!.setMsg('send', '保存数据成功...', 'success')
+    StateModalRef.value!.setMsg('send', `保存数据成功...(${getTime('保存数据')})`, 'success')
     StateModalRef.value!.completeInit()
     // 弹出办理窗口
     handleVisible.value = true

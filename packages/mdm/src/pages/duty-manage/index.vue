@@ -10,7 +10,7 @@
         ></NwTableFun>
       </div>
     </n-layout-header>
-    <n-layout position="absolute"  has-sider style="top: 36px; " ref="page">
+    <n-layout position="absolute"  has-sider style="top: 50px; " ref="page">
       <n-layout-sider
         collapse-mode="width"
         :collapsed-width="400"

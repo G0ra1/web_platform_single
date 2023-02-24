@@ -57,7 +57,7 @@
       
       </n-space>
     </n-layout-header>
-    <n-layout position="absolute"  has-sider style="top: 36px; " ref="page">
+    <n-layout position="absolute"  has-sider style="top: 50px; " ref="page">
     <n-layout-sider
         collapse-mode="width"
         :collapsed-width="250"
@@ -338,7 +338,11 @@ export default defineComponent({
           default:({row})=>{
             return <a href="javascript:void(0)" onClick={() => {
               // 这里需要封装一个统一函数
-              Page.toLevel2Menu('appCode', row.appCode, 'appName', row.appName, row, (d, r) => {
+              Page.toLevel2Menu(
+                'appCode', row.appCode,
+                'appName', row.appName,
+                '',
+                row, (d, r) => {
                 if (d.key === 'menu-manage' && r.appCode === 'incloud-base-portal') {
                   return false
                 } else { return true }

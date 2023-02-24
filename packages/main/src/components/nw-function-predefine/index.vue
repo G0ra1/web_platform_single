@@ -1,6 +1,6 @@
 <script lang='tsx'>
 // import { GridComponent, ColumnsDirective, ColumnDirective } from '@syncfusion/ej2-vue-grids';
-import { h,defineComponent, ref, reactive, nextTick, computed, inject, getCurrentInstance } from "vue";
+import { h, defineComponent, ref, reactive, nextTick, computed, inject, getCurrentInstance } from "vue";
 import {
   NConfigProvider,
   NDrawer,
@@ -20,19 +20,31 @@ import {
   NPopconfirm,
   NMessageProvider,
   NSpin
-  
+
 } from "naive-ui";
 
-import { NwIcon, request, NwFunctionViewer } from '@platform/main'
+import { NwIcon, request, NwFunctionViewer, Utils } from '@platform/main'
+
+import { WfRunModal } from '@platform/wf'
 
 // import { createConfig, editConfig } from './data.js'
 import { get } from 'lodash'
 
 // 存储公共
-const StaticFnMap:any = {}
+const StaticFnMap: any = {}
+
+const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
 
 export default defineComponent({
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    pid: {
+      type: String,
+      default: ''
+    },
     code: {
       type: String,
       default: ''
@@ -44,6 +56,10 @@ export default defineComponent({
     params: { // 请求参数
       type: Array,
       default: () => ([])
+    },
+    text: {
+      type: Boolean,
+      ddefault: false
     }
     // 这里需要加入定制
   },
@@ -80,8 +96,9 @@ export default defineComponent({
     if (!StaticFnMap[props.code]) {
       // 从缓存获取功能
       // fnData = StaticFnMap[props.code] = (inject('FnItem') as any).find((d: any) => d.code === props.code)
-      
+
       const FnItem: any = inject('FnItem')
+      // console.log('FnItem=', FnItem, props.code)
       // 当页面含有功能时赋值
       if (FnItem) {
         fnData = StaticFnMap[props.code] = FnItem[props.code]
@@ -114,7 +131,7 @@ export default defineComponent({
     let wfProcdefKey = ''
     // 功能配置
     let functionOption: any;
-    
+
     let btnText: string;
     let btnOption: any;
     if (fnData) {
@@ -130,6 +147,8 @@ export default defineComponent({
       }
     }
 
+    
+    const WfRunModalRef = ref<any>()
     // 功能组件对象
     const FunctionViewRef = ref<typeof NwFunctionViewer>()
     /*
@@ -150,26 +169,50 @@ export default defineComponent({
       }
     
     */
+    const EventKey = (props.pid && props.code) ? `sendParam_${props.pid}_${props.code}` : `sendParam_${Utils.radomKey()}`
+    // 回调
+    const cb = (d: any) => {
+      console.log(123321)
+      d.detail.dispatchEvent(new CustomEvent('setParams', {
+        detail: {
+          param: props.params[0], // 第一个参数
+          params: props.params, // 参数组
+          initScript: new AsyncFunction('Request', 'Utils', JSON.parse(functionOption.script).find((d: any) => d.key === 'init').code)
+        }
+      }));
+    }
     const handle = () => {
+
+      // console.log('=====functionOption, props.params====', props.params)
       // 判断
       if (wfProcdefKey) {
         // 传值
-        
-        const skinWin = window.open(
-          `/web-wf/pages/run-skin.html?Action=create&CamundaDefKey=${wfProcdefKey}${props.params.length ? '&isParamsChannel=1' : ''}`,
-          '_blank',
-          'top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no'
-        )
+        WfRunModalRef.value.show(`/web-wf/pages/run-skin.html?Action=create&CamundaDefKey=${wfProcdefKey}${props.params.length ? `&isParamsChannel=${EventKey}` : ''}`);
+        // const skinWin = window.open(
+        //   `/web-wf/pages/run-skin.html?Action=create&CamundaDefKey=${wfProcdefKey}${props.params.length ? `&isParamsChannel=${EventKey}` : ''}`,
+        //   '_blank',
+        //   'top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no'
+        // )
         if (props.params.length) {
           // 如果含有参数
-          skinWin?.addEventListener('getParams', () => {
-            // 这里监听到了获取参数请求 这里触发
-            skinWin?.dispatchEvent(new CustomEvent('setParams', {
-              detail: props.params[0]
-            }));
-          })
+          // skinWin?.addEventListener('getParams', () => {
+          //   // 这里获取功能脚本init
+
+          //   // 这里监听到了获取参数请求 这里触发
+          //   skinWin?.dispatchEvent(new CustomEvent('setParams', {
+          //     detail: props.params[0]
+          //   }));
+
+          //   // 测试触发功能脚本
+          // })
+
+          // 20221126 修改向流程壳传值
+
+          window.removeEventListener(EventKey, cb)
+          window.addEventListener(EventKey, cb)
         }
       } else {
+        console.log('======functionOption===', functionOption)
         FunctionViewRef.value!.show(functionOption, props.params)
       }
     }
@@ -177,14 +220,17 @@ export default defineComponent({
     return () => {
 
       if (flag) {
-          
         return [
           instance!.slots.auth ? instance!.slots.auth(handle) : <NButton
-          type={btnOption.type}
-          size={btnOption.size}
-          onClick={() => {
-            handle()
-          }}
+            disabled={props.disabled}
+            type={btnOption.type}
+            size={btnOption.size}
+            class={props.text ? 'vxe-grid-active' : ''}
+            text={props.text}
+            style="margin-right:12px"
+            onClick={() => {
+              handle()
+            }}
           >
             {{
               default: () => [btnText]
@@ -198,6 +244,9 @@ export default defineComponent({
             onCancel={() => {
               Emitter.emit('function-cancel')
             }}
+          />,
+          <WfRunModal
+            ref={(d: any) => { WfRunModalRef.value = d }}
           />
         ]
 

@@ -9,19 +9,36 @@ export namespace SearchNS {
     }
     export type condition = ''
     // 
-    export type option = {
+    export type basicOption = {
         name: string,
         field: string,
         vtype: VType,
+    }
+    export type dictOption = {
         dictCode?: string,
         dictUrl?: string,
+        dictMethod?: 'get' | 'post',
         codeFiled?: string,
         nameFiled?: string
     }
+    export type option = basicOption & dictOption
     export type SelectOption = {
         label: string,
         value: string | number,
-        disabled: boolean,
+        disabled?: boolean,
+    }
+    export type searchFilter = {
+        keyWord: string,
+        operationType: OperationEmu,
+        value: string | number,
+        isIncludeRang: boolean,
+        isRang: boolean,
+        vType: VType,
+
+    }
+    export type searchGroup = Array<searchFilter>
+    export type obj = {
+        [a: string]: dictOption
     }
 }
 

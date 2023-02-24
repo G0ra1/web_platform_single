@@ -1,0 +1,24 @@
+.n-select > .n-base-selection {
+    height: 36px;
+    opacity: 1;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 1);
+
+    border: 1px solid rgba(0, 0, 0, 0.1);  
+    .n-base-selection-label {
+        height: 100%;
+    }
+    &.n-base-selection--disabled {
+        height: 36px;
+        >.n-base-selection__border {
+            box-shadow: none
+        }
+    }
+     .n-base-selection-tags{
+        height: 100%;
+        overflow-y: scroll;
+    }
+    >.n-base-selection__border {
+        // box-shadow: 0 0 0 0 rgb(45 114 210 / 0%), 0 0 0 0 rgb(45 114 210 / 0%), inset 0 0 0 1px rgb(17 20 24 / 20%), inset 0 1px 1px rgb(17 20 24 / 50%);
+    }
+}

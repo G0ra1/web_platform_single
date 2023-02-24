@@ -147,7 +147,8 @@ export default defineComponent({
     NwOpenapiPick,
     NwCodeMirror
   },
-  setup() {
+  emits: [ 'callback' ],
+  setup(props, context) {
     const action = ref<'create' | 'edit'>('create')
     const active = ref<boolean>(false)
     const x = ref<string>('')
@@ -191,6 +192,8 @@ export default defineComponent({
       edit(formData.value).then(r => {
         console.log('====r====', r)
         active.value = false
+      }).finally(() => {
+        context.emit('callback')
       })
     }
 

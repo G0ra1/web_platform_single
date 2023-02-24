@@ -209,6 +209,8 @@ export default defineComponent({
             m.visibleType = 1;
             m.rangeName = d.userNameCh;
             m.rangeId = d.id;
+            m.rangeParentId = d.parentOrgId;
+            m.rangeParentName = d.parentOrgName;
             return m;
           })
         );
@@ -227,6 +229,8 @@ export default defineComponent({
           m.rangeName = d.orgName;
           m.rangeId = d.id;
           m.orgId = d.id;
+          m.rangeParentId = d.parentOrgId;
+          m.rangeParentName = d.parentOrgName;
           return m;
         })
       );

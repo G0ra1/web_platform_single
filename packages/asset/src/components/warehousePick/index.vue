@@ -2,14 +2,14 @@
   <n-input-group @click="selectContract()">
     <n-input v-model:value="warehouseName" disabled :style="{ width: '100%' }" placeholder="选择仓库"
       class="selectedInput" />
-    <n-button style="padding: 0 8px">
+    <n-button style="padding: 0 8px;height: 35px;" >
       <NwIcon name="icon-sousuo1" :size="15"></NwIcon>
     </n-button>
   </n-input-group>
   <n-modal v-model:show="showModal" :mask-closable="false" preset="dialog" title="选择仓库信息" positive-text="确认"
     negative-text="取消" style="width: 1200px">
     <n-grid>
-      <n-grid-item :span="24" style="height: 650px">
+      <n-grid-item :span="24" style="height: 520px">
         <n-spin :show="spinShow">
           <vxe-toolbar style="height: 40px">
             <template v-slot:buttons>
@@ -81,6 +81,14 @@ export default defineComponent({
       type: String,
       default: ''
     },
+    orgId : {
+      type: String,
+      default: ''
+    },
+    deptId : {
+      type: String,
+      default: ''
+    },
   },
 
   setup(props, context) {
@@ -102,7 +110,7 @@ export default defineComponent({
     };
     const gridOptions = reactive({
       border: true,
-      height: 600,
+      height: 480,
       rowConfig: {
         keyField: "id",
       },
@@ -185,6 +193,8 @@ export default defineComponent({
               contractPurchaseList({
                 searchCondition: searchValue.value,
                 partyaCode: props.partyaCode,
+                orgId: props.orgId,
+                deptId: props.deptId,
                 isDefault: 1,
                 page: {
                   current: !currentPage ? page.currentPage : currentPage,

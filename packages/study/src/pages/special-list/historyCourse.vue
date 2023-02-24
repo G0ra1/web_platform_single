@@ -22,7 +22,7 @@
             >
                 <vxe-column field="specialName" title="专题名称"  >
                   <template v-slot="{ row }">
-                    <span style="color:#2080f0;cursor:pointer" @Click="()=>{studySpecialHisDetailShow(row)}">
+                    <span style="color:#2080f0;cursor:pointer" @click="()=>{studySpecialHisDetailShow(row)}">
                       {{row.specialName}}
                     </span>
                 </template>
@@ -64,7 +64,7 @@
     >
       <nw-form-view
         ref="formRef"
-        src="/html/forms/study-special-form.html"
+        src="/web-study/forms/study-special-form.html"
       />
       
     </n-drawer-content>

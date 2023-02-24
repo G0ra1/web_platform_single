@@ -43,15 +43,18 @@
 
               <n-button :loading="isTableLoading" :disabled="isTableLoading" type="info" size="small"
                 @click="exportFile" style="margin-right: 5px">导出模板</n-button>
+              <n-button :loading="isTableLoading"  type="info" size="small"
+                @click="exportFileData" style="margin-right: 5px">导出数据</n-button> 
               <n-upload v-if="showUpload" :action="uploadUrl" accept="*/*" :show-file-list="false"
                 :disabled="orgType == 1" :headers="{
                   Authorization: `${tokenType} ${token}`,
                 }" :data="{
-  deptId: uploadDeptId
-}" @finish="handleFinish" @change="handChange" @error="handleError" @before-upload="beforeUpload">
+                    deptId: uploadDeptId
+                  }" @finish="handleFinish" @change="handChange" @error="handleError" @before-upload="beforeUpload">
                 <n-button size="small" type="info">
                   <NwIcon name="icon-add-bold" :size="15" />导入
                 </n-button>
+                
               </n-upload>
             </n-input-group>
           </template>
@@ -69,6 +72,13 @@
               <n-form-item path="idCard" label="证件号">
                 <n-input v-model:value="searchFormData.idCard" @keydown.enter.prevent />
               </n-form-item>
+              <n-form-item path="phoneNum" label="手机号">
+                <n-input v-model:value="searchFormData.phoneNum" @keydown.enter.prevent />
+              </n-form-item>
+              <n-form-item path="education" label="学历">
+                <n-input v-model:value="searchFormData.education" @keydown.enter.prevent />
+              </n-form-item>
+             
             </n-form>
             <!-- <n-button type="info" size="small" style="margin-right: 5px;">其他</n-button>
             <n-button type="info" size="small">其他</n-button> -->
@@ -189,20 +199,20 @@ import {
   setAndDuty,
   setMasterDuty,
   syncGuFenUserAndMasterPostIncrement,
-  exportUser
+  exportUser,
+  exportUserData
 } from './api'
 import AddEmp from './empAdd.vue'
 import EditAction from './editAction.vue'
 import UnitMobilize from './unitMobilize.vue'
 import SetPassWord from './setPassWord.vue'
-import NwIcon from '/@/components/nw-icon/index.vue'
 import SortAction from './sortAction.vue'
 import CurrentSort from './currentSort.vue'
 import Setting from "/setting.js"
 import PostPickModal from '../../components/postPickModal/postPickModal.vue'
 import DutyPickModal from '../../components/dutyPickModal/dutyPickModal.vue'
 import VersionAction from './versionAction.vue'
-import cookies from "/@/utils/cookies.js";
+import { NwIcon, Cookies,  } from '@platform/main'
 
 export default defineComponent({
   components: {
@@ -247,8 +257,8 @@ export default defineComponent({
     const setPassWord = ref()
     const sortAction = ref()
     const currentSort = ref()
-    const token = cookies.get("token");
-    const tokenType = cookies.get("tokenType");
+    const token = Cookies.get("token");
+    const tokenType = Cookies.get("tokenType");
     const tree = reactive({
       treeList: [], //原始数据
 
@@ -524,12 +534,14 @@ export default defineComponent({
           }
 
         },
+        { field: 'userCode', title: '人员编号', showHeaderOverflow: true, width: 150 },
         { field: 'userName', title: '账户名称', showHeaderOverflow: true, width: 150 },
         { field: 'parentOrgName', title: '所属单位', showHeaderOverflow: true, width: 250 },
         { field: 'parentDeptName', title: '所属部门', showHeaderOverflow: true, width: 200 },
         { field: 'idCard', title: '证件号', showOverflow: true, width: 200 },
         { field: 'postName', title: '主岗', showOverflow: true, width: 200 },
-
+        { field: 'phoneNum', title: '手机号', showOverflow: true, width: 200 },
+        { field: 'education', title: '学历', showOverflow: true, width: 200 },
         {
           field: 'sex', title: '性别', showOverflow: true, width: 80,
           slots: {
@@ -543,6 +555,17 @@ export default defineComponent({
           }
 
         },
+        { field: "status", title: "在职离职",showHeaderOverflow: true, showOverflow: true,
+            slots: {
+                default: ({row}) => {
+                  return [
+                    <span>
+                      {row.status == 1 ? '在职' : '离职'}
+                    </span>,
+                  ];
+                },
+              }
+          },
         {
           field: "status", title: "启用状态", showHeaderOverflow: true, showOverflow: true,
           slots: {
@@ -684,6 +707,12 @@ export default defineComponent({
     exportFile() {
       this.isTableLoading = true
       exportUser().then(r => {
+        this.isTableLoading = false
+      })
+    },
+    exportFileData() {
+      this.isTableLoading = true
+      exportUserData({}).then(r => {
         this.isTableLoading = false
       })
     }

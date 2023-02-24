@@ -52,7 +52,7 @@
   </n-modal>
 </template>
 <script lang="tsx">
-import { ref, reactive, nextTick, h } from "vue";
+import { defineComponent, ref, reactive, nextTick, h } from "vue";
 import {
   NConfigProvider,
   NLayout,
@@ -87,7 +87,7 @@ import {
   CircularizeUsers
 } from '../../store'
 
-export default {
+export default defineComponent({
   components: {
     NConfigProvider,
     NLayout,
@@ -114,13 +114,12 @@ export default {
     NwEmployee,
     NwEmployeePick,
   },
-  props: {},
   
   setup(props: any, context: any){
     const visible = ref(false)
     const gridRef = ref(null)
     // 用户列表
-    const gridOption = ref({
+    const gridOption = ref<any>({
       rowId: 'id',
       rowKey: false,
       height: '340px',
@@ -209,7 +208,7 @@ export default {
         }
       }
   },
-};
+});
 </script>
 
 <style scoped lang="less">

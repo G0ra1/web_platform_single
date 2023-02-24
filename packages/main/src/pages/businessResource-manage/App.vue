@@ -143,6 +143,7 @@ export default defineComponent({
                   type="error"
                   onClick={() => {
                     dialog.error({
+                      class: 'text-modal-dialog',
                       title: '删除',
                       content: '确定删除？',
                       positiveText: '确定',
@@ -168,7 +169,7 @@ export default defineComponent({
         }
       ]
     }, new RequestPaging(
-      '/permission/businessResource/pageByBusiness',
+      '/permission/businessResource/page',
       'post'
     )
     )

@@ -7,17 +7,17 @@
   <n-modal v-model:show="showModal" :mask-closable="false" preset="dialog" title="选择物资" content="你确认" positive-text="确认"
     negative-text="取消" style="width: 1200px">
     <n-grid>
-      <n-grid-item span="6" style="height: 650px" v-if="showSide">
-        <div class="sider" style="height: 690px">
+      <n-grid-item span="6" style="height: 580px" v-if="showSide">
+        <div class="sider" style="height: 5600px">
           <n-input v-model:value="searchItemClassName" clearable placeholder="搜索物资分类" />
           <n-spin :show="leftSpinShow">
-            <n-tree placeholder="请选择" :data="tree.treeList" style="height: 630px; padding: 5px 0" block-line
+            <n-tree placeholder="请选择" :data="tree.treeList" style="height: 540px; padding: 5px 0" block-line
               virtual-scroll :pattern="searchItemClassName" :show-irrelevant-nodes="false"
               :default-expanded-keys="['0']" @update:selected-keys="treeSelect" />
           </n-spin>
         </div>
       </n-grid-item>
-      <n-grid-item :span="showSide ? 18 : 24" style="height: 650px">
+      <n-grid-item :span="showSide ? 18 : 24" style="height: 520px">
         <n-spin :show="spinShow">
           <vxe-toolbar style="height: 40px">
             <template v-slot:buttons>
@@ -47,17 +47,17 @@
               </vxe-form>
             </template>
           </vxe-toolbar>
-          <vxe-table resizable highlight-current-row ref="aTable" row-id="id" height="300px"
+          <vxe-table resizable highlight-current-row ref="aTable" row-id="id" :height="180"
             :edit-config="{ trigger: 'click', mode: 'cell' }" v-show="multiple" :data="emp.alreadyEmpList">
-            <vxe-table-column showHeaderOverflow showOverflow  field="itemName" title="物资名称"></vxe-table-column>
-            <vxe-table-column showHeaderOverflow showOverflow  field="itemCode" title="物资编码"></vxe-table-column>
-            <vxe-table-column showHeaderOverflow showOverflow  field="classifyName" title="物资分类"></vxe-table-column>
-            <vxe-table-column showHeaderOverflow showOverflow  field="classifyCode" title="物资分类编码"></vxe-table-column>
-            <vxe-table-column showHeaderOverflow showOverflow   field="descshort" title="物资编码短描述"></vxe-table-column>
-            <vxe-table-column showHeaderOverflow showOverflow  field="desclong" title="物资编码长描述"></vxe-table-column>
-            <vxe-table-column   field="unitName" title="物资单位"></vxe-table-column>
-            <vxe-table-column   field="state" title="状态"></vxe-table-column>
-            <vxe-table-column  field title="操作">
+            <vxe-table-column showHeaderOverflow showOverflow field="itemName" title="物资名称"></vxe-table-column>
+            <vxe-table-column showHeaderOverflow showOverflow field="itemCode" title="物资编码"></vxe-table-column>
+            <vxe-table-column showHeaderOverflow showOverflow field="classifyName" title="物资分类"></vxe-table-column>
+            <vxe-table-column showHeaderOverflow showOverflow field="classifyCode" title="物资分类编码"></vxe-table-column>
+            <vxe-table-column showHeaderOverflow showOverflow field="descshort" title="物资编码短描述"></vxe-table-column>
+            <vxe-table-column showHeaderOverflow showOverflow field="desclong" title="物资编码长描述"></vxe-table-column>
+            <vxe-table-column field="unitName" title="物资单位"></vxe-table-column>
+            <vxe-table-column field="state" title="状态"></vxe-table-column>
+            <vxe-table-column field title="操作">
               <vxe-button type="text" @click="
                 () => {
                   emp.alreadyEmpList.splice(index, 1);

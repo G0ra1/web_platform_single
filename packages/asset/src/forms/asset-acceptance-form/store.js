@@ -5,7 +5,7 @@ import { getUser, fileinfo } from "./api/index.js";
 import { format } from "date-fns";
 import { assetsList, acceptanceDetailsRef } from "./itemtable.js";
 import { Utils } from '@platform/main'
-const { reduceData,enlargeData} = Utils
+const { reduceData, enlargeData } = Utils
 export const formRef = ref(null);
 export const dataModel = ref({});
 export const rules = ref([]);
@@ -13,12 +13,13 @@ export const brules = ref([]);
 export const detailList = ref([{}]);
 export const filesSons = ref([{}]);
 window.DM_SET_VALUE = async function (v) {
-  console.log(v, '111111111111')
+  let user ;
   if (!v.applyTime) {
     v.applyTime = format(new Date(), "yyyy-MM-dd HH:mm:ss");
   }
   if (!v.applyUserName) {
     await getUser().then((res) => {
+      user = res;
       v.applyUserName = res.userNameCh;
       v.applyUserId = res.id;
       v.applyUserDeptName = res.parentDeptName;
@@ -27,7 +28,14 @@ window.DM_SET_VALUE = async function (v) {
       v.applyUserOrgId = res.parentOrgId;
     });
   }
-  if (v.detailList && v.detailList.length > 0) {
+  if (!v.acceptanceDate) {
+    v.acceptanceDate = format(new Date(), "yyyy-MM-dd");
+  }
+  if (!v.acceptanceUserName) {
+    v.acceptanceUserId = user.id;
+    v.acceptanceUserName = user.userNameCh;
+  }
+  if (v.detailList && v.detailList.length > 0 && acceptanceDetailsRef.value) {
     v.detailList = enlargeData(v.detailList)
     acceptanceDetailsRef.value.setTableValue(v.detailList.map(d => {
       d.productionDate = d.productionDate ? d.productionDate.slice(0, 10) : null
@@ -36,6 +44,7 @@ window.DM_SET_VALUE = async function (v) {
     }))
   }
   dataModel.value = v;
+  console.log(dataModel.value, 'dataModel.value')
 };
 // 设置表单字段权限
 window.DM_SET_RULES = function (v) {
@@ -68,17 +77,21 @@ window.DM_SET_RULES = function (v) {
 };
 // 获取表单数据
 window.DM_GET_VALUE = function () {
-  dataModel.value.detailList = reduceData(cloneDeep(acceptanceDetailsRef.value.getTableValue()).map(d => {
-    if (d.productionDate && d.productionDate.length == 10) {
-      d.productionDate = d.productionDate + ' 00:00:00'
-    }
-    if (d.factoryDate && d.factoryDate.length == 10) {
-      d.factoryDate = d.factoryDate + ' 00:00:00'
-    }
-    return d
-  }))
-  console.log(dataModel.value, 'assetsList.valueassetsList.value')
+  if (acceptanceDetailsRef.value) {
+    dataModel.value.detailList = reduceData(cloneDeep(acceptanceDetailsRef.value.getTableValue()).map(d => {
+      if (d.productionDate && d.productionDate.length == 10) {
+        d.productionDate = d.productionDate + ' 00:00:00'
+      }
+      if (d.factoryDate && d.factoryDate.length == 10) {
+        d.factoryDate = d.factoryDate + ' 00:00:00'
+      }
+      return d
+    }))
+    console.log(dataModel.value, 'assetsList.valueassetsList.value')
+    return cloneDeep(dataModel.value);
+  }
   return cloneDeep(dataModel.value);
+
 };
 window.DM_VALIDATE = async function () {
   let f = []

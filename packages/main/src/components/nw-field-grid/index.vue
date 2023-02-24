@@ -16,9 +16,7 @@ import {
   computed,
   defineComponent,
   watch,
-  defineExpose,
   nextTick,
-  defineEmits,
   renderSlot,
   useSlots,
   getCurrentInstance,
@@ -60,10 +58,40 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
+    searchOptions: {
+      type: Object,
+      default: () => ({})
+    },
+    defaultAddBtnOptions: {
+      type: Object,
+      default: () => ({})
+    }
   },
-  emits: ["update:value"],
-  setup (props, context) {
-    console.log('context', context)
+  emits: ["update:value", 'checkboxChange'],
+  setup(props, context) {
+    // 查询
+    const searchFun = (searchStr: string | number , fieldStr: string | number , c: boolean) => {
+      if (c) {
+        return `${fieldStr}`.indexOf(`${searchStr}`) >= 0
+      } else {
+        return searchStr === fieldStr
+      }
+    }
+    const mergeSearchFn = (field: any) => {
+      if (!Object.entries(SearchForm.value).length) {
+        return 1
+      }
+      return Object.entries(SearchForm.value).every(([k, v]: any) => {
+        if (!v) {
+          return 1
+        } else {
+          return searchFun(v, field[k], !!props.searchOptions[k])
+        }
+      })
+    }
+    const SearchForm = ref<any>({})
+
+    // console.log('context', context)
     const VxeGrid: any = getCurrentInstance()!.appContext.components.VxeGrid
 
     const gridRef = ref<VxeGridInstance>()
@@ -74,44 +102,48 @@ export default defineComponent({
       // gridRef.value?.reloadData(props.value)
       refreshGrid()
     },
-    {deep: true})
+      { deep: true })
     // 
     const getColumn = () => {
       props.columns?.forEach((d: any) => {
         d.visible = props.dataPermits[d.field] !== 'hide'
-        if (!d.editRender) d.editRender = { }
+        if (d.editRender?.enabled !== undefined) return
+        if (!d.editRender) d.editRender = {}
         // console.log('props.dataPermits', props.dataPermits)
         d.editRender.enabled = props.dataPermits[d.field] !== 'readonly'
       })
       return [
-          ...props.columns as any,
-          {
-              visible: !props.isReadonly,
-              title: "操作",
-              width: 70,
-              fixed: "right",
-              slots: {
-                  default: ({ $table, rowIndex }: any) => {
-                  return [
-                      <NButton
-                      size="small"
-                      type="error"
-                      text
-                      onClick={() => {
-                          props.value.splice(rowIndex, 1)
-                          context.emit('update:value', props.value);
-                          $table.reloadData(props.value);
-                      }}
-                      >
-                      {{
-                          default: () => "删除",
-                      }}
-                      </NButton>,
-                  ];
-                  },
-              }
-          },
+        ...(props.columns || []) as any,
+        {
+          visible: !props.isReadonly,
+          title: "操作",
+          width: 70,
+          fixed: "right",
+          slots: {
+            default: ({ $table, rowIndex }: any) => {
+              return [
+                <NButton
+                  size="small"
+                  type="error"
+                  text
+                  onClick={() => {
+                    const deleteed = props.value.splice(rowIndex, 1)
+                    context.emit('update:value', props.value, deleteed);
+                    $table.reloadData(props.value);
+                  }}
+                >
+                  {{
+                    default: () => "删除",
+                  }}
+                </NButton>,
+              ];
+            },
+          }
+        },
       ]
+    }
+    const checkboxChangeEvent = (e: any) => {
+      context.emit('checkboxChange', e)
     }
 
     const validRules = ref<VxeTablePropTypes.EditRules>({
@@ -125,71 +157,82 @@ export default defineComponent({
     // 刷新表格整体
     const refreshGrid = () => {
 
-        gridOption.value = {
-            rowKey: false,
-            keepSource: false,
-            // height: '500px',
-            size: "mini",
-            showOverflow: false,
-            highlightHoverRow: true,
-            border: true,
-            data: props.value, //computed<any>(() => props.value) as any,
-            columns: getColumn(),
-            editConfig: {
-              enabled: props.editEnabled,
-              trigger: "click",
-              mode: "row",
-              showStatus: true,
-              autoClear: false,
-            },
-            editRules: props.rules,//validRules.value,
-            toolbarConfig: {
-            enabled: !props.isReadonly, // 控制新增  
-            slots: {
-                buttons: context.slots.buttons ? 'buttons' : ({ $grid }: any) => {
-                return [
-                    <NButton
-                    type="primary"
-                    onClick={() => {
-                        context.emit('update:value', [ ...cloneDeep(props.value), cloneDeep(props.defaultValue) ]);
-                        nextTick(() => {
-                            $grid.reloadData(props.value);
-                        })
-                    }}
-                    >
-                    {{
-                        default: () => "新增",
-                    }}
-                    </NButton>,
-                ];
-                },
-                // buttons: ({ $grid }: any) => {
-                // return [
-                //     <NButton
-                //     type="primary"
-                //     onClick={() => {
-                //         context.emit('update:value', [ ...cloneDeep(props.value), cloneDeep(props.defaultValue) ]);
-                //         nextTick(() => {
-                //             $grid.reloadData(props.value);
-                //         })
-                //     }}
-                //     >
-                //     {{
-                //         default: () => "新增",
-                //     }}
-                //     </NButton>,
-                // ];
-                // },
-            },
+      gridOption.value = {
+        rowKey: false,
+        keepSource: false,
+        // height: '500px',
+        size: "small",
+        showOverflow: false,
+        highlightHoverRow: true,
+        border: true,
+        // data: props.value, //computed<any>(() => props.value) as any, 这里加入分页
+        data: computed<any>(() => {
+          if (props.value) {
+            return props.value.filter(d => {
+              return mergeSearchFn(d)
+            })
+          } else {
+            return []
+          }
+        }) as any,
+        columns: getColumn(),
+        editConfig: {
+          enabled: props.editEnabled,
+          trigger: "click",
+          mode: "row",
+          showStatus: true,
+          autoClear: false,
         },
-        }
+        editRules: props.rules,//validRules.value,
+        toolbarConfig: {
+          enabled: !props.isReadonly, // 控制新增  
+          slots: {
+            buttons: context.slots.buttons ? 'buttons' : ({ $grid }: any) => {
+              return [
+                <NButton
+                  type="primary"
+                  class="pickAnyC"
+                  onClick={() => {
+                    context.emit('update:value', [...cloneDeep(props.value), cloneDeep(props.defaultValue)]);
+                    nextTick(() => {
+                      $grid.reloadData(props.value);
+                    })
+                  }}
+                  {...props.defaultAddBtnOptions}
+                >
+                  {{
+                    default: () => "新增",
+                  }}
+                </NButton>,
+              ];
+            },
+            // buttons: ({ $grid }: any) => {
+            // return [
+            //     <NButton
+            //     type="primary"
+            //     onClick={() => {
+            //         context.emit('update:value', [ ...cloneDeep(props.value), cloneDeep(props.defaultValue) ]);
+            //         nextTick(() => {
+            //             $grid.reloadData(props.value);
+            //         })
+            //     }}
+            //     >
+            //     {{
+            //         default: () => "新增",
+            //     }}
+            //     </NButton>,
+            // ];
+            // },
+          },
+        },
+      }
     }
     refreshGrid()
     // fullValidate
     context.expose({
       validate: async () => {
         return await gridRef.value!.validate(true).then((res) => {
-          
+
           if (!res) {
             return res
           } else {
@@ -200,15 +243,43 @@ export default defineComponent({
 
       }
     })
-    return () => (<VxeGrid
-        ref={(d: any) => gridRef.value = d}
-        {
-            ...gridOption.value
+    const search: any = {}
+    if (context.slots.search) {
+      search.top = () => {
+          return <div style="padding: 5px;display:flex;justify-content: space-between;">
+            <div>
+              {{
+                default: () => {
+                  return context.slots.search!(SearchForm)
+                }
+              }}
+            </div>
+            <div>
+            <NButton
+              size="small"
+              onClick={() => {
+                SearchForm.value = {}
+              }}
+            >重置</NButton>
+            
+            </div>
+          </div>
         }
+    }
+    // 这里判断
+    return () => (<VxeGrid
+      class="field-grid"
+      ref={(d: any) => gridRef.value = d}
+      {
+      ...gridOption.value
+      }
+      onCheckboxChange={checkboxChangeEvent}
+      onCheckboxAll={checkboxChangeEvent}
     >
-        {{
-            ...useSlots()
-        }}
+      {{
+        ...useSlots(),
+        ...search
+      }}
     </VxeGrid>)
   }
 })
@@ -221,5 +292,37 @@ export default defineComponent({
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+
+.vxe-grid.field-grid {
+  >.vxe-grid--toolbar-wrapper {
+    >.vxe-toolbar.size--mini {
+      padding: 5px 0;
+      height: auto;
+    }
+  }
+
+  >.vxe-grid--pager-wrapper {
+    >.vxe-pager.size--mini {
+      height: 22px;
+    }
+  }
+
+  .vxe-table--render-default .vxe-body--column {
+    line-height: 22px;
+    font-size: 14px;
+  }
+
+  .vxe-table--render-default .vxe-header--column {
+    line-height: 22px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.64);
+    font-weight: 500;
+
+  }
+
+  .vxe-table--render-default .vxe-table--header {
+    height: 22px;
+  }
 }
 </style>

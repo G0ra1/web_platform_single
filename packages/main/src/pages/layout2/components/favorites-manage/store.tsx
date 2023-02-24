@@ -4,12 +4,20 @@ import type { FormModel } from './model'
 import { NwIcon } from '@platform/main'
 import { TreeOption } from 'naive-ui'
 
+export const formRef = ref()
 export const model = ref<FormModel>({})
 export const modelType = ref<number>(1) // 1新增类型 2新增链接
 export const options = ref<any>([])
 export const treeData = ref<any>([])
 export const message = ref<any>({})
 export const sContext = ref<any>({})
+export const rules = ref({
+    typeId: {
+        required: true,
+        message: '请选择分类',
+        trigger: ['input', 'change']
+    }
+})
 
 export const getTypeList = () => {
     treeData.value = []
@@ -48,13 +56,26 @@ export const treeSelect = (keys: Array<string | number>, option: Array<any>) => 
     model.value = { ...option[0] }
 }
 export const save = () => {
-    console.log(sContext)
-    let fn = modelType.value === 1 ? model.value.id ? typeEdit : typeCreate : model.value.id ? edit : create;
-    fn(model.value).then(res => {
-        message.value.success('保存成功')
-        getTypeList()
-        sContext.value.emit('callback')
+    console.log(formRef, 'formRefformRefformRef')
+    console.log(modelType.value, 'modelType.valuemodelType.value')
+    console.log(model.value, 'model.valuemodel.value')
+    formRef.value?.validate((errors: any) => {
+        if (!errors) {
+            let fn = modelType.value === 1 ? model.value.id ? typeEdit : typeCreate : model.value.id ? edit : create;
+            fn(model.value).then(res => {
+                message.value.success('保存成功')
+                model.value.typeName = ""
+                model.value.articleName = ""
+                model.value.webUrl = ""
+                model.value.typeId = null
+                getTypeList()
+                sContext.value.emit('callback')
+            })
+        } else {
+            message.value.error('请选择分类')
+        }
     })
+
 }
 export const delHandle = (id: string) => {
     let fn = modelType.value === 1 ? typeDel : del
@@ -62,7 +83,10 @@ export const delHandle = (id: string) => {
     fn(id).then(res => {
         message.value.success('删除成功')
         getTypeList()
-        model.value = {}
+        model.value.typeName = ""
+        model.value.articleName = ""
+        model.value.webUrl = ""
+        model.value.typeId = null
         sContext.value.emit('callback')
     })
 }

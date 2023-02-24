@@ -1,4 +1,5 @@
-export const dateOperation = [
+import { operationType } from './operation.d'
+const rangOperation = [
     {
         label: '等于',
         value: 'eq'
@@ -21,7 +22,7 @@ export const dateOperation = [
     },
 
 ]
-export const otherOperation = [
+const normalOperation = [
     {
         label: '等于',
         value: 'eq'
@@ -30,4 +31,18 @@ export const otherOperation = [
         label: '不等于',
         value: 'neq'
     },
+    {
+        label: '包含',
+        value: 'in'
+    },
+    {
+        label: '包含于',
+        value: 'bein'
+    },
 ]
+
+const operation: operationType = {
+    rang: rangOperation,
+    normal: normalOperation
+}
+export default operation

@@ -23,6 +23,10 @@ export class LabourPlan {
     planType!: string;
     //大修id
     overhaulId!: string;
+    //大修编码
+    overhaulCode!: string;
+    //大修名称
+    overhaulName!: string;
     //预估金额
     estimateAmount!: string;
     //预算金额
@@ -43,6 +47,12 @@ export class LabourPlan {
     labourPlanSuppOrgList?: Array<LabourPlanSuppOrg>;
     //需求人员信息
     labourPlanPersonList?: Array<LabourPlanPerson>;
+
+    overhaulSourceList?: Array<overhaulSourceList>;
+
+
+    purchaseExtend ?: Array<PurchaseExtend>;
+    purchasePrice ?: Array<PurchasePrice>;
 }
 
 export  class LabourPlanContractWork {
@@ -59,11 +69,9 @@ export  class LabourPlanContractWork {
 //需求人员
 export  class LabourPlanPerson {
     //需求计划id
-    //planId!: string;
+    planId!: string;
     //项目名称
     projectName!: string;
-    //岗位id（字典类型为postRank）
-    postRankId!: string;
     //岗位名称（字典类型为postRank）
     postRankName!: string;
     //需求人数
@@ -84,12 +92,18 @@ export  class LabourPlanSuppOrg {
     suppOrgId!: string;
     //供应商组织code
     suppOrgCode!: string;
+    //供应商组织code
+    suppOrgName!: string;
+    //供应商组织简称
+    suppOrgShortName!: string;
 }
 
 //人员推荐信息
 export  class LabourPlanReferral {
     //需求计划id
     planId!: string;
+    //需求计划需求专业相关信息
+    plaplanPersonIdnId!: string;
     //专业字典id（字典类型为outer_discipline）
     outerDisciplineId!: string;
     //专业字典名称（字典类型为outer_discipline）
@@ -104,6 +118,8 @@ export  class LabourPlanReferral {
     suppOrgId!: string;
     //供应商组织code
     suppOrgCode!: string;
+    //供应商组织name
+    suppOrgName!: string;
     //是否工时制
     isHour!: number;
     //录用状态（pass 未录用；interview面试；stay_entrance待入场；）
@@ -112,4 +128,68 @@ export  class LabourPlanReferral {
     suppUserId!: string;
     //劳务人员名称
     suppUserName!: string;
+    //性别 1 男   2女
+    sex!: number;
+    //班组id
+    banId!: string;
+    //班组名称
+    banName!: string;
 }
+export  class PurchaseExtend {
+
+    //需求计划id
+    planId!: string;
+    //主键
+    id!: string;
+    //采购合同ID
+    contractId!: string;
+    //合同名称
+    contractname !:string;
+    //税率
+    taxrateName!: string;
+
+    partaname !:string;
+
+    contractcode !:string;
+    //税率
+    taxrate!: string;
+    //发票类型
+    invoiceTypeName!: string;
+    //发票类型
+    invoiceType!: string;
+    //申请日期
+    applyTime!: string;
+    //工时时薪
+    workHourAmount !:number;
+   //加班时薪
+   overtimeHourAmount !:number;
+   //工作日加班倍数
+   workdayOvertimeCoefficient !:number;
+   //休息日加班倍数
+   dayOffOvertimeCoefficient !:number;
+   //法定休假日加班倍数
+   legalDayOffOvertimeCoefficient!:number;
+
+}
+
+export class PurchasePrice{
+
+     //需求计划id
+     planId!: string;
+
+    //专业(规格型号)
+    outerDisciplineId!: string;
+     //专业名称(规格型号)
+    outerDisciplineName!: string;
+     //休息方式;1单休2双休3不休
+    restMode!: string;
+     //单位;1人/天2人/月
+    unit!: number;
+     //价格
+    price!: number;
+  }
+
+  export class overhaulSourceList{
+
+    
+ }

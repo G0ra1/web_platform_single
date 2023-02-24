@@ -3,33 +3,80 @@ import sysMenu from './sys'
 import demoMenu from './demo'
 
 import { AxiosError } from "axios";
-// 一般
-export async function login (form: any) {
-    Db.clear()
-    const fd = new FormData()
-    fd.append('username', form.username)
-    fd.append('password', Aes.encrypt(form.password))
-
-    const reqData = await new Request(
-        '/sys/login',
+// 修改密码
+export async function updatePassword (params: string) {
+    await new Request(
+        '/main/mdmUser/updatePassword',
         'post',
-        fd
-    ).send().then(async data => {
-        return data
+        params
+    ).send().then(async res => {
+        
     }).catch(error => {
         return error;
     })
+}
+// 一般
+export async function login (loginType: 'userlogin' | 'ssologin' | 'hblogin',form?: any) {
+    // 设置风格
+    Db.clear()
+    // 清除cookies
+    Cookies.remove("token");
+    Cookies.remove("tokenType");
+    let reqData
+
+    if (loginType === 'userlogin') {
+        const fd = new FormData()
+        fd.append('username', form.username)
+        fd.append('password', Aes.encrypt(form.password))
+
+        reqData = await new Request(
+            '/sys/login',
+            'post',
+            fd
+        ).send().then(async res => {
+            window.localStorage.setItem('ssologin', `${res.token_type} ${res.access_token}`)
+            return res
+        }).catch(error => {
+            return error;
+        })
+    } else if (loginType === 'ssologin') {
+        const params = Utils.parseQuery(window.location.search.substring(1))
+        reqData = await new Request(
+            `/main/api/jxLogin?ssoUserLoginName=${params.ssoUserLoginName}`,
+            'get'
+        ).send().then(async res => {
+            window.localStorage.setItem('ssologin', `${res.token_type} ${res.access_token}`)
+            return res
+        }).catch(error => {
+            return error;
+        })
+    } else if (loginType === 'hblogin') {
+        const params = Utils.parseQuery(window.location.search.substring(1))
+        reqData = await new Request(
+            `/main/api/hbLogin?hbToken=${params.hbToken}`,
+            'get'
+        ).send().then(async res => {
+            window.localStorage.setItem('ssologin', params.hbToken)
+
+            return res
+        }).catch(error => {
+            return error;
+        })
+    }
+    
     // 
 
     if (reqData.constructor === AxiosError) {
         throw reqData
     }
 
-    Cookies.remove("token");
-    Cookies.remove("tokenType");
     Cookies.set("token", reqData.access_token);
     Cookies.set("tokenType", reqData.token_type);
 
+    // 这里判断密码是否符合
+    // if (!reqData.passwordValid) {
+    //     return 'passwordValid-false'
+    // }
     // 这里写入db 用户信息
     const {
         resources,
@@ -46,12 +93,25 @@ export async function login (form: any) {
     // 所有应用
     const AppItems: Array<any> = (resources || []).filter((d: any) => d.bizMenuCode !== 'incloud-old').map((d: any) => {
 
+        if (d.type !== 'group') {
+            return {
+                appName: d.bizMenuName,
+                appCode: d.bizMenuCode,
+                appType: 'service',
+                type: d.type,
+                icon: d.bizMenuIcon,
+                url: d.url,
+                sort: d.sort
+            }
+        }
+
         const menus: any = []
 
         const sonmenus: any = []
 
         const pages: any = {}
 
+        const pageMenus: any = {}
         // 记录一级页面数据接口
         const formListUrl: any = {}
 
@@ -66,7 +126,7 @@ export async function login (form: any) {
                     type: d.menuType
                 })
                 // 这里记录一级菜单 框架页面你的接口
-                // if ()
+                // 一级页面记录页面的url
                 if (d.menuType === 0) {
                     formListUrl[d.menuCode] = d.formListUrl
                 }
@@ -108,18 +168,26 @@ export async function login (form: any) {
             //     }
             // }
             if (d.formTargetUrl) {
+                
                 pages[d.menuCode] = Utils.addParamtoUrl(d.formTargetUrl, `menuId=${d.id}`)
                 // console.log(pages[d.menuCode])
+                pageMenus[d.id] = {
+                    name: d.menuName,
+                    icon: d.menuIcon,
+                    icon2: d.bizMenuIcon,
+                    code: d.menuCode
+                }
             }
         })
         // 获取二级以上菜单和页面
         const allMenus = d.mdmMenuVos.filter((d: any) => d.level > 1 && (d.menuType === 1 || d.menuType === 3))
+        // 这里遍历一级菜单
         menus.forEach((m: any) => {
-            // 处理一级菜单配置了页面的
+            // 处理一级页面配置了页面的
             if (m.type === 0) {
                 m.sonMenus = sonmenus.filter((m2: any) => m2.parentId === m.id)
             } else if (m.type === 3) {
-                // 处理 d.type === 3
+                // 处理 一级菜单为分类类型 d.type === 3 菜单分类
                 // 这里需要递归生成子菜单
                 const _cache: any = {
                     [`${m.id}`]: {
@@ -128,7 +196,7 @@ export async function login (form: any) {
                     }
                 }
                 allMenus.forEach((d: any) => {
-                    // 本节点表单
+                    // cache中没有菜单时加入该菜单，如果是分类则加入children数组
                     if (!_cache[d.id]) {
                         const menu: any = {
                             id: d.id,
@@ -140,20 +208,26 @@ export async function login (form: any) {
                         _cache[d.id] = menu
                     }
         
-                    // _cache[d.id] = 
+                    // 如果有父级是一级菜单则加入
                     if (d.parentId === m.id) {
                         _cache[m.id].children.push(_cache[d.id])
                     } else if(!_cache[d.parentId]) {
                         // 缓存中没有找到对应父级对象
-                        const menu = menus.find((m: any) => m.id === d.parentId)
-                        _cache[d.parentId] = {
-                            id: menu.id,
-                            label: menu.menuName,
-                            key: menu.menuCode,
-                            type: menu.menuType,
-                            children: [
-                                _cache[d.id]
-                            ]
+                        const menu = [...menus, ...allMenus].find((m: any) => m.id === d.parentId)
+                        if (menu) {
+                            
+                            _cache[d.parentId] = {
+                                id: menu.id,
+                                label: menu.menuName,
+                                key: menu.menuCode,
+                                type: menu.menuType,
+                                children: [
+                                    _cache[d.id]
+                                ]
+                            }
+                        } else {
+                            console.error('!没有找到该菜单的父级!',menus, d);
+                            debugger;
                         }
                     } else {
                         _cache[d.parentId].children.push(_cache[d.id])
@@ -165,21 +239,24 @@ export async function login (form: any) {
             }
             
         })
-
+        
         return {
             appName: d.bizMenuName,
             appCode: d.bizMenuCode,
             appType: 'service',
+            type: 'group',
             icon: d.bizMenuIcon,
+            sort: d.sort,
             menus,
             pages,
+            pageMenus,
             formListUrl
         } 
     })
 
     // 记录菜单信息
     // const AppItems2 = (resources || []).map((d: any) => {
-    //     // 生成menus  menuType：  0 菜单、1页面、 2按钮
+    //     // 生成menus  menuType：  0 菜单、1页面、 2按钮 3菜单分类
     //     const menus: any = [] // d.mdmMenuVos.filter((m: any)=> m.menuType === 0 || m.menuType === 1)
 
     //     // 获取页面映射

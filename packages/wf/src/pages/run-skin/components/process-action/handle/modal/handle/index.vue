@@ -44,7 +44,7 @@
   </div>
 </template>
 <script lang="tsx">
-import { ref, reactive, nextTick, h } from "vue";
+import { defineComponent, ref, reactive, nextTick, h } from "vue";
 import {
   NConfigProvider,
   NLayout,
@@ -74,7 +74,7 @@ import {
 } from "@platform/main";
 import { NodeList, ActiveNode, OpinionText } from '../../store'
 
-export default {
+export default defineComponent({
   components: {
     NConfigProvider,
     NLayout,
@@ -99,7 +99,6 @@ export default {
     NDivider,
     NDrawer
   },
-  props: {},
   emits: ["callback"],
   setup(props: any, context: any) {
     const GridRef = ref<any>(null)
@@ -135,36 +134,47 @@ export default {
             title: '部门'
           },
           {
-            title: '操作',
+            title: '选取',
             showHeaderOverflow: true,
             width: '70px',
             slots: {
               default: ({row}: any) => {
-                
+                // 改为勾选
                 return [
-                  <NButton
-                    size="tiny"
-                    style="margin-right: 5px;"
-                    type={row._isSelect ? 'success' : 'primary'}
-                    onClick={() => {
-                      row._isSelect = !row._isSelect
-                    }}
-                  >{{
-                    default: () => row._isSelect ? '已选择' : '选择'
-                  }}</NButton>
-                ];
+                  <NwIcon
+                  size={20}
+                  name={row._isSelect ? 'icon-n-n-yes' : 'icon-n-y-circle'}
+                  onClick={() => {
+                    row._isSelect = !row._isSelect
+                  }}
+                  style="cursor: pointer"
+                  color="green"
+                  />
+                ]
+                // return [
+                //   <NButton
+                //     size="tiny"
+                //     style="margin-right: 5px;"
+                //     type={row._isSelect ? 'success' : 'primary'}
+                //     onClick={() => {
+                //       row._isSelect = !row._isSelect
+                //     }}
+                //   >{{
+                //     default: () => row._isSelect ? '已选择' : '选择'
+                //   }}</NButton>
+                // ];
               },
             }
           }
         ]
-      },
+      } as any,
       handleNode (node: any) {
         ActiveNode.value = node
         GridRef.value!.reloadData(ActiveNode.value.userList)
       }
     };
   },
-};
+});
 </script>
 
 <style scoped lang="less">

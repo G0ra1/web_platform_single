@@ -34,6 +34,9 @@ export const buttons = [
         value: 'wf_act_process',
         label: '流程激活'
     },
+
+
+    
     {
         value: 'wf_end_process',
         label: '流程终止'
@@ -62,5 +65,9 @@ export const buttons = [
     {
         value: 'wf_countersign',
         label: '加签'
+    },
+    {
+        value: 'wf_print',
+        label: '打印'
     }
 ]

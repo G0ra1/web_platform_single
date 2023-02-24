@@ -404,9 +404,9 @@ export default defineComponent({
   }
 })
 </script>
-<style lang='scss'>
+<!-- <style lang='scss'>
 $vxe-table-row-height-mini: 16px !default;
-</style>
+</style> -->
 <style lang='less'>
 .n-dialog.n-modal.padding20 {
   padding: 20px;

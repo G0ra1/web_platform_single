@@ -3,7 +3,7 @@
 </template>
 <script lang="ts">
 // import request from '/@/plugins/request'
-import { Request } from '@platform/main'
+import { Request, Aes } from '@platform/main'
 
 import {
   NSelect,
@@ -152,6 +152,7 @@ export default defineComponent({
     let transformInRule: Function
     // 获取页面数据
     const queryFormPage = (url?: string) => {
+      console.log('3==根据url请求表单页面详情=queryFormPage=')
       new Request(
         `/main/page/getPageBy${url || props.src}`,
         'get'
@@ -160,9 +161,12 @@ export default defineComponent({
         // frame.value!.onload = () => {
         //   postMessage('SET_KEY', pageUrl.value)
         // }
-        pageUrl.value = r.pageUrl
-        // 设定访问地址
-        frameUrl.value = `${r.targetUrl}#${r.pageUrl}` //'http://localhost:3001/wf/forms/meetings.html'
+        
+        console.log('4==获取到表单页面内容=', r)
+
+        pageUrl.value = Aes.encrypt(r.pageUrl)
+        // 设定访问地址 这里修改传值方式 使用Aes 加密
+        frameUrl.value = `${r.targetUrl}?fkey=${Aes.encrypt(r.pageUrl)}#${Aes.encrypt(r.pageUrl)}` //'http://localhost:3001/wf/forms/meetings.html'
 
         // 判断是否需要进行转换
         if (r.isTransform === 1) { // r.interfaceJsonSchema
@@ -204,7 +208,8 @@ export default defineComponent({
 
     // 初始化触发 如果iframe为多个这里可能，混淆监听，无法获取对应的映射
     const init = function (e: any) {
-
+      //
+      console.log('6==监听到表单页面触发的postMsg初始化动作==', e)
       if (e.data.cmd === 'INIT_COMPLETE' && e.data.key === pageUrl.value) {
         // 触发初始化
         isLoaded.value = true
@@ -274,6 +279,33 @@ export default defineComponent({
       }).catch(e => {console.error(e)})
       return r
     }
+
+    const runScript = async (scriptName: string, p: any) => {
+
+      let f: (e: any) => void
+      let r = await new Promise((resolve, reject)  => {
+        f = (e) => {
+          if (e.data.cmd === 'RUN_SCRIPT' && e.data.key === pageUrl.value) {
+            // 获取数据 需要把e.data.value 进行数据转换
+            resolve(e.data.value)
+          } else if (e.data.cmd === 'RUN_SCRIPT_ERROR') {
+            reject(e.data.value)
+          }
+        }
+        window.addEventListener('message', f)
+        postMessage('RUN_SCRIPT', {
+          scriptName,
+          params: cloneDeep(p)
+        })
+      }).then(d => {
+        window.removeEventListener('message', f)
+        return d
+      }).catch(e => {
+        throw new Error(e)
+        // console.error(e)
+      })
+      return r
+    }
     return {
       pageUrl,
       frameUrl,
@@ -282,6 +314,7 @@ export default defineComponent({
       getValue,
       setRules,
       validate,
+      runScript,
       reload (url: string) {
         queryFormPage(url)
       }

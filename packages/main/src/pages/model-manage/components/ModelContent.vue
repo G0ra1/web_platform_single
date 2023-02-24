@@ -12,7 +12,7 @@ defineExpose({ show });
         <n-drawer-content>
             <n-layout has-sider class="nw-layout-full">
                 <!-- 左树 -->
-                <n-layout-sider bordered width="220" collapse-mode="transform" show-trigger="arrow-circle">
+                <n-layout-sider bordered width="220" collapse-mode="transform">
                     <ModelLeftTree ref="modelLeftTreeRef" />
                 </n-layout-sider>
                 <!-- 右侧主体内容 -->
@@ -26,15 +26,17 @@ defineExpose({ show });
                             </n-h3>
                         </n-space>
                         <n-space justify="end" :inline="true" size="small" style="margin-right: 30px">
-                            <n-button type="primary" size="small" @click="addRow" v-if="isView">添加</n-button>
-                            <n-button type="primary" size="small" @click="addWfRow" v-if="isView">添加工作流字段</n-button>
-                            <n-button type="primary" size="small" @click="syncField" v-if="isView">同步</n-button>
-                            <n-button type="primary" size="small" @click="viewSqlEvent" v-if="isView">SQL预览</n-button>
-                            <n-button type="primary" size="small" @click="submitField" v-if="isView">提交</n-button>
+                            <template v-if="isView">
+                                <n-button type="primary" size="small" @click="addRow">添加</n-button>
+                                <n-button type="primary" size="small" @click="addWfRow">添加工作流字段</n-button>
+                                <n-button type="primary" size="small" @click="syncField">同步</n-button>
+                                <n-button type="primary" size="small" @click="viewSqlEvent">SQL预览</n-button>
+                                <n-button type="primary" size="small" @click="submitField">提交</n-button>
+                            </template>
                             <n-button type="primary" size="small" @click="close">关闭</n-button>
                         </n-space>
                     </n-layout-header>
-                    <n-layout-content v-if="isView" style="padding: 0 15px">
+                    <n-layout-content v-show="isView" style="padding: 0 15px">
                         <ModelFieldTable />
                         <ModelSQLView />
                     </n-layout-content>

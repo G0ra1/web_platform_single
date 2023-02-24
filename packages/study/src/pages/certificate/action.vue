@@ -246,7 +246,7 @@ export default defineComponent({
       showModal: showModalRef,
       types,
       isTableLoading,
-      uploadUrl: `${window.apiBaseURL}/file/aliyunFile`,
+      uploadUrl: `${window.apiBaseURL}/main/aliyunFile`,
       token,
       tokenType,
       model:modelRef, // 表单数据

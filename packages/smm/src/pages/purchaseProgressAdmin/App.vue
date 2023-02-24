@@ -4,8 +4,10 @@
       <n-space :size="5">
         <span></span>
       </n-space>
+      <n-space :size="5" style="padding: 0 5px">
+        <NwFunctionPredefine code="purchaseProgressAdminForm_add1" :params="paramsArray" />
+      </n-space>
       <n-space :size="5" style="padding: 0 5px;position:absolute;">
-
         <n-form ref="formRef" inline label-placement="left" label-align="right" :label-width="120" :model="SearchForm"
           style="height: 30px;">
           <n-form-item label="大宗商品名称" path="commodityItemName">
@@ -28,15 +30,7 @@
 
         <!-- <n-button type="warning" >编辑</n-button> -->
       </n-space>
-      <n-space :size="5" style="padding: 0 5px">
-        <n-button type="primary" @click="showAction([], 1)">
-          <template #icon>
-            <nw-icon name="icon-n-y-add" :size="14" />
-          </template>
-          新建
-        </n-button>
 
-      </n-space>
     </n-layout-header>
 
     <n-layout has-sider content-style="height: 100%">
@@ -80,7 +74,7 @@ import {
   useMessage,
   NLayoutSider
 } from 'naive-ui'
-import { NwIcon, RequestPaging, VxeHelper, OrgTree } from '@platform/main'
+import { NwIcon, RequestPaging, VxeHelper, OrgTree, NwFunctionPredefine } from '@platform/main'
 import SideTree from './components/tree-grid/index.vue'
 import { query, del } from './api/index.js'
 import ModalAction from './components/action.vue'
@@ -111,7 +105,8 @@ export default defineComponent({
     NPopconfirm,
     ButtonAction,
     NLayoutSider,
-    OrgTree
+    OrgTree,
+    NwFunctionPredefine
   },
   setup() {
     const rightDatas = ref([])
@@ -277,7 +272,7 @@ export default defineComponent({
                     negative-text="取消"
                   >
                     {{
-                      trigger: () => <a style="color:red;cursor: pointer;display:inline-block;margin-left:8px">{"删除"}</a>,
+                      trigger: () => <a style="color:#C91019;cursor: pointer;display:inline-block;margin-left:8px">{"删除"}</a>,
                       default: () => `是否删除项目-${row.projectName}？`
                     }}
 

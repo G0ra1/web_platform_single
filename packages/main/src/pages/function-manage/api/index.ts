@@ -32,4 +32,11 @@ export function del(id: string) {
       url: `/main/mdmCpts/${id}`,
       method: 'delete'
     })
-  }
+}
+
+export function unLinkWf(id: string) {
+    return request({
+        url: `/main/mdmCpts/clearWfInfoById/${id}`,
+        method: 'put'
+    })
+}

@@ -551,6 +551,9 @@ export default {
         'camunda:TaskListener',
         'netwisd:TaskListener'
       ]), d => d.order)
+      if (isNaN(max)) {
+        return -1;
+      }
       return max < 0 ? -1 : max
     } 
 
@@ -685,6 +688,7 @@ export default {
 
           refreshGrid()
           
+          currentEventParamter.value = currentEvent.value.fields
         }
       }
     }

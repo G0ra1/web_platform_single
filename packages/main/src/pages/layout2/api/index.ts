@@ -18,3 +18,19 @@ export function favoritesTypeList(data: any) {
         data: {}
     })
 }
+
+
+// 获取待办数量
+export function wftodotaskCount() {
+    return request({
+        url: `/wf/wftodotask/count`,
+        method: 'get',
+    })
+}
+// 获取消息数量
+export function unreadNumber() {
+    return request({
+        url: `/main/unreadNumber`,
+        method: 'get',
+    })
+}

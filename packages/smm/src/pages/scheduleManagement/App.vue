@@ -14,24 +14,42 @@
         <div class="schedule-box-right">
           <div class="schedule-box-right-header">
             <div class="schedule-box-right-header-left">
-              <span @click="viewChange('m')" :class="{'active':viewActiveType=='m'}">月</span>
+              <span
+                @click="viewChange('m')"
+                :class="{ active: viewActiveType == 'm' }"
+                >月</span
+              >
               <span class="red-split"></span>
               <!-- <span @click="viewChange('w')" :class="{ 'active': viewActiveType == 'w' }">周</span>
               <span class="red-split"></span> -->
-              <span @click="viewChange('d')" :class="{ 'active': viewActiveType == 'd' }">日</span>
-
+              <span
+                @click="viewChange('d')"
+                :class="{ active: viewActiveType == 'd' }"
+                >日</span
+              >
             </div>
-            <div class="schedule-box-right-header-mid" onselectstart="return false">
-              <span class="schedule-box-right-header-mid-lbtn" @click="lastMonth">
-                <nw-icon name="icon-xiangzuojiantou" />
-              </span>{{ viewActiveType == 'd'?format(activeValue,"yyyy年MM月dd日"):format(date,"yyyy年MM月")}}<span
-                class="schedule-box-right-header-mid-rbtn" @click="nextMonth">
+            <div
+              class="schedule-box-right-header-mid"
+              onselectstart="return false"
+            >
+              <span
+                class="schedule-box-right-header-mid-lbtn"
+                @click="lastMonth"
+              >
+                <nw-icon name="icon-xiangzuojiantou" /> </span
+              >{{
+                viewActiveType == "d"
+                  ? format(activeValue, "yyyy年MM月dd日")
+                  : format(date, "yyyy年MM月")
+              }}<span
+                class="schedule-box-right-header-mid-rbtn"
+                @click="nextMonth"
+              >
                 <nw-icon name="icon-xiangyoujiantou" />
-
               </span>
             </div>
             <div class="schedule-box-right-header-right">
-              <span @click="showCreateTodo" style="float:right">
+              <span @click="showCreateTodo" style="float: right">
                 <n-button type="primary">新增日程</n-button>
                 <!-- <nw-icon name="icon-n-y-thinadd" color="rgb(103, 194, 58)" :size="15" /> -->
               </span>
@@ -44,31 +62,58 @@
           </div>
           <div class="schedule-box-right-content">
             <div class="left-calendar">
-              <schedulePanel @dateChange="dateChange" @saveSuccess="saveSuccess" @activeDateChange="activeDateChange"
-                boxHeight="440px" width="400px" :hideCreate="true" ref="schedulePanelRef">
+              <schedulePanel
+                @dateChange="dateChange"
+                @saveSuccess="saveSuccess"
+                @activeDateChange="activeDateChange"
+                boxHeight="440px"
+                width="400px"
+                :hideCreate="true"
+                ref="schedulePanelRef"
+              >
               </schedulePanel>
             </div>
-            <calendarMonthView @dateChange="dateChange" @activeDateChange="activeDateChange"
-              v-if="viewActiveType == 'm'" ref="monthView" :date="date" @editEvent="showCreateTodo"
-              @saveCallback="saveSuccess" :todoListView="todoListView">
+            <calendarMonthView
+              @dateChange="dateChange"
+              @activeDateChange="activeDateChange"
+              v-if="viewActiveType == 'm'"
+              ref="monthView"
+              :date="date"
+              @editEvent="showCreateTodo"
+              @saveCallback="saveSuccess"
+              :todoListView="todoListView"
+            >
             </calendarMonthView>
-            <calendarWeekView v-if="viewActiveType == 'w'" ref="weekView" :date="date" :todoListView="todoListView">
+            <calendarWeekView
+              v-if="viewActiveType == 'w'"
+              ref="weekView"
+              :date="date"
+              :todoListView="todoListView"
+            >
             </calendarWeekView>
-            <calendarDayView v-if="viewActiveType == 'd'" ref="daykView" :activeValue="activeValue"
-              @editEvent="showCreateTodo" :date="date">
+            <calendarDayView
+              v-if="viewActiveType == 'd'"
+              ref="daykView"
+              :activeValue="activeValue"
+              @editEvent="showCreateTodo"
+              :date="date"
+            >
             </calendarDayView>
           </div>
-
         </div>
       </div>
     </n-layout-content>
   </n-layout>
-  <todoCreate ref="todoCreateRef" :finish="todoFinish" @saveSuccess="saveSuccess"></todoCreate>
+  <todoCreate
+    ref="todoCreateRef"
+    :finish="todoFinish"
+    @saveSuccess="saveSuccess"
+  ></todoCreate>
   <memo ref="memoRef" @finishSuccess="finishSuccess"></memo>
 </template>
 
 <script lang="jsx">
-import { ref, reactive, defineComponent, nextTick, h, onMounted } from 'vue'
+import { ref, reactive, defineComponent, nextTick, h, onMounted } from "vue";
 import {
   NLayout,
   NLayoutHeader,
@@ -80,15 +125,15 @@ import {
   NInputGroup,
   NDrawer,
   NDrawerContent,
-  NMenu
-} from 'naive-ui'
-import { NwIcon, RequestPaging, VxeHelper } from '@platform/main'
-import { todoCreate, memo, schedulePanel } from '@platform/smm'
-import calendarMonthView from '../../components/calendarMonthView/index.vue'
-import calendarWeekView from '../../components/calendarWeekView/index.vue'
-import calendarDayView from '../../components/calendarDayView/index.vue'
+  NMenu,
+} from "naive-ui";
+import { NwIcon, RequestPaging, VxeHelper } from "@platform/main";
+import { todoCreate, memo, schedulePanel } from "@platform/smm";
+import calendarMonthView from "../../components/calendarMonthView/index.vue";
+import calendarWeekView from "../../components/calendarWeekView/index.vue";
+import calendarDayView from "../../components/calendarDayView/index.vue";
 import { format } from "date-fns";
-import { todoListView, todofinish } from "../../api/index.js"
+import { todoListView, todofinish } from "../../api/index.js";
 
 export default defineComponent({
   components: {
@@ -109,107 +154,121 @@ export default defineComponent({
     NMenu,
     todoCreate,
     memo,
-    schedulePanel
-
+    schedulePanel,
   },
   setup() {
-    const _format = format
-    const date = ref(new Date())
-    const monthView = ref(null)
-    const weekView = ref(null)
-    const daykView = ref(null)
-    const memoRef = ref(null)
-    const schedulePanelRef = ref(null)
+    const _format = format;
+    const date = ref(new Date());
+    const monthView = ref(null);
+    const weekView = ref(null);
+    const daykView = ref(null);
+    const memoRef = ref(null);
+    const schedulePanelRef = ref(null);
     const menuOptions = ref([
       {
-        label: '日历视图',
-        key: 'calendar-view',
+        label: "日历视图",
+        key: "calendar-view",
       },
       // {
       //   label: '任务查看',
       //   key: 'task-view',
       // },
-    ])
+    ]);
 
-    const todoCreateRef = ref(null)
+    const todoCreateRef = ref(null);
     const showCreateTodo = (d = {}) => {
       if (d.id) {
-        todoCreateRef.value.show(d)
+        todoCreateRef.value.show(d);
       } else {
-        todoCreateRef.value.show()
+        todoCreateRef.value.show();
       }
-
-    }
+    };
     const loadData = () => {
-      if (monthView.value) monthView.value.setValue(date.value)
-      if (weekView.value) weekView.value.setValue(date.value)
-      if (daykView.value) daykView.value.setValue(activeValue.value)
-    }
+      if (monthView.value) monthView.value.setValue(date.value);
+      if (weekView.value) weekView.value.setValue(date.value);
+      if (daykView.value) daykView.value.setValue(activeValue.value);
+    };
     const lastMonth = () => {
-      let d_m = 24 * 60 * 60 * 1000
-      if (viewActiveType.value == 'd') {
-        activeValue.value = new Date(+new Date(_format(activeValue.value, 'yyyy-MM-dd') + ' 00:00:00') - d_m)
-        date.value = new Date(activeValue.value.getFullYear(), activeValue.value.getMonth())
-        daykView.value.setValue(activeValue.value)
-        schedulePanelRef.value.setActiveDate(activeValue.value)
+      let d_m = 24 * 60 * 60 * 1000;
+      if (viewActiveType.value == "d") {
+        activeValue.value = new Date(
+          +new Date(_format(activeValue.value, "yyyy-MM-dd") + " 00:00:00") -
+            d_m
+        );
+        date.value = new Date(
+          activeValue.value.getFullYear(),
+          activeValue.value.getMonth()
+        );
+        daykView.value.setValue(activeValue.value);
+        schedulePanelRef.value.setActiveDate(activeValue.value);
       } else {
-        date.value = new Date(date.value.getFullYear(), date.value.getMonth() - 1)
-        loadData()
-        dateChange(date.value)
+        date.value = new Date(
+          date.value.getFullYear(),
+          date.value.getMonth() - 1
+        );
+        loadData();
+        dateChange(date.value);
       }
-    }
+    };
     const nextMonth = () => {
-      let d_m = 24 * 60 * 60 * 1000
-      if (viewActiveType.value == 'd') {
-        activeValue.value = new Date(+new Date(_format(activeValue.value, 'yyyy-MM-dd') + ' 00:00:00') + d_m)
-        date.value = new Date(activeValue.value.getFullYear(), activeValue.value.getMonth())
-        daykView.value.setValue(activeValue.value)
-        schedulePanelRef.value.setActiveDate(activeValue.value)
+      let d_m = 24 * 60 * 60 * 1000;
+      if (viewActiveType.value == "d") {
+        activeValue.value = new Date(
+          +new Date(_format(activeValue.value, "yyyy-MM-dd") + " 00:00:00") +
+            d_m
+        );
+        date.value = new Date(
+          activeValue.value.getFullYear(),
+          activeValue.value.getMonth()
+        );
+        daykView.value.setValue(activeValue.value);
+        schedulePanelRef.value.setActiveDate(activeValue.value);
       } else {
-        date.value = new Date(date.value.getFullYear(), date.value.getMonth() + 1)
-        loadData()
-        dateChange(date.value)
+        date.value = new Date(
+          date.value.getFullYear(),
+          date.value.getMonth() + 1
+        );
+        loadData();
+        dateChange(date.value);
       }
-    }
-    const viewActiveType = ref('m')
+    };
+    const viewActiveType = ref("m");
     const menuChange = (key, item) => {
-      console.log(key, item)
-    }
+      console.log(key, item);
+    };
     const viewChange = (type) => {
-      viewActiveType.value = type
-    }
+      viewActiveType.value = type;
+    };
     const saveSuccess = () => {
-      loadData()
-      activeDateChange(activeValue.value)
-      schedulePanelRef.value.getEvent(activeValue.value)
-    }
+      loadData();
+      activeDateChange(activeValue.value);
+      schedulePanelRef.value.getEvent(activeValue.value);
+    };
     const todoFinish = (d) => {
-      memoRef.value.show(d)
-    }
+      memoRef.value.show(d);
+    };
     const finishSuccess = () => {
-      todoCreateRef.value.cancelModal()
-      loadData()
-    }
+      todoCreateRef.value.cancelModal();
+      loadData();
+    };
     const dateChange = (_date) => {
-      date.value = new Date(_date.getFullYear(), _date.getMonth())
-      schedulePanelRef.value.setValue(date.value)
-      loadData()
-    }
-    const activeValue = ref(new Date())
+      date.value = new Date(_date.getFullYear(), _date.getMonth());
+      schedulePanelRef.value.setValue(date.value);
+      loadData();
+    };
+    const activeValue = ref(new Date());
     const activeDateChange = (_date) => {
-      activeValue.value = _date
-      schedulePanelRef.value.setActiveDate(_date)
-      if (viewActiveType.value == 'd') {
+      activeValue.value = _date;
+      schedulePanelRef.value.setActiveDate(_date);
+      if (viewActiveType.value == "d") {
         //dd
-        if (daykView.value) daykView.value.setValue(_date)
+        if (daykView.value) daykView.value.setValue(_date);
       } else {
-
         //mm
-        monthView.value.setActiveDate(_date)
-
+        monthView.value.setActiveDate(_date);
       }
       // schedulePanelRef.value.setActiveDate(_date)
-    }
+    };
     return {
       lastMonth,
       nextMonth,
@@ -233,11 +292,10 @@ export default defineComponent({
       dateChange,
       schedulePanelRef,
       activeDateChange,
-      activeValue
-    }
-  }
-})
-
+      activeValue,
+    };
+  },
+});
 </script>
 
 <style lang="less" scoped>
@@ -268,11 +326,9 @@ export default defineComponent({
 
       &-item:hover {
         padding: 0;
-        background: var(--n-red1)
+        background: var(--n-red1);
       }
     }
-
-
   }
 
   &-right {
@@ -307,7 +363,6 @@ export default defineComponent({
           text-align: center;
           cursor: pointer;
           font-weight: 700;
-
         }
 
         span.red-split {
@@ -321,8 +376,8 @@ export default defineComponent({
           border-bottom: 3px solid red;
         }
 
-        span:last-child {}
-
+        span:last-child {
+        }
       }
 
       &-mid {
@@ -353,7 +408,6 @@ export default defineComponent({
         &-rbtn:hover {
           background-color: #eee;
         }
-
       }
 
       &-right {
@@ -375,10 +429,6 @@ export default defineComponent({
         padding: 0 12px;
       }
     }
-
-
-
   }
-
 }
 </style>

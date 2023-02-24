@@ -7,17 +7,17 @@
   <n-modal v-model:show="showModal" :mask-closable="false" preset="dialog" title="选择物资" content="你确认" positive-text="确认"
     negative-text="取消" style="width: 1200px">
     <n-grid>
-      <n-grid-item span="6" style="height: 650px" v-if="showSide">
-        <div class="sider" style="height: 690px">
+      <n-grid-item span="6" style="height: 540px" v-if="showSide">
+        <div class="sider" style="height: 569px">
           <n-input v-model:value="searchItemClassName" clearable placeholder="搜索物资分类" />
           <n-spin :show="leftSpinShow">
-            <n-tree placeholder="请选择" :data="tree.treeList" style="height: 630px; padding: 5px 0" block-line
-              virtual-scroll :pattern="searchItemClassName" :show-irrelevant-nodes="false"
-              :default-expanded-keys="['0']" @update:selected-keys="treeSelect" />
+            <n-tree placeholder="请选择" :data="tree.treeList" style="height: 540px;" block-line virtual-scroll
+              :pattern="searchItemClassName" :show-irrelevant-nodes="false" :default-expanded-keys="['0']"
+              @update:selected-keys="treeSelect" />
           </n-spin>
         </div>
       </n-grid-item>
-      <n-grid-item :span="showSide ? 18 : 24" style="height: 650px">
+      <n-grid-item :span="showSide ? 18 : 24" style="height: 540px">
         <n-spin :show="spinShow">
           <vxe-toolbar style="height: 40px">
             <template v-slot:buttons>
@@ -47,7 +47,7 @@
               </vxe-form>
             </template>
           </vxe-toolbar>
-          <vxe-table resizable highlight-current-row ref="aTable" row-id="rowId" height="260px"
+          <vxe-table resizable highlight-current-row ref="aTable" row-id="rowId" height="180px"
             :edit-config="{ trigger: 'click', mode: 'cell' }" v-show="multiple" :data="emp.alreadyEmpList">
             <vxe-table-column showHeaderOverflow showOverflow field="itemName" title="物资名称"></vxe-table-column>
             <vxe-table-column showHeaderOverflow showOverflow field="itemCode" title="物资编码"></vxe-table-column>
@@ -59,11 +59,11 @@
             <vxe-table-column field="state" title="状态"></vxe-table-column>
             <vxe-table-column field title="操作">
               <vxe-button type="text" @click="
-                () => {
-                  emp.alreadyEmpList.splice(index, 1);
-                  $refs.aTable.loadData(emp.alreadyEmpList);
-                }
-              " status="danger">删除</vxe-button>
+  () => {
+    emp.alreadyEmpList.splice(index, 1);
+    $refs.aTable.loadData(emp.alreadyEmpList);
+  }
+" status="danger">删除</vxe-button>
             </vxe-table-column>
           </vxe-table>
         </n-spin>
@@ -243,7 +243,7 @@ export default defineComponent({
     };
     const gridOptions = reactive({
       border: true,
-      height: !props.multiple ? 500 : 320,
+      height: !props.multiple ? 450 : 280,
       rowConfig: {
         keyField: "id",
       },

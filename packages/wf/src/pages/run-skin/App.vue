@@ -1,33 +1,42 @@
 <template>
-  <n-message-provider>
-    <n-layout class="nw-layout-full">
-      <n-layout-header bordered>
-        <h3 style="padding-left: 10px">{{WfSendData.reason}}</h3>
-      </n-layout-header>
-      <n-layout-content>
-        <n-layout has-sider sider-placement="right" style="height: 100%">
-          <!-- 表单页签 -->
-          <n-layout-content>
-            <form-viewer ref="FormFrameRef" />
-          </n-layout-content>
-          <n-layout-sider bordered content-style="display: flex;flex-direction: column;">
-            <n-scrollbar style="flex: 1">
-              <procdef-info ref="ProcdefInfoRef" />
-              <user-info ref="UserInfoRef" />
-              <log-info ref="LogInfoRef" />
-            </n-scrollbar>
-            <div style="display: flex;justify-content: end ;padding: 5px;height: 32px;">
-              <process-action
-                ref="ProcessActionRef"
-                :actionType="ParamAction"
-              />
-            </div>
-          </n-layout-sider>
-        </n-layout>
-      </n-layout-content>
-    </n-layout>
-  </n-message-provider>
+  <n-layout class="nw-layout-full">
+    <n-layout-header bordered style="height: 50px;">
+      <h3 style="padding-left: 10px;color: rgba(1, 1, 1, 0.94);font-size: 18px;font-weight: 400;">{{WfSendData.reason}}</h3>
+      <n-button text @click="closeAll"><nw-icon
+        name="icon-n-y-close"
+        color="grey"
+        style="cursor:pointer"
+        
+      />
+      </n-button>
+    </n-layout-header>
+    <n-layout-content >
+      <form-viewer ref="FormFrameRef" />
+    </n-layout-content>
+    <n-layout-footer>
+      <div style="display: flex;justify-content: space-between ;padding: 12px;width: 100%;">
+        <div>
+        </div>
+        <div style="display: flex;">
+          <n-button
+            v-if="ParamAction !== 'create'"
+            style="margin-right: 20px;"
+            @click="LogModalRef.show(WfSendData.camundaProcinsId)"
+            class="liuchengBtn"
+          
+          >
+            流程日志
+          </n-button>
+          <process-action
+            ref="ProcessActionRef"
+            :actionType="ParamAction"
+          />
+        </div>
+      </div>
+    </n-layout-footer>
+  </n-layout>
   <init-modal ref="StateModalRef" />
+  <log-modal ref="LogModalRef" />
 </template>
 
 <script lang='tsx'>
@@ -51,6 +60,7 @@ import {
   NMessageProvider,
   NScrollbar
 } from "naive-ui";
+import { NwIcon } from "@platform/main"
 import InitModal from './components/init-modal/index.vue'
 import ProcdefInfo from './components/procdef-info/index.vue'
 import UserInfo from './components/user-info/index.vue'
@@ -58,6 +68,8 @@ import LogInfo from './components/log-info/index.vue'
 
 import ProcessAction from './components/process-action/index.vue'
 import FormViewer from './components/form-viewer/index.vue'
+
+import LogModal from './components/log-info/logModal.vue'
 
 import {
   init,
@@ -68,7 +80,8 @@ import {
   UserInfoRef,
   LogInfoRef,
   ProcessActionRef,
-  WfSendData
+  WfSendData,
+  onComplete
 } from './store/index'
 
 
@@ -96,10 +109,12 @@ export default defineComponent({
     UserInfo,
     LogInfo,
     ProcessAction,
-    NScrollbar
+    NScrollbar,
+    LogModal,
+    NwIcon
   },
   setup(props, context) {
-    
+    const LogModalRef = ref<any>()
     nextTick().then(() => {
       init()
     })
@@ -111,7 +126,12 @@ export default defineComponent({
       ProcdefInfoRef,
       UserInfoRef,
       LogInfoRef,
-      ProcessActionRef
+      ProcessActionRef,
+      LogModalRef,
+      closeAll () {
+        
+        onComplete('close')
+      }
     };
   }
 });

@@ -5,9 +5,9 @@
  */
 
 import { ref, h } from 'vue'
-import { RequestPaging, VxeHelper, NwFunctionPredefine, Db } from '@platform/main'
-import  NTag  from 'naive-ui'
-
+import { RequestPaging, VxeHelper, NwFunctionPredefine, Db,Page } from '@platform/main'
+import { NTag } from 'naive-ui'
+import { getUserList } from './api/index'
 /**
  * 初始化弹出框组件
  */
@@ -16,33 +16,53 @@ function initDialog(dialog: any) {
     dialogLocal = dialog;
 }
 
-const typeArray = ["error", "success", "info"];
+const typeArray = ["default", "info", "primary"];
 const sexArray = ["未知", "男", "女"];
-const sexOptions = ref([
-    { label: '请选择', value: '' },
-    { label: '男', value: 1 },
-    { label: '女', value: 2 },
-])
 
 
 //数据来源枚举
 let sourceMap = new Map();
-sourceMap.set("self_build","自建");
-sourceMap.set("cnijx_contract","商法系统");
-sourceMap.set("cnijx_portal","人力管理系统");
-sourceMap.set("cnijx_ems","工时系统");
+sourceMap.set("self_build", "自建");
+sourceMap.set("cnijx_contract", "商法系统");
+sourceMap.set("cnijx_portal", "人力管理系统");
+sourceMap.set("cnijx_ems", "工时系统");
 
 /**
  * 列表的请求和组装，也可以直接在页面用使用vxe-grid形式
  */
-const { bind, gridRef, filterData, query, reset } = new VxeHelper.VxeGridPaging(
+const { bind, gridRef, filterData, query, reset,gridEvents } = new VxeHelper.VxeGridPaging(
     {
         columns: [
-            { field: 'phoneNum', title: '手机号', showHeaderOverflow: true, width: '240px', align: 'center' },
-            { field: 'userNameCh', title: '姓名', showHeaderOverflow: true, width: '240px', align: 'center' },
-            { field: 'idCard', title: '身份证', showHeaderOverflow: true, width: '300px', align: 'center' },
+            { 
+                field: 'userNameCh', title: '姓名', showHeaderOverflow: true, minWidth: '100px', align: 'center', showOverflow: true ,
+                slots:{
+                    default: ({ row }) => {
+                        return h(
+                            NwFunctionPredefine,
+                            { code: "labourSuppUserDetailForm", params: [row] },
+                            {unauth:()=>{ return row.userNameCh },auth:(fn:any)=>{
+                                return [
+                                    h(
+                                        'a',
+                                        {
+                                            href: 'javascript:void(0)',
+                                            style: 'text-decoration: none',
+                                            onClick: () => {
+                                               fn()
+                                            }
+                                        },
+                                        { default: () => row.userNameCh }
+                                    )
+                                ]
+                            }}
+                        )
+                    }
+                }
+            },
+            { field: 'phoneNum', title: '手机号', showHeaderOverflow: true, minWidth: '100px', align: 'center', showOverflow: true },
+            { field: 'idCard', title: '身份证', showHeaderOverflow: true, minWidth: '150px', align: 'center', showOverflow: true },
             {
-                title: '性别', showHeaderOverflow: true, width: '100px', align: 'center',
+                title: '性别', showHeaderOverflow: true, minWidth: '70px', align: 'center', showOverflow: true,
                 slots: {
                     default: ({ row }) => [h(
                         NTag,
@@ -51,21 +71,25 @@ const { bind, gridRef, filterData, query, reset } = new VxeHelper.VxeGridPaging(
                     )] as JSX.Element[]
                 }
             },
-            { field: 'unitName', title: '所在单位', showHeaderOverflow: true, width: '280px', align: 'center' },
-            { field: 'partName', title: '所在部门', showHeaderOverflow: true, width: '260px', align: 'center' },
-            { field: 'source', title: '数据来源', showHeaderOverflow: true, width: '200px', align: 'center',
-            slots: {
-                default: ({ row }) => [h(
-                    NTag,
-                    { size: "small", type: "info" } as {},
-                    { default: () => sourceMap.get(row.source) }
-                )] as JSX.Element[]
-            }
+            { field: 'parentOrgName', title: '劳务供方公司', showHeaderOverflow: true, minWidth: '120px', align: 'center', showOverflow: true },
+            { field: 'unitName', title: '所在单位', showHeaderOverflow: true, minWidth: '120px', align: 'center', showOverflow: true },
+
+            { field: 'partName', title: '所在部门', showHeaderOverflow: true, minWidth: '120px', align: 'center', showOverflow: true },
+            {
+                field: 'source', title: '数据来源', showHeaderOverflow: true, minWidth: '100px', align: 'center', showOverflow: true,
+                slots: {
+                    default: ({ row }) => [h(
+                        NTag,
+                        { size: "small", type: "info" } as {},
+                        { default: () => sourceMap.get(row.source) }
+                    )] as JSX.Element[]
+                }
             },
             {
                 title: '操作',
                 showHeaderOverflow: true,
                 align: 'center',
+                minWidth: '110px',
                 slots: {
                     default: ({ row }) => {
                         let edit = h(
@@ -88,7 +112,19 @@ const { bind, gridRef, filterData, query, reset } = new VxeHelper.VxeGridPaging(
     )
 )
 
+
 const refresh = () => {
+    const org = Page.getMenuData()
+
+    // alert(JSON.stringify(org))
+    if (org.id) {
+        // alert(1)
+        reset({ parentOrgId: org.id })
+    } else {
+        reset({})
+    }
+}
+const refresh_ = () => {
     reset({})
 }
 
@@ -98,9 +134,26 @@ const refresh = () => {
 let paramsArray = ref([{}]);
 Db.get('userInfo').then((d: any) => {
     console.log(d);
-    paramsArray.value = [{ parentOrgId: d.parentOrgId, parentOrgName: d.parentOrgName }];
+    paramsArray.value = [{ parentOrgId: d.parentDeptId, parentOrgName: d.parentDeptName }];
+})
+//所在单位
+const unitNameOptions = ref<any>([]);
+const parentOrgNameOptions = ref<any>([]);
+getUserList().then(d=>{
+    //所在单位
+    let unitNameDisArr =  d.map((d:any)=>{return d.unitName})
+    let unitNameArr =  Array.from(new Set(unitNameDisArr))
+    unitNameArr.unshift('')
+    unitNameOptions.value = unitNameArr.map(d=> { return {'label':d,'value':d}})
+    //劳务供方公司
+    let parentOrgNameDisArr =  d.map((d:any)=>{return d.parentOrgName})
+    let parentOrgNameArr =  Array.from(new Set(parentOrgNameDisArr))
+    parentOrgNameArr.unshift('')
+    parentOrgNameOptions.value = parentOrgNameArr.map(d=> { return {'label':d,'value':d}})
+
 })
 
+const gridSearchRef = ref()
 export {
-    bind, gridRef, filterData, query, refresh, reset, paramsArray, initDialog, sexOptions
+    bind, gridRef, filterData, query, refresh, reset, paramsArray, initDialog,gridSearchRef, gridEvents,unitNameOptions,parentOrgNameOptions 
 }
