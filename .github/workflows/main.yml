@@ -1,4 +1,4 @@
-name: Java CI
+name: 测试 CI
 
 on: [push]
 jobs:
@@ -11,6 +11,5 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'temurin'
-      - name: Build with Maven
+      - name: 指令
         run: ls
