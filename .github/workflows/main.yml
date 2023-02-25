@@ -6,5 +6,7 @@ jobs:
     runs-on:  ubuntu-latest
     
     steps:
-      - name: 指令
+      - name: 路径
         run: pwd
+      - name: 文件
+        run: ls
