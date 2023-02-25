@@ -6,7 +6,8 @@ jobs:
     runs-on:  ubuntu-latest
     
     steps:
-      - name: 路径
+      - name: actions/checkout@v3
+      - name: 拿到文件后的路径
         run: pwd
-      - name: 文件
+      - name: 拿到文件后的文件
         run: ls
